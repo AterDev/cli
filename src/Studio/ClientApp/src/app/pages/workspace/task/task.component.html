@@ -120,7 +120,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>项目数据类型</mat-label>
-        <mat-select placeholder="选择要用到的项目数据" [formControl]="sourceType" name="item" matTooltip="依赖的项目数据类型"
+        <mat-select placeholder="选择要用到的项目数据" [formControl]="sourceType" name="item" matTooltip="运行项目时选择的项目数据来源"
           (selectionChange)="sourceTypeChange($event)">
           <mat-option [value]="null">无</mat-option>
           <mat-option *ngFor="let item of GenSourceType | toKeyValue" [value]="item.value">

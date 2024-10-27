@@ -162,8 +162,8 @@ export class TaskComponent implements OnInit {
   }
 
   sourceTypeChange(event: any): void {
-    this.entityPath.reset();
-    this.getModels();
+    // this.entityPath.reset();
+    // this.getModels();
   }
 
   async openAddDialog(item: GenActionItemDto | null = null, isEditable = false): Promise<void> {
