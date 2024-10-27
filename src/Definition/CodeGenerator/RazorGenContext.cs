@@ -1,5 +1,7 @@
 using RazorEngineCore;
 
+namespace CodeGenerator;
+
 /// <summary>
 /// 代码生成下下文
 /// </summary>
@@ -11,6 +13,13 @@ public class RazorGenContext
         return GenCode(templateContent, model);
     }
 
+    /// <summary>
+    /// 特定类型生成
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="templateContent"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
     public string GenCode<T>(string templateContent, T model)
     {
         IRazorEngineCompiledTemplate<RazorEngineTemplateBase<T>> template = RazorEngine.Compile<RazorEngineTemplateBase<T>>(templateContent);
@@ -21,6 +30,12 @@ public class RazorGenContext
         return result;
     }
 
+    /// <summary>
+    /// 变量模板替换
+    /// </summary>
+    /// <param name="templateContent"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
     public string GenTemplate(string templateContent, List<Variable> model)
     {
         // model to dictionary 
@@ -33,4 +48,33 @@ public class RazorGenContext
         });
         return result;
     }
+
+    public string GenTemplate(string templateContent, TempModel model)
+    {
+        var template = RazorEngine.Compile<RazorEngineTemplateBase<TempModel>>(templateContent);
+        string result = template.Run(instance =>
+        {
+            instance.Model = model;
+        });
+        return result;
+    }
+}
+public class TempModel
+{
+    public List<Variable> Variables { get; set; } = [];
+    /// <summary>
+    /// 模型名称
+    /// </summary>
+    public string? ModelName { get; set; }
+    /// <summary>
+    /// 命名空间
+    /// </summary>
+    public string? Namespace { get; set; }
+
+    /// <summary>
+    /// 类型描述
+    /// </summary>
+    public string? Description { get; set; }
+
+    public List<PropertyInfo> PropertyInfos { get; set; } = [];
 }

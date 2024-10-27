@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, lastValueFrom, map, startWith } from 'rxjs';
 import { GenActionService } from 'src/app/services/gen-action/gen-action.service';
 import { GenActionFilterDto } from 'src/app/services/gen-action/models/gen-action-filter-dto.model';
 import { GenActionItemDtoPageList } from 'src/app/services/gen-action/models/gen-action-item-dto-page-list.model';
@@ -16,6 +16,8 @@ import { GenActionUpdateDto } from 'src/app/services/gen-action/models/gen-actio
 import { GenStepItemDto } from 'src/app/services/gen-step/models/gen-step-item-dto.model';
 import { GenStepService } from 'src/app/services/gen-step/gen-step.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
+import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-item-dto.model';
 
 @Component({
   selector: 'app-index',
@@ -23,12 +25,15 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit {
+  GenSourceType = GenSourceType;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   isLoading = true;
   isProcessing = false;
   total = 0;
   data: GenActionItemDto[] = [];
-  columns: string[] = ['name', 'description','status', 'actions'];
+  models: ModelFileItemDto[] = [];
+  filteredModels: ModelFileItemDto[] = [];
+  columns: string[] = ['name', 'description', 'status', 'actions'];
   dataSource!: MatTableDataSource<GenActionItemDto>;
   dialogRef!: MatDialogRef<{}, any>;
   @ViewChild('addDialog', { static: true }) addTmpl!: TemplateRef<{}>;
@@ -62,6 +67,9 @@ export class TaskComponent implements OnInit {
 
   get name(): FormControl { return this.addForm.get('name') as FormControl; }
   get description(): FormControl { return this.addForm.get('description') as FormControl; }
+  get entityPath(): FormControl { return this.addForm.get('entityPath') as FormControl; }
+  get openApiPath(): FormControl { return this.addForm.get('openApiPath') as FormControl; }
+  get sourceType(): FormControl { return this.addForm.get('sourceType') as FormControl; }
   get variables(): FormArray { return this.addForm.get('variables') as FormArray; }
 
   ngOnInit(): void {
@@ -84,6 +92,7 @@ export class TaskComponent implements OnInit {
           this.isLoading = false;
         }
       });
+
   }
 
   getListAsync(): Observable<GenActionItemDtoPageList> {
@@ -116,6 +125,17 @@ export class TaskComponent implements OnInit {
       });
   }
 
+  async getModels(): Promise<void> {
+    if (this.sourceType.value != null) {
+      const res = await lastValueFrom(this.service.getModelFile(this.sourceType.value));
+      if (res) {
+        this.models = res;
+        this.filteredModels = this.models;
+      }
+    }
+
+  }
+
   jumpTo(pageNumber: string): void {
     const number = parseInt(pageNumber);
     if (number > 0 && number < this.paginator.getNumberOfPages()) {
@@ -127,18 +147,38 @@ export class TaskComponent implements OnInit {
   initForm(): void {
     this.addForm = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.maxLength(40)]),
-      description: new FormControl(null, [Validators.maxLength(200)]),
+      description: new FormControl(null, [Validators.maxLength(1024)]),
+      entityPath: new FormControl(null, [Validators.maxLength(1024)]),
+      openApiPath: new FormControl(null, [Validators.maxLength(200)]),
+      sourceType: new FormControl(null),
       variables: new FormArray([])
     });
   }
 
-  openAddDialog(item: GenActionItemDto | null = null, isEditable = false): void {
+  filterModels(value: string): void {
+    const filterValue = value;
+    this.filteredModels = this.models.filter(o => o.name.toLowerCase().includes(filterValue));
+  }
+
+  sourceTypeChange(event: any): void {
+    this.entityPath.reset();
+    this.getModels();
+  }
+
+  async openAddDialog(item: GenActionItemDto | null = null, isEditable = false): Promise<void> {
     this.initForm();
+    await this.getModels();
     this.isEditable = isEditable;
     if (this.isEditable && item) {
       this.currentItem = item;
       this.name?.setValue(item?.name);
+      
+      this.openApiPath?.setValue(item?.openApiPath);
+      this.sourceType?.setValue(item?.sourceType);
+      await this.getModels();
       this.description?.setValue(item?.description);
+
+      this.entityPath.setValue(this.models.find(_ => _.fullName === item.entityPath)?.name);
 
       if (item.variables) {
         const groups = item.variables.map(item => new FormGroup({
@@ -249,6 +289,8 @@ export class TaskComponent implements OnInit {
       this.snb.open('请检查输入项');
       return;
     }
+    this.entityPath.setValue(this.models.find(_ => _.name === this.entityPath.value)?.fullName);
+
     if (this.isEditable) {
       const data = this.addForm.value as GenActionUpdateDto;
       this.service.update(this.currentItem.id, data)

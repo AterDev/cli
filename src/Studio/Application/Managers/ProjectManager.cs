@@ -38,9 +38,9 @@ public class ProjectManager(DataAccessContext<Project> dataContext,
     /// <param name="name"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    public async Task<Guid?> AddAsync(string name, string projectFilePath)
+    public async Task<Guid?> AddAsync(string name, string? projectFilePath)
     {
-        SolutionType? solutionType = AssemblyHelper.GetSolutionType(projectFilePath);
+        var solutionType = AssemblyHelper.GetSolutionType(projectFilePath);
         var solutionName = Path.GetFileName(projectFilePath) ?? name;
         var solutionPath = Path.GetDirectoryName(projectFilePath) ?? "";
         var entity = new Project()

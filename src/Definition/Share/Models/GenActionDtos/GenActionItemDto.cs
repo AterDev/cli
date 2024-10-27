@@ -11,9 +11,17 @@ public class GenActionItemDto
     [MaxLength(40)]
     public string Name { get; set; } = default!;
 
-
     [MaxLength(200)]
     public string? Description { get; set; }
+
+    /// <summary>
+    /// 实体路径
+    /// </summary>
+    public string? EntityPath { get; set; }
+    /// <summary>
+    /// open api path
+    /// </summary>
+    public string? OpenApiPath { get; set; }
     /// <summary>
     /// source type
     /// </summary>

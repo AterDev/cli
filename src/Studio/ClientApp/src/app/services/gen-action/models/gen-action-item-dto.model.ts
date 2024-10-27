@@ -10,6 +10,14 @@ export interface GenActionItemDto {
    */
   name: string;
   description?: string | null;
+  /**
+   * 实体路径
+   */
+  entityPath?: string | null;
+  /**
+   * open api path
+   */
+  openApiPath?: string | null;
   sourceType?: GenSourceType | null;
   actionStatus?: ActionStatus | null;
   id: string;

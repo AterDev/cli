@@ -17,6 +17,7 @@ import { TaskComponent } from './task/task.component';
 import { StepComponent } from './step/step.component';
 import { EnumTextPipeModule } from 'src/app/pipe/enum-text.pipe';
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { AsyncPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     EnumTextPipeModule,
     MarkdownModule.forRoot(),
     DragDropModule,
+    AsyncPipe
   ]
 })
 export class WorkspaceModule { }

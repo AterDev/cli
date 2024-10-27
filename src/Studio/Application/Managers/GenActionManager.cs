@@ -10,11 +10,13 @@ public class GenActionManager(
     CodeGenService codeGenService,
     ILogger<GenActionManager> logger,
     IProjectContext projectContext,
+    CodeAnalysisService codeAnalysis,
     IUserContext userContext) : ManagerBase<GenAction>(dataContext, logger)
 {
     private readonly IUserContext _userContext = userContext;
     private readonly IProjectContext _projectContext = projectContext;
     private readonly CodeGenService _codeGen = codeGenService;
+    private readonly CodeAnalysisService _codeAnalysis = codeAnalysis;
 
 
     /// <summary>
@@ -203,5 +205,47 @@ public class GenActionManager(
 
         action.ActionStatus = ActionStatus.Success;
         return await SaveChangesAsync() > 0;
+    }
+
+    public List<ModelFileItemDto> GetModelFile(GenSourceType sourceType)
+    {
+        var entityPath = _projectContext.EntityPath;
+        var filePaths = CodeAnalysisService.GetEntityFilePaths(entityPath!);
+        var entityFiles = new List<EntityFile>();
+        if (filePaths.Count != 0)
+        {
+            entityFiles = _codeAnalysis.GetEntityFiles(entityPath!, filePaths);
+        }
+
+        if (sourceType == GenSourceType.EntityCLass)
+        {
+            return entityFiles.Select(q => new ModelFileItemDto
+            {
+                Name = q.Name,
+                FullName = q.FullName,
+            }).ToList();
+
+        }
+        else if (sourceType == GenSourceType.DtoModel)
+        {
+            var res = new List<ModelFileItemDto>();
+            foreach (var item in entityFiles)
+            {
+                var dtoPath = item.GetDtoPath(_projectContext);
+                if (!Directory.Exists(dtoPath))
+                {
+                    continue;
+                }
+                var dtoFiles = Directory.GetFiles(dtoPath, "*Dto.cs", SearchOption.AllDirectories);
+
+                res.AddRange(dtoFiles.Select(q => new ModelFileItemDto
+                {
+                    Name = Path.GetFileName(q),
+                    FullName = q,
+                }));
+            }
+            return res;
+        }
+        return [];
     }
 }

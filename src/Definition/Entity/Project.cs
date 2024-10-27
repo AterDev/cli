@@ -93,5 +93,5 @@ public enum SolutionType
     [Description("Node")]
     Node,
     [Description("Empty")]
-    Empty
+    Else
 }

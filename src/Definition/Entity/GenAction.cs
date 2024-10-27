@@ -21,11 +21,13 @@ public class GenAction : EntityBase
     /// <summary>
     /// 实体路径
     /// </summary>
+    [MaxLength(1024)]
     public string? EntityPath { get; set; }
 
     /// <summary>
     /// open api path
     /// </summary>
+    [MaxLength(1024)]
     public string? OpenApiPath { get; set; }
 
     public List<Variable> Variables { get; set; } = [];
@@ -79,10 +81,15 @@ public enum ActionStatus
 public enum GenSourceType
 {
     /// <summary>
-    /// entity class
+    /// 实体类
     /// </summary>
-    [Description("Entity Class")]
+    [Description("实体类")]
     EntityCLass,
+    /// <summary>
+    /// dto模型
+    /// </summary>
+    [Description("Dto模型")]
+    DtoModel,
     /// <summary>
     /// OpenAPI
     /// </summary>

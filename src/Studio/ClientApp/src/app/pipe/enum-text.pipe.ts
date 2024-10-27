@@ -83,8 +83,9 @@ export class EnumTextPipe implements PipeTransform {
       case 'GenSourceType':
         {
           switch (value) {
-            case 0: result = 'Entity Class'; break;
-            case 1: result = 'OpenAPI'; break;
+            case 0: result = '实体类'; break;
+            case 1: result = 'Dto模型'; break;
+            case 2: result = 'OpenAPI'; break;
             default: result = '默认'; break;
           }
         }

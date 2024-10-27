@@ -6,13 +6,15 @@ namespace EntityFramework.DBProvider;
 
 public class ContextBase(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<Project> Projects { get; set; }
-    public DbSet<EntityInfo> EntityInfos { get; set; }
-    public DbSet<ApiDocInfo> ApiDocInfos { get; set; }
-    public DbSet<GenAction> GenActions { get; set; }
-    public DbSet<GenStep> GenSteps { get; set; }
-    public DbSet<ConfigData> Configs { get; set; }
-    public DbSet<GenActionGenStep> GenActionGenSteps { get; set; }
+    public DbSet<Project> Projects { get; set; } = null!;
+    public DbSet<EntityInfo> EntityInfos { get; set; } = null!;
+    public DbSet<ApiDocInfo> ApiDocInfos { get; set; } = null!;
+    public DbSet<GenAction> GenActions { get; set; } = null!;
+    public DbSet<GenStep> GenSteps { get; set; } = null!;
+    public DbSet<ConfigData> Configs { get; set; } = null!;
+    public DbSet<GenActionGenStep> GenActionGenSteps { get; set; } = null!;
+    public DbSet<GenActionTmp> GenActionTmps { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -1,7 +1,4 @@
-﻿using Application.Managers;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AterStudio.Controllers;
+﻿namespace AterStudio.Controllers;
 
 /// <summary>
 /// 项目
@@ -67,10 +64,6 @@ public class ProjectController(
         projectFilePath ??= Directory.GetFiles(path, $"*{ConstVal.CSharpProjectExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
         projectFilePath ??= Directory.GetFiles(path, ConstVal.NodeProjectFile, SearchOption.TopDirectoryOnly).FirstOrDefault();
 
-        if (projectFilePath == null)
-        {
-            return Problem("Not Found valid Project!");
-        }
         return await _manager.AddAsync(name, projectFilePath);
     }
 
@@ -118,11 +111,7 @@ public class ProjectController(
     public async Task<ActionResult<bool>> UpdateConfigAsync([FromRoute] Guid id, ProjectConfig dto)
     {
         var project = await _manager.GetCurrentAsync(id);
-        if (project == null)
-        {
-            return NotFound();
-        }
-        return await _manager.UpdateConfigAsync(project, dto);
+        return project == null ? (ActionResult<bool>)NotFound() : (ActionResult<bool>)await _manager.UpdateConfigAsync(project, dto);
     }
 
     /// <summary>

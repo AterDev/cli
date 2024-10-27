@@ -3,7 +3,7 @@ using Share.Models.GenStepDtos;
 namespace AterStudio.Controllers;
 
 /// <summary>
-/// The project's generate action
+/// 生成操作
 /// </summary>
 public class GenActionController(
     IUserContext user,
@@ -33,6 +33,18 @@ public class GenActionController(
         return await _manager.GetStepsAsync(id);
     }
 
+
+    /// <summary>
+    /// 获取模型列表
+    /// </summary>
+    /// <param name="sourceType"></param>
+    /// <returns></returns>
+    [HttpGet("modelFile")]
+    public List<ModelFileItemDto> GetModelFile(GenSourceType sourceType)
+    {
+        return _manager.GetModelFile(sourceType);
+    }
+
     /// <summary>
     /// 添加操作步骤
     /// </summary>
@@ -44,7 +56,6 @@ public class GenActionController(
     {
         return await _manager.AddStepsAsync(id, stepIds);
     }
-
 
     /// <summary>
     /// 新增

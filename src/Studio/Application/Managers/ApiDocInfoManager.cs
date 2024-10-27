@@ -214,7 +214,7 @@ public class ApiDocInfoManager(
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public NgComponentInfo CreateUIComponent(CreateUIComponentDto dto)
+    public NgComponentInfo? CreateUIComponent(CreateUIComponentDto dto)
     {
         return default;
         //return dto.ComponentType switch
@@ -227,7 +227,7 @@ public class ApiDocInfoManager(
         //};
     }
 
-    public NgComponentInfo GenFormComponent(ModelInfo modelInfo, string serviceName)
+    public NgComponentInfo? GenFormComponent(ModelInfo modelInfo, string serviceName)
     {
         return default;
     }

@@ -6,7 +6,9 @@ import { GenActionAddDto } from './models/gen-action-add-dto.model';
 import { GenActionUpdateDto } from './models/gen-action-update-dto.model';
 import { GenActionItemDtoPageList } from './models/gen-action-item-dto-page-list.model';
 import { GenStepItemDto } from './models/gen-step-item-dto.model';
+import { ModelFileItemDto } from './models/model-file-item-dto.model';
 import { GenActionDetailDto } from './models/gen-action-detail-dto.model';
+import { GenSourceType } from '../enum/models/gen-source-type.model';
 
 /**
  * The project's generate action
@@ -39,6 +41,15 @@ export class GenActionBaseService extends BaseService {
   addSteps(id: string, data: string[]): Observable<boolean> {
     const _url = `/api/admin/GenAction/steps/${id}`;
     return this.request<boolean>('post', _url, data);
+  }
+
+  /**
+   * 获取模型列表
+   * @param sourceType 
+   */
+  getModelFile(sourceType: GenSourceType | null): Observable<ModelFileItemDto[]> {
+    const _url = `/api/admin/GenAction/modelFile?sourceType=${sourceType ?? ''}`;
+    return this.request<ModelFileItemDto[]>('get', _url);
   }
 
   /**

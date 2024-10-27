@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-10-20 22:41:46",
+    "description": "Studio API 文档. 更新时间:2024-10-27 17:34:37",
     "version": "v1"
   },
   "paths": {
@@ -945,6 +945,40 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/GenAction/modelFile": {
+      "get": {
+        "tags": [
+          "GenAction"
+        ],
+        "summary": "获取模型列表",
+        "operationId": "GenAction_GetModelFile",
+        "parameters": [
+          {
+            "name": "sourceType",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "$ref": "#/components/schemas/GenSourceType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelFileItemDto"
+                  }
                 }
               }
             }
@@ -2638,10 +2672,12 @@
             "nullable": true
           },
           "entityPath": {
+            "maxLength": 1024,
             "type": "string",
             "nullable": true
           },
           "openApiPath": {
+            "maxLength": 1024,
             "type": "string",
             "nullable": true
           },
@@ -2825,6 +2861,16 @@
             "type": "string",
             "nullable": true
           },
+          "entityPath": {
+            "type": "string",
+            "description": "实体路径",
+            "nullable": true
+          },
+          "openApiPath": {
+            "type": "string",
+            "description": "open api path",
+            "nullable": true
+          },
           "sourceType": {
             "$ref": "#/components/schemas/GenSourceType"
           },
@@ -2913,23 +2959,30 @@
       "GenSourceType": {
         "enum": [
           0,
-          1
+          1,
+          2
         ],
         "type": "integer",
         "format": "int32",
         "x-enumNames": [
           "EntityCLass",
+          "DtoModel",
           "OpenAPI"
         ],
         "x-enumData": [
           {
             "name": "EntityCLass",
             "value": 0,
-            "description": "Entity Class"
+            "description": "实体类"
+          },
+          {
+            "name": "DtoModel",
+            "value": 1,
+            "description": "Dto模型"
           },
           {
             "name": "OpenAPI",
-            "value": 1,
+            "value": 2,
             "description": "OpenAPI"
           }
         ]
@@ -3281,6 +3334,25 @@
           }
         },
         "additionalProperties": false
+      },
+      "ModelFileItemDto": {
+        "required": [
+          "fullName",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "名称"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "路径"
+          }
+        },
+        "additionalProperties": false,
+        "description": "模型文件项"
       },
       "ModelInfo": {
         "required": [
@@ -3828,7 +3900,7 @@
         "x-enumNames": [
           "DotNet",
           "Node",
-          "Empty"
+          "Else"
         ],
         "x-enumData": [
           {
@@ -3842,7 +3914,7 @@
             "description": "Node"
           },
           {
-            "name": "Empty",
+            "name": "Else",
             "value": 2,
             "description": "Empty"
           }

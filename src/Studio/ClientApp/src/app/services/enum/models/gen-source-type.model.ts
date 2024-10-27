@@ -1,5 +1,6 @@
 export enum GenSourceType {
   EntityCLass = 0,
-  OpenAPI = 1,
+  DtoModel = 1,
+  OpenAPI = 2,
 
 }

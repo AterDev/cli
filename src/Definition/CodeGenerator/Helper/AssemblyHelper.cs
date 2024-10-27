@@ -313,21 +313,18 @@ public class AssemblyHelper
     /// </summary>
     /// <param name="filePath"></param>
     /// <returns></returns>
-    public static SolutionType? GetSolutionType(string filePath)
+    public static SolutionType GetSolutionType(string? filePath)
     {
+        if (filePath.IsEmpty()) return SolutionType.Else;
         string fileName = Path.GetFileName(filePath);
         string fileExt = Path.GetExtension(filePath);
-        if (fileName == ConstVal.NodeProjectFile) return SolutionType.Node;
-        switch (fileExt)
-        {
-            case ConstVal.SolutionExtension:
-            case ConstVal.CSharpProjectExtension:
-            case ConstVal.SolutionXMLExtension:
-                return SolutionType.DotNet;
-            default:
-                break;
-        }
-        return default;
+        return (SolutionType)(fileName == ConstVal.NodeProjectFile
+            ? SolutionType.Node
+            : fileExt switch
+            {
+                ConstVal.SolutionExtension or ConstVal.CSharpProjectExtension or ConstVal.SolutionXMLExtension => (SolutionType?)SolutionType.DotNet,
+                _ => (SolutionType?)SolutionType.Else,
+            });
     }
 
     /// <summary>
