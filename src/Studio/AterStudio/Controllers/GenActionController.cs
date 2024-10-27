@@ -33,7 +33,6 @@ public class GenActionController(
         return await _manager.GetStepsAsync(id);
     }
 
-
     /// <summary>
     /// 获取模型列表
     /// </summary>
@@ -90,14 +89,15 @@ public class GenActionController(
     /// 执行操作
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="path"></param>
     /// <returns></returns>
     [HttpPost("execute/{id}")]
-    public async Task<ActionResult<bool>> ExecuteAsync(Guid id)
+    public async Task<ActionResult<bool>> ExecuteAsync(Guid id, string path)
     {
         var exist = await _manager.ExistAsync(id);
         if (!exist) { return NotFound(ErrorMsg.NotFoundResource); }
         // return Forbid();
-        return await _manager.ExecuteActionAsync(id);
+        return await _manager.ExecuteActionAsync(id, path);
     }
 
 

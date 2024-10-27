@@ -51,6 +51,19 @@
         <td mat-cell *matCellDef="let element">{{element.description}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="sourceType">
+        <th mat-header-cell *matHeaderCellDef>项目数据</th>
+        <td mat-cell *matCellDef="let element">
+          @if(element.sourceType == GenSourceType.OpenAPI){
+            <span>OpenAPI</span>
+          }@else if(element.sourceType !=null){
+            <span>{{element.sourceType | enumText:'GenSourceType'}}</span>
+          }@else {
+            -
+          }
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef>执行状态</th>
         <td mat-cell *matCellDef="let element;table:table">
@@ -62,7 +75,7 @@
         <th mat-header-cell *matHeaderCellDef>操作</th>
         <td mat-cell *matCellDef="let element;table:table" class="gap-1">
           <!-- 执行 -->
-          <button mat-icon-button (click)="execute(element)" matTooltip="执行操作">
+          <button mat-icon-button (click)="openRunDialog(element)" matTooltip="执行操作">
             <mat-icon class="text-primary">play_arrow</mat-icon>
           </button>
           <button mat-icon-button (click)="openAddStep(element)" matTooltip="编辑步骤">
@@ -115,23 +128,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      @if(sourceType.value == GenSourceType.OpenAPI){
-        <mat-form-field>
-          <mat-label>OpenAPI Url</mat-label>
-          <input matInput [formControl]="openApiPath" placeholder="OpenAPI URL" required>
-        </mat-form-field>
-      }@else if(sourceType.value !=null){
-        <mat-form-field>
-          <mat-label>选择模型</mat-label>
-          <input type="text" placeholder="选择模型" matInput [formControl]="entityPath" [matAutocomplete]="auto"
-            (input)="filterModels(input.value)" (focus)="filterModels(input.value)" #input>
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" requireSelection>
-            @for (file of filteredModels; track file.name) {
-              <mat-option [value]="file.name">{{file.name}}</mat-option>
-            }
-          </mat-autocomplete>
-        </mat-form-field>
-      }
       <div class="d-flex justify-content-between align-items-center px-1">
         <div class="d-flex align-items-center">
           <span style="font-size: 16px;">
@@ -195,5 +191,36 @@
   <mat-dialog-actions class="justify-content-end">
     <button mat-stroked-button [mat-dialog-close]="false">取消</button>
     <button mat-flat-button color="primary" (click)="saveSteps()">保存</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #runDialog>
+  <h2 mat-dialog-title>运行任务</h2>
+  <mat-dialog-content>
+    <form class="d-flex p-2 flex-column">
+      <div class="d-flex flex-column">
+        @if(currentItem.sourceType == GenSourceType.OpenAPI){
+          <mat-form-field>
+            <mat-label>OpenAPI Url</mat-label>
+            <input matInput [formControl]="openApiPath" placeholder="OpenAPI URL" required>
+          </mat-form-field>
+        }@else if(currentItem.sourceType != null){
+          <mat-form-field>
+            <mat-label>选择模型</mat-label>
+            <input type="text" placeholder="选择模型" matInput [formControl]="entityPath" [matAutocomplete]="auto"
+              (input)="filterModels(input.value)" (focus)="filterModels(input.value)" #input>
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" requireSelection>
+              @for (file of filteredModels; track file.name) {
+                <mat-option [value]="file.name">{{file.name}}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="justify-content-end">
+    <button mat-button mat-dialog-close>取消</button>
+    <button mat-button color="primary" (click)="execute()">确认</button>
   </mat-dialog-actions>
 </ng-template>

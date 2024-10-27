@@ -33,11 +33,12 @@ export class TaskComponent implements OnInit {
   data: GenActionItemDto[] = [];
   models: ModelFileItemDto[] = [];
   filteredModels: ModelFileItemDto[] = [];
-  columns: string[] = ['name', 'description', 'status', 'actions'];
+  columns: string[] = ['name', 'description', 'sourceType', 'status', 'actions'];
   dataSource!: MatTableDataSource<GenActionItemDto>;
   dialogRef!: MatDialogRef<{}, any>;
   @ViewChild('addDialog', { static: true }) addTmpl!: TemplateRef<{}>;
   @ViewChild('addStepDialog', { static: true }) addStepTmpl!: TemplateRef<{}>;
+  @ViewChild('runDialog', { static: true }) runTmp!: TemplateRef<{}>;
   isEditable = false;
   addForm!: FormGroup;
   addDto: GenActionAddDto | null = null;
@@ -172,7 +173,7 @@ export class TaskComponent implements OnInit {
     if (this.isEditable && item) {
       this.currentItem = item;
       this.name?.setValue(item?.name);
-      
+
       this.openApiPath?.setValue(item?.openApiPath);
       this.sourceType?.setValue(item?.sourceType);
       await this.getModels();
@@ -242,6 +243,20 @@ export class TaskComponent implements OnInit {
         }
       });
   }
+
+  openRunDialog(item: GenActionItemDto): void {
+    console.log(item.sourceType);
+    if (item.sourceType != null) {
+      this.dialogRef = this.dialog.open(this.runTmp, {
+        minWidth: '400px',
+        maxHeight: '98vh'
+      });
+
+    } else {
+      this.execute();
+    }
+  }
+
   saveSteps(): void {
     this.service.addSteps(this.currentItem.id, this.selectedSteps.map(_ => _.id))
       .subscribe({
@@ -331,9 +346,13 @@ export class TaskComponent implements OnInit {
 
   }
 
-  execute(item: GenActionItemDto): void {
+  execute(): void {
     this.isProcessing = true;
-    this.service.execute(item.id)
+    if (!this.currentItem.id) {
+      this.snb.open('请选择要执行的任务');
+      return;
+    }
+    this.service.execute(this.currentItem.id)
       .subscribe({
         next: (res) => {
           if (res) {
