@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-10-27 17:34:37",
+    "description": "Studio API 文档. 更新时间:2024-11-02 23:08:58",
     "version": "v1"
   },
   "paths": {
@@ -1159,6 +1159,14 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -4074,7 +4082,7 @@
     },
     {
       "name": "GenAction",
-      "description": "The project's generate action"
+      "description": "生成操作"
     },
     {
       "name": "GenStep",

@@ -92,7 +92,7 @@ public class GenActionController(
     /// <param name="path"></param>
     /// <returns></returns>
     [HttpPost("execute/{id}")]
-    public async Task<ActionResult<bool>> ExecuteAsync(Guid id, string path)
+    public async Task<ActionResult<bool>> ExecuteAsync(Guid id, string? path)
     {
         var exist = await _manager.ExistAsync(id);
         if (!exist) { return NotFound(ErrorMsg.NotFoundResource); }

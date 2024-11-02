@@ -120,8 +120,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>项目数据类型</mat-label>
-        <mat-select placeholder="选择要用到的项目数据" [formControl]="sourceType" name="item" matTooltip="运行项目时选择的项目数据来源"
-          (selectionChange)="sourceTypeChange($event)">
+        <mat-select placeholder="选择要用到的项目数据" [formControl]="sourceType" name="item" matTooltip="运行项目时选择的项目数据来源">
           <mat-option [value]="null">无</mat-option>
           <mat-option *ngFor="let item of GenSourceType | toKeyValue" [value]="item.value">
             {{item.value | enumText:'GenSourceType'}}
@@ -202,13 +201,21 @@
         @if(currentItem.sourceType == GenSourceType.OpenAPI){
           <mat-form-field>
             <mat-label>OpenAPI Url</mat-label>
-            <input matInput [formControl]="openApiPath" placeholder="OpenAPI URL" required>
+            <input matInput [(ngModel)]="runFilePath" placeholder="OpenAPI URL" required name="runFilePath">
+
           </mat-form-field>
         }@else if(currentItem.sourceType != null){
           <mat-form-field>
             <mat-label>选择模型</mat-label>
-            <input type="text" placeholder="选择模型" matInput [formControl]="entityPath" [matAutocomplete]="auto"
-              (input)="filterModels(input.value)" (focus)="filterModels(input.value)" #input>
+            <input type="text" #input placeholder="选择模型" matInput [(ngModel)]="runFilePath" [matAutocomplete]="auto"
+              (input)="filterModels(input.value)" (focus)="filterModels(input.value)" name="runFilePath">
+
+            @if(runFilePath){
+              <button mat-icon-button matSuffix (click)="runFilePath=null">
+                <mat-icon>clear</mat-icon>
+              </button>
+            }
+
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" requireSelection>
               @for (file of filteredModels; track file.name) {
                 <mat-option [value]="file.name">{{file.name}}</mat-option>
@@ -221,6 +228,6 @@
   </mat-dialog-content>
   <mat-dialog-actions class="justify-content-end">
     <button mat-button mat-dialog-close>取消</button>
-    <button mat-button color="primary" (click)="execute()">确认</button>
+    <button mat-button color="primary" (click)="execute()">执行</button>
   </mat-dialog-actions>
 </ng-template>

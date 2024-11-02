@@ -46,6 +46,8 @@ export class TaskComponent implements OnInit {
   filter: GenActionFilterDto;
   pageSizeOption = [12, 20, 50];
 
+  runFilePath: string | null = null;
+
   // 选择steps
   allSteps: GenStepItemDto[] = [];
   remainSteps: GenStepItemDto[] = [];
@@ -126,15 +128,14 @@ export class TaskComponent implements OnInit {
       });
   }
 
-  async getModels(): Promise<void> {
-    if (this.sourceType.value != null) {
-      const res = await lastValueFrom(this.service.getModelFile(this.sourceType.value));
+  async getModels(type: GenSourceType): Promise<void> {
+    if (type != null) {
+      const res = await lastValueFrom(this.service.getModelFile(type));
       if (res) {
         this.models = res;
         this.filteredModels = this.models;
       }
     }
-
   }
 
   jumpTo(pageNumber: string): void {
@@ -161,14 +162,8 @@ export class TaskComponent implements OnInit {
     this.filteredModels = this.models.filter(o => o.name.toLowerCase().includes(filterValue));
   }
 
-  sourceTypeChange(event: any): void {
-    // this.entityPath.reset();
-    // this.getModels();
-  }
-
   async openAddDialog(item: GenActionItemDto | null = null, isEditable = false): Promise<void> {
     this.initForm();
-    await this.getModels();
     this.isEditable = isEditable;
     if (this.isEditable && item) {
       this.currentItem = item;
@@ -176,7 +171,6 @@ export class TaskComponent implements OnInit {
 
       this.openApiPath?.setValue(item?.openApiPath);
       this.sourceType?.setValue(item?.sourceType);
-      await this.getModels();
       this.description?.setValue(item?.description);
 
       this.entityPath.setValue(this.models.find(_ => _.fullName === item.entityPath)?.name);
@@ -244,14 +238,14 @@ export class TaskComponent implements OnInit {
       });
   }
 
-  openRunDialog(item: GenActionItemDto): void {
-    console.log(item.sourceType);
+  async openRunDialog(item: GenActionItemDto): Promise<void> {
+    this.currentItem = item;
     if (item.sourceType != null) {
+      await this.getModels(item.sourceType);
       this.dialogRef = this.dialog.open(this.runTmp, {
         minWidth: '400px',
         maxHeight: '98vh'
       });
-
     } else {
       this.execute();
     }
@@ -272,7 +266,6 @@ export class TaskComponent implements OnInit {
           this.snb.open(error.detail);
         },
         complete: () => {
-
         }
       });
   }
@@ -352,7 +345,11 @@ export class TaskComponent implements OnInit {
       this.snb.open('请选择要执行的任务');
       return;
     }
-    this.service.execute(this.currentItem.id)
+    let path = this.runFilePath;
+    if (this.currentItem.sourceType !== GenSourceType.OpenAPI) {
+      path = this.models.find(_ => _.name === this.runFilePath)?.fullName ?? null;
+    }
+    this.service.execute(this.currentItem.id, path)
       .subscribe({
         next: (res) => {
           if (res) {

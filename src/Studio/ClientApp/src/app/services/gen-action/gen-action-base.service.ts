@@ -11,7 +11,7 @@ import { GenActionDetailDto } from './models/gen-action-detail-dto.model';
 import { GenSourceType } from '../enum/models/gen-source-type.model';
 
 /**
- * The project's generate action
+ * 生成操作
  */
 @Injectable({ providedIn: 'root' })
 export class GenActionBaseService extends BaseService {
@@ -92,9 +92,10 @@ export class GenActionBaseService extends BaseService {
   /**
    * 执行操作
    * @param id 
+   * @param path 
    */
-  execute(id: string): Observable<boolean> {
-    const _url = `/api/admin/GenAction/execute/${id}`;
+  execute(id: string, path: string | null): Observable<boolean> {
+    const _url = `/api/admin/GenAction/execute/${id}?path=${path ?? ''}`;
     return this.request<boolean>('post', _url);
   }
 

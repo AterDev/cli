@@ -153,7 +153,7 @@ public class GenActionManager(
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<bool> ExecuteActionAsync(Guid id, string path)
+    public async Task<bool> ExecuteActionAsync(Guid id, string? path)
     {
         var action = await Command.Where(a => a.Id == id)
             .Include(a => a.GenSteps)
