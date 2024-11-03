@@ -164,16 +164,23 @@ public class GenActionManager(
         await SaveChangesAsync();
 
         // 构建任务执行需要的内容
+        var variables = action.Variables;
+        if (dto.Variables != null)
+        {
+            variables = variables.Concat(dto.Variables)
+                .DistinctBy(variables => variables.Key)
+                .ToList();
+        }
         var actionRunModel = new ActionRunModel
         {
-            Variables = action.Variables
+            Variables = variables
         };
 
         // 解析模型
         if (action.SourceType is GenSourceType.EntityCLass or GenSourceType.DtoModel
-            && action.EntityPath.NotEmpty())
+            && dto.SourceFilePath.NotEmpty())
         {
-            var entityInfo = _codeAnalysis.GetEntityInfos([action.EntityPath]).FirstOrDefault();
+            var entityInfo = _codeAnalysis.GetEntityInfos([dto.SourceFilePath]).FirstOrDefault();
             if (entityInfo != null)
             {
                 actionRunModel.ModelName = entityInfo.Name;

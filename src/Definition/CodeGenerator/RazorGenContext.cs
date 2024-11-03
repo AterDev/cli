@@ -51,14 +51,44 @@ public class RazorGenContext
 
     public string GenTemplate(string templateContent, ActionRunModel model)
     {
-        var template = RazorEngine.Compile<RazorEngineTemplateBase<ActionRunModel>>(templateContent);
+        var dictionary = model.Variables.ToDictionary(v => v.Key, v => v.Value);
+        var template = RazorEngine.Compile<CustomTemplate>(templateContent, builder =>
+        {
+            builder.AddAssemblyReferenceByName("System.Collections");
+            //builder.AddAssemblyReferenceByName("CodeGenerator");
+            builder.AddAssemblyReferenceByName("Entity");
+        });
         string result = template.Run(instance =>
         {
-            instance.Model = model;
+            instance.Variables = dictionary;
+            instance.ModelName = model.ModelName;
+            instance.Namespace = model.Namespace;
+            instance.PropertyInfos = model.PropertyInfos;
         });
         return result;
     }
 }
+
+public class CustomTemplate : RazorEngineTemplateBase
+{
+    public Dictionary<string, string> Variables { get; set; } = [];
+    /// <summary>
+    /// 模型名称
+    /// </summary>
+    public string? ModelName { get; set; }
+    /// <summary>
+    /// 命名空间
+    /// </summary>
+    public string? Namespace { get; set; }
+
+    /// <summary>
+    /// 类型描述
+    /// </summary>
+    public string? Description { get; set; }
+
+    public List<PropertyInfo> PropertyInfos { get; set; } = [];
+}
+
 public class ActionRunModel
 {
     public List<Variable> Variables { get; set; } = [];

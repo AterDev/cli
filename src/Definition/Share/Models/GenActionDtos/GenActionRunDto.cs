@@ -18,4 +18,6 @@ public class GenActionRunDto
     /// 仅输出
     /// </summary>
     public bool OnlyOutput { get; set; }
+
+    public List<Variable>? Variables { get; set; }
 }

@@ -11,8 +11,8 @@ export interface GenActionRunDto {
    */
   sourceFilePath?: string | null;
   /**
-   * 是否写入文件
+   * 仅输出
    */
-  isFile: boolean;
+  onlyOutput: boolean;
 
 }

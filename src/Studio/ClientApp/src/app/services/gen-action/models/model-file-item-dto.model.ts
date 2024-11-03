@@ -10,5 +10,6 @@ export interface ModelFileItemDto {
    * 路径
    */
   fullName: string;
+  content?: string | null;
 
 }

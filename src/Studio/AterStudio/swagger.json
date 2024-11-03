@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-11-03 17:21:10",
+    "description": "Studio API 文档. 更新时间:2024-11-03 19:29:47",
     "version": "v1"
   },
   "paths": {
@@ -1176,7 +1176,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/GenActionResultDto"
                 }
               }
             }
@@ -2923,6 +2923,28 @@
         },
         "additionalProperties": false
       },
+      "GenActionResultDto": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "errorMsg": {
+            "type": "string",
+            "description": "错误信息",
+            "nullable": true
+          },
+          "outputFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelFileItemDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "执行结果"
+      },
       "GenActionRunDto": {
         "type": "object",
         "properties": {
@@ -2936,9 +2958,9 @@
             "description": "源文件路径",
             "nullable": true
           },
-          "isFile": {
+          "onlyOutput": {
             "type": "boolean",
-            "description": "是否写入文件"
+            "description": "仅输出"
           }
         },
         "additionalProperties": false,
@@ -3378,6 +3400,10 @@
           "fullName": {
             "type": "string",
             "description": "路径"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false,

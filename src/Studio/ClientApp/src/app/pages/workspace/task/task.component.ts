@@ -353,12 +353,12 @@ export class TaskComponent implements OnInit {
     const data: GenActionRunDto = {
       id: this.currentItem.id,
       sourceFilePath: path,
-      isFile: false
+      onlyOutput: true
     }
     this.service.execute(data)
       .subscribe({
         next: (res) => {
-          if (res) {
+          if (res.isSuccess) {
             this.snb.open('执行成功');
           } else {
             this.snb.open('执行失败');

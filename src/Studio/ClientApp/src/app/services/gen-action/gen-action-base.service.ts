@@ -9,6 +9,7 @@ import { GenActionItemDtoPageList } from './models/gen-action-item-dto-page-list
 import { GenStepItemDto } from './models/gen-step-item-dto.model';
 import { ModelFileItemDto } from './models/model-file-item-dto.model';
 import { GenActionDetailDto } from './models/gen-action-detail-dto.model';
+import { GenActionResultDto } from './models/gen-action-result-dto.model';
 import { GenSourceType } from '../enum/models/gen-source-type.model';
 
 /**
@@ -94,9 +95,9 @@ export class GenActionBaseService extends BaseService {
    * 执行操作
    * @param data GenActionRunDto
    */
-  execute(data: GenActionRunDto): Observable<boolean> {
+  execute(data: GenActionRunDto): Observable<GenActionResultDto> {
     const _url = `/api/admin/GenAction/execute`;
-    return this.request<boolean>('post', _url, data);
+    return this.request<GenActionResultDto>('post', _url, data);
   }
 
 }
