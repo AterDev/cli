@@ -225,6 +225,7 @@ public class GenActionManager(
                                 {
                                     File.WriteAllText(outputPath, step.OutputContent);
                                 }
+                                res.IsSuccess = true;
                             }
                             break;
                         case GenStepType.Command:

@@ -51,19 +51,24 @@ public class RazorGenContext
 
     public string GenTemplate(string templateContent, ActionRunModel model)
     {
+        templateContent = "@using Ater.Web.Core.Utils;" + Environment.NewLine + templateContent;
         var dictionary = model.Variables.ToDictionary(v => v.Key, v => v.Value);
+
         var template = RazorEngine.Compile<CustomTemplate>(templateContent, builder =>
         {
             builder.AddAssemblyReferenceByName("System.Collections");
-            //builder.AddAssemblyReferenceByName("CodeGenerator");
+            builder.AddAssemblyReferenceByName("System");
+            builder.AddAssemblyReferenceByName("Ater.Web.Core");
             builder.AddAssemblyReferenceByName("Entity");
         });
+
         string result = template.Run(instance =>
         {
             instance.Variables = dictionary;
             instance.ModelName = model.ModelName;
             instance.Namespace = model.Namespace;
             instance.PropertyInfos = model.PropertyInfos;
+            instance.NewLine = Environment.NewLine;
         });
         return result;
     }
@@ -85,6 +90,8 @@ public class CustomTemplate : RazorEngineTemplateBase
     /// ¿‡–Õ√Ë ˆ
     /// </summary>
     public string? Description { get; set; }
+
+    public string NewLine { get; set; } = Environment.NewLine;
 
     public List<PropertyInfo> PropertyInfos { get; set; } = [];
 }

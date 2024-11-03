@@ -267,7 +267,15 @@ public class CodeGenService(ILogger<CodeGenService> logger)
     public string GenTemplateFile(string tplContent, ActionRunModel model)
     {
         var genContext = new RazorGenContext();
-        return genContext.GenTemplate(tplContent, model);
+        try
+        {
+            return genContext.GenTemplate(tplContent, model);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Razor generate Error");
+            return string.Empty;
+        }
     }
 
     /// <summary>
