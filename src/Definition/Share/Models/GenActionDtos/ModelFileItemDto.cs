@@ -12,4 +12,7 @@ public class ModelFileItemDto
     /// 路径
     /// </summary>
     public required string FullName { get; set; }
+
+
+    public string? Content { get; set; }
 }

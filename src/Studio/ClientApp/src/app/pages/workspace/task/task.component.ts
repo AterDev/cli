@@ -18,6 +18,7 @@ import { GenStepService } from 'src/app/services/gen-step/gen-step.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
 import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-item-dto.model';
+import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-run-dto.model';
 
 @Component({
   selector: 'app-index',
@@ -349,7 +350,12 @@ export class TaskComponent implements OnInit {
     if (this.currentItem.sourceType !== GenSourceType.OpenAPI) {
       path = this.models.find(_ => _.name === this.runFilePath)?.fullName ?? null;
     }
-    this.service.execute(this.currentItem.id, path)
+    const data: GenActionRunDto = {
+      id: this.currentItem.id,
+      sourceFilePath: path,
+      isFile: false
+    }
+    this.service.execute(data)
       .subscribe({
         next: (res) => {
           if (res) {

@@ -88,16 +88,15 @@ public class GenActionController(
     /// <summary>
     /// 执行操作
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="path"></param>
+    /// <param name="dto">dto</param>
     /// <returns></returns>
-    [HttpPost("execute/{id}")]
-    public async Task<ActionResult<bool>> ExecuteAsync(Guid id, string? path)
+    [HttpPost("execute")]
+    public async Task<ActionResult<GenActionResultDto>> ExecuteAsync(GenActionRunDto dto)
     {
-        var exist = await _manager.ExistAsync(id);
+        var exist = await _manager.ExistAsync(dto.Id);
         if (!exist) { return NotFound(ErrorMsg.NotFoundResource); }
         // return Forbid();
-        return await _manager.ExecuteActionAsync(id, path);
+        return await _manager.ExecuteActionAsync(dto);
     }
 
 

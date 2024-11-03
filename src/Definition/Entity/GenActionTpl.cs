@@ -2,7 +2,7 @@
 /// <summary>
 /// 操作模板
 /// </summary>
-public class GenActionTmp : EntityBase
+public class GenActionTpl : EntityBase
 {
     /// <summary>
     /// 模板名称

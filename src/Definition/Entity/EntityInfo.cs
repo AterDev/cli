@@ -2,7 +2,7 @@
 
 namespace Entity;
 /// <summary>
-/// 实体
+/// 模型信息
 /// </summary>
 [Index(nameof(Name))]
 public class EntityInfo : EntityBase

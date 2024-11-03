@@ -242,7 +242,7 @@ namespace AterStudio.Migrations
                     b.ToTable("GenActionGenSteps");
                 });
 
-            modelBuilder.Entity("Entity.GenActionTmp", b =>
+            modelBuilder.Entity("Entity.GenActionTpl", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,7 +275,7 @@ namespace AterStudio.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GenActionTmps");
+                    b.ToTable("GenActionTpls");
                 });
 
             modelBuilder.Entity("Entity.GenStep", b =>

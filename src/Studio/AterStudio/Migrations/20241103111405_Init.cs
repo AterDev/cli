@@ -29,6 +29,23 @@ namespace AterStudio.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GenActionTpls",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 60, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    ActionContent = table.Column<string>(type: "TEXT", maxLength: 10001024, nullable: false),
+                    CreatedTime = table.Column<string>(type: "TEXT", nullable: false),
+                    UpdatedTime = table.Column<string>(type: "TEXT", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenActionTpls", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -113,10 +130,11 @@ namespace AterStudio.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
-                    EntityPath = table.Column<string>(type: "TEXT", nullable: true),
-                    OpenApiPath = table.Column<string>(type: "TEXT", nullable: true),
+                    EntityPath = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
+                    OpenApiPath = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
                     SourceType = table.Column<int>(type: "INTEGER", nullable: true),
                     ProjectId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ActionStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedTime = table.Column<string>(type: "TEXT", nullable: false),
                     UpdatedTime = table.Column<string>(type: "TEXT", nullable: false),
                     IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -138,6 +156,7 @@ namespace AterStudio.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Content = table.Column<string>(type: "TEXT", maxLength: 100000, nullable: true),
                     OutputContent = table.Column<string>(type: "TEXT", maxLength: 100000, nullable: true),
                     Path = table.Column<string>(type: "TEXT", maxLength: 400, nullable: true),
@@ -203,7 +222,7 @@ namespace AterStudio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GenActionGenStep",
+                name: "GenActionGenSteps",
                 columns: table => new
                 {
                     GenActionsId = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -211,15 +230,15 @@ namespace AterStudio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GenActionGenStep", x => new { x.GenActionsId, x.GenStepsId });
+                    table.PrimaryKey("PK_GenActionGenSteps", x => new { x.GenActionsId, x.GenStepsId });
                     table.ForeignKey(
-                        name: "FK_GenActionGenStep_GenActions_GenActionsId",
+                        name: "FK_GenActionGenSteps_GenActions_GenActionsId",
                         column: x => x.GenActionsId,
                         principalTable: "GenActions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GenActionGenStep_GenSteps_GenStepsId",
+                        name: "FK_GenActionGenSteps_GenSteps_GenStepsId",
                         column: x => x.GenStepsId,
                         principalTable: "GenSteps",
                         principalColumn: "Id",
@@ -242,8 +261,8 @@ namespace AterStudio.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenActionGenStep_GenStepsId",
-                table: "GenActionGenStep",
+                name: "IX_GenActionGenSteps_GenStepsId",
+                table: "GenActionGenSteps",
                 column: "GenStepsId");
 
             migrationBuilder.CreateIndex(
@@ -297,7 +316,10 @@ namespace AterStudio.Migrations
                 name: "Configs");
 
             migrationBuilder.DropTable(
-                name: "GenActionGenStep");
+                name: "GenActionGenSteps");
+
+            migrationBuilder.DropTable(
+                name: "GenActionTpls");
 
             migrationBuilder.DropTable(
                 name: "PropertyInfo");

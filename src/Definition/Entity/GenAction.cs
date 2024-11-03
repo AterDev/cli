@@ -19,7 +19,7 @@ public class GenAction : EntityBase
     public string? Description { get; set; }
 
     /// <summary>
-    /// 实体路径
+    /// 实体/模型路径
     /// </summary>
     [MaxLength(1024)]
     public string? EntityPath { get; set; }

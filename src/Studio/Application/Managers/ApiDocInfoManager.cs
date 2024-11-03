@@ -216,15 +216,14 @@ public class ApiDocInfoManager(
     /// <returns></returns>
     public NgComponentInfo? CreateUIComponent(CreateUIComponentDto dto)
     {
-        return default;
-        //return dto.ComponentType switch
-        //{
-        //    ComponentType.Form => GenFormComponent(dto.ModelInfo, dto.ServiceName),
-        //    ComponentType.Table => GenTableComponent(dto.ModelInfo, dto.ServiceName),
-        //    ComponentType.Detail => GenDetailComponent(dto.ModelInfo, dto.ServiceName),
+        return dto.ComponentType switch
+        {
+            ComponentType.Form => GenFormComponent(dto.ModelInfo, dto.ServiceName),
+            //ComponentType.Table => GenTableComponent(dto.ModelInfo, dto.ServiceName),
+            //ComponentType.Detail => GenDetailComponent(dto.ModelInfo, dto.ServiceName),
 
-        //    _ => default!,
-        //};
+            _ => default!,
+        };
     }
 
     public NgComponentInfo? GenFormComponent(ModelInfo modelInfo, string serviceName)

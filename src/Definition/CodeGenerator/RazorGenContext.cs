@@ -49,9 +49,9 @@ public class RazorGenContext
         return result;
     }
 
-    public string GenTemplate(string templateContent, TempModel model)
+    public string GenTemplate(string templateContent, ActionRunModel model)
     {
-        var template = RazorEngine.Compile<RazorEngineTemplateBase<TempModel>>(templateContent);
+        var template = RazorEngine.Compile<RazorEngineTemplateBase<ActionRunModel>>(templateContent);
         string result = template.Run(instance =>
         {
             instance.Model = model;
@@ -59,7 +59,7 @@ public class RazorGenContext
         return result;
     }
 }
-public class TempModel
+public class ActionRunModel
 {
     public List<Variable> Variables { get; set; } = [];
     /// <summary>

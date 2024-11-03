@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { GenActionFilterDto } from './models/gen-action-filter-dto.model';
 import { GenActionAddDto } from './models/gen-action-add-dto.model';
 import { GenActionUpdateDto } from './models/gen-action-update-dto.model';
+import { GenActionRunDto } from './models/gen-action-run-dto.model';
 import { GenActionItemDtoPageList } from './models/gen-action-item-dto-page-list.model';
 import { GenStepItemDto } from './models/gen-step-item-dto.model';
 import { ModelFileItemDto } from './models/model-file-item-dto.model';
@@ -91,12 +92,11 @@ export class GenActionBaseService extends BaseService {
 
   /**
    * 执行操作
-   * @param id 
-   * @param path 
+   * @param data GenActionRunDto
    */
-  execute(id: string, path: string | null): Observable<boolean> {
-    const _url = `/api/admin/GenAction/execute/${id}?path=${path ?? ''}`;
-    return this.request<boolean>('post', _url);
+  execute(data: GenActionRunDto): Observable<boolean> {
+    const _url = `/api/admin/GenAction/execute`;
+    return this.request<boolean>('post', _url, data);
   }
 
 }

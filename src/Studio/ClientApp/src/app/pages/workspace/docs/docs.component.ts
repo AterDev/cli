@@ -8,7 +8,6 @@ import { ApiDocInfo } from 'src/app/services/api-doc-info/models/api-doc-info.mo
 import { CreateUIComponentDto } from 'src/app/services/api-doc-info/models/create-uicomponent-dto.model';
 import { NgComponentInfo } from 'src/app/services/api-doc-info/models/ng-component-info.model';
 import { ApiDocTag } from 'src/app/services/models/api-doc-tag.model';
-import { EntityInfo } from 'src/app/services/models/entity-info.model';
 import { ComponentType } from 'src/app/services/enum/models/component-type.model';
 import { OperationType } from 'src/app/services/enum/models/operation-type.model';
 import { RequestLibType } from 'src/app/services/enum/models/request-lib-type.model';
@@ -23,6 +22,9 @@ import { EntityInfoService } from 'src/app/services/entity-info/entity-info.serv
 import { ProjectService } from 'src/app/services/project/project.service';
 import { ProjectConfig } from 'src/app/services/project/models/project-config.model';
 import { ModelInfo } from 'src/app/services/models/model-info.model';
+import { GenActionService } from 'src/app/services/gen-action/gen-action.service';
+import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
+import { GenActionItemDto } from 'src/app/services/gen-action/models/gen-action-item-dto.model';
 
 @Component({
   selector: 'app-docs',
@@ -49,6 +51,8 @@ export class DocsComponent implements OnInit {
    * 文档列表
    */
   docs = [] as ApiDocInfoItemDto[];
+
+  actions = [] as GenActionItemDto[];
   currentDoc: ApiDocInfoItemDto | null = null;
   newDoc = {} as ApiDocInfo;
   addForm!: FormGroup;
@@ -96,6 +100,7 @@ export class DocsComponent implements OnInit {
     public projectSrv: ProjectService,
     public projectState: ProjectStateService,
     public service: ApiDocInfoService,
+    private genActionService: GenActionService,
     public entitySrv: EntityInfoService,
     public router: Router,
     public dialog: MatDialog,
@@ -112,6 +117,7 @@ export class DocsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDocs();
+    this.getGenActions();
     this.initForm();
   }
 
@@ -166,6 +172,25 @@ export class DocsComponent implements OnInit {
           this.snb.open(error);
         }
       });
+  }
+
+  getGenActions(): void {
+    this.genActionService.filter({
+      sourceType: GenSourceType.DtoModel,
+      pageIndex: 1,
+      pageSize: 99
+    }).subscribe({
+      next: (res) => {
+        if (res.data) {
+          this.actions = res.data;
+        }
+      },
+      error: (error) => {
+        this.snb.open(error.detail);
+      },
+      complete: () => {
+      }
+    });
   }
   export(): void {
     this.isSync = true;
@@ -296,6 +321,16 @@ export class DocsComponent implements OnInit {
     const path = this.clientRequestForm.get('path')?.value as string;
   }
 
+
+  runGenAction(): void {
+    if (this.currentModel) {
+      this.isSync = true;
+      const data = {};
+      
+
+    }
+
+  }
   generateUIComponent(type: ComponentType): void {
     if (this.currentModel) {
       this.isSync = true;

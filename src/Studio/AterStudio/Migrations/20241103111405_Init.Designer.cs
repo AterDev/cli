@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AterStudio.Migrations
 {
     [DbContext(typeof(CommandDbContext))]
-    [Migration("20241019193639_UpdateGenStep")]
-    partial class UpdateGenStep
+    [Migration("20241103111405_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,6 +182,9 @@ namespace AterStudio.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ActionStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CreatedTime")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -191,6 +194,7 @@ namespace AterStudio.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EntityPath")
+                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsDeleted")
@@ -202,6 +206,7 @@ namespace AterStudio.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OpenApiPath")
+                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProjectId")
@@ -223,6 +228,57 @@ namespace AterStudio.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("GenActions");
+                });
+
+            modelBuilder.Entity("Entity.GenActionGenStep", b =>
+                {
+                    b.Property<Guid>("GenActionsId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("GenStepsId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("GenActionsId", "GenStepsId");
+
+                    b.HasIndex("GenStepsId");
+
+                    b.ToTable("GenActionGenSteps");
+                });
+
+            modelBuilder.Entity("Entity.GenActionTpl", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ActionContent")
+                        .IsRequired()
+                        .HasMaxLength(10001024)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedTime")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedTime")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GenActionTpls");
                 });
 
             modelBuilder.Entity("Entity.GenStep", b =>
@@ -431,21 +487,6 @@ namespace AterStudio.Migrations
                     b.ToTable("PropertyInfo");
                 });
 
-            modelBuilder.Entity("GenActionGenStep", b =>
-                {
-                    b.Property<Guid>("GenActionsId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("GenStepsId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("GenActionsId", "GenStepsId");
-
-                    b.HasIndex("GenStepsId");
-
-                    b.ToTable("GenActionGenStep");
-                });
-
             modelBuilder.Entity("Entity.ApiDocInfo", b =>
                 {
                     b.HasOne("Entity.Project", "Project")
@@ -508,6 +549,25 @@ namespace AterStudio.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("Variables");
+                });
+
+            modelBuilder.Entity("Entity.GenActionGenStep", b =>
+                {
+                    b.HasOne("Entity.GenAction", "GenAction")
+                        .WithMany()
+                        .HasForeignKey("GenActionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.GenStep", "GenStep")
+                        .WithMany()
+                        .HasForeignKey("GenStepsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GenAction");
+
+                    b.Navigation("GenStep");
                 });
 
             modelBuilder.Entity("Entity.GenStep", b =>
@@ -604,21 +664,6 @@ namespace AterStudio.Migrations
                         .IsRequired();
 
                     b.Navigation("EntityInfo");
-                });
-
-            modelBuilder.Entity("GenActionGenStep", b =>
-                {
-                    b.HasOne("Entity.GenAction", null)
-                        .WithMany()
-                        .HasForeignKey("GenActionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entity.GenStep", null)
-                        .WithMany()
-                        .HasForeignKey("GenStepsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entity.EntityInfo", b =>

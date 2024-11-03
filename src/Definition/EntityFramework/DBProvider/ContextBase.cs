@@ -13,7 +13,7 @@ public class ContextBase(DbContextOptions options) : DbContext(options)
     public DbSet<GenStep> GenSteps { get; set; } = null!;
     public DbSet<ConfigData> Configs { get; set; } = null!;
     public DbSet<GenActionGenStep> GenActionGenSteps { get; set; } = null!;
-    public DbSet<GenActionTmp> GenActionTmps { get; set; } = null!;
+    public DbSet<GenActionTpl> GenActionTpls { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder builder)

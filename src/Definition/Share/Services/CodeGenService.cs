@@ -262,12 +262,12 @@ public class CodeGenService(ILogger<CodeGenService> logger)
     /// 生成模板内容
     /// </summary>
     /// <param name="tplContent"></param>
-    /// <param name="variables"></param>
+    /// <param name="model"></param>
     /// <returns></returns>
-    public string GenTemplateFile(string tplContent, List<Variable> variables)
+    public string GenTemplateFile(string tplContent, ActionRunModel model)
     {
         var genContext = new RazorGenContext();
-        return genContext.GenTemplate(tplContent, variables);
+        return genContext.GenTemplate(tplContent, model);
     }
 
     /// <summary>

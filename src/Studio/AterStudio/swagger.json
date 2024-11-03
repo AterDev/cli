@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-11-02 23:08:58",
+    "description": "Studio API 文档. 更新时间:2024-11-03 17:21:10",
     "version": "v1"
   },
   "paths": {
@@ -1143,33 +1143,33 @@
         }
       }
     },
-    "/api/admin/GenAction/execute/{id}": {
+    "/api/admin/GenAction/execute": {
       "post": {
         "tags": [
           "GenAction"
         ],
         "summary": "执行操作",
         "operationId": "GenAction_Execute",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "path",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "description": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenActionRunDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenActionRunDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenActionRunDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -2922,6 +2922,27 @@
           }
         },
         "additionalProperties": false
+      },
+      "GenActionRunDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "操作id",
+            "format": "uuid"
+          },
+          "sourceFilePath": {
+            "type": "string",
+            "description": "源文件路径",
+            "nullable": true
+          },
+          "isFile": {
+            "type": "boolean",
+            "description": "是否写入文件"
+          }
+        },
+        "additionalProperties": false,
+        "description": "操作执行模型"
       },
       "GenActionUpdateDto": {
         "type": "object",

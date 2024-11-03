@@ -1,4 +1,5 @@
-﻿using Share.Models.GenActionDtos;
+﻿using CodeGenerator;
+using Share.Models.GenActionDtos;
 using Share.Models.GenStepDtos;
 
 namespace Application.Managers;
@@ -153,36 +154,74 @@ public class GenActionManager(
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<bool> ExecuteActionAsync(Guid id, string? path)
+    public async Task<GenActionResultDto> ExecuteActionAsync(GenActionRunDto dto)
     {
-        var action = await Command.Where(a => a.Id == id)
+        var res = new GenActionResultDto();
+        var action = await Command.Where(a => a.Id == dto.Id)
             .Include(a => a.GenSteps)
             .FirstAsync();
         action.ActionStatus = ActionStatus.InProgress;
-        var variables = action.Variables;
+        await SaveChangesAsync();
+
+        // 构建任务执行需要的内容
+        var actionRunModel = new ActionRunModel
+        {
+            Variables = action.Variables
+        };
+
+        // 解析模型
+        if (action.SourceType is GenSourceType.EntityCLass or GenSourceType.DtoModel
+            && action.EntityPath.NotEmpty())
+        {
+            var entityInfo = _codeAnalysis.GetEntityInfos([action.EntityPath]).FirstOrDefault();
+            if (entityInfo != null)
+            {
+                actionRunModel.ModelName = entityInfo.Name;
+                actionRunModel.Namespace = entityInfo.NamespaceName;
+                actionRunModel.PropertyInfos = entityInfo.PropertyInfos;
+                actionRunModel.Description = entityInfo.Summary;
+            }
+        }
+
         if (action.GenSteps.Count > 0)
         {
             try
             {
                 foreach (var step in action.GenSteps)
                 {
+                    if (step.Path.NotEmpty() && File.Exists(step.Path))
+                    {
+                        step.Content = File.ReadAllText(step.Path);
+                    }
+
                     switch (step.GenStepType)
                     {
                         case GenStepType.File:
-                            if (step.Path.NotEmpty() && File.Exists(step.Path))
-                            {
-                                step.Content = File.ReadAllText(step.Path);
-                            }
-                            step.OutputContent = _codeGen.GenTemplateFile(step.Content ?? "", variables);
+
+                            step.OutputContent = _codeGen.GenTemplateFile(step.Content ?? "", actionRunModel);
                             if (step.OutputPath.NotEmpty())
                             {
-                                // 处理outputPath中的变化
-                                var outputPath = step.OutputPathFormat(variables);
+                                // 处理outputPath中的变量
+                                var outputPath = step.OutputPathFormat(actionRunModel.Variables);
                                 outputPath = Path.Combine(_projectContext.SolutionPath!, outputPath);
-                                File.WriteAllText(outputPath, step.OutputContent);
+
+                                if (dto.OnlyOutput)
+                                {
+                                    res.OutputFiles.Add(new ModelFileItemDto
+                                    {
+                                        Name = Path.GetFileName(outputPath),
+                                        FullName = outputPath,
+                                        Content = step.OutputContent
+                                    });
+                                }
+                                else
+                                {
+                                    File.WriteAllText(outputPath, step.OutputContent);
+                                }
                             }
                             break;
                         case GenStepType.Command:
+
                             break;
                         case GenStepType.Script:
 
@@ -190,7 +229,6 @@ public class GenActionManager(
                         default:
                             break;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -199,12 +237,13 @@ public class GenActionManager(
                 // TODO: 记录执行情况
                 _logger.LogError(ex, "Execute action failed");
                 await SaveChangesAsync();
-                return false;
+                res.IsSuccess = false;
             }
         }
 
         action.ActionStatus = ActionStatus.Success;
-        return await SaveChangesAsync() > 0;
+        await SaveChangesAsync();
+        return res;
     }
 
     public List<ModelFileItemDto> GetModelFile(GenSourceType sourceType)

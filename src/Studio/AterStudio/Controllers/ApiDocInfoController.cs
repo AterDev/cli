@@ -1,8 +1,6 @@
 ﻿using System.Text;
-using Application.Managers;
 using CodeGenerator.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Share.Models.ApiDocInfoDtos;
 
 namespace AterStudio.Controllers;
@@ -107,10 +105,9 @@ public class ApiDocInfoController(
     /// <param name="dto"></param>
     /// <returns></returns>
     [HttpPost("component")]
-    public NgComponentInfo CreateUIComponent(CreateUIComponentDto dto)
+    public NgComponentInfo? CreateUIComponent(CreateUIComponentDto dto)
     {
         return _manager.CreateUIComponent(dto);
-        return default;
     }
 
     /// <summary>

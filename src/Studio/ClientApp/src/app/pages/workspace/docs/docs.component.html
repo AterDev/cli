@@ -75,7 +75,7 @@
           </mat-accordion>
         </div>
         <!-- 右边内容 -->
-        <div class="col api-content" *ngIf="currentApi">
+        <div class="col api-content p-1" *ngIf="currentApi">
           <div class="section-block">
             <legend>{{currentApi.summary}}</legend>
             <div class="api-summary">
@@ -239,7 +239,7 @@
           </div>
         </div>
         <!-- 右边内容 -->
-        <div class="col api-content" *ngIf="currentModel">
+        <div class="col api-content p-1" *ngIf="currentModel">
           <div class="d-flex gap-1 ">
             <div class="col-auto">
               <legend>{{currentModel.name}} {{currentModel.comment}}</legend>
@@ -250,18 +250,14 @@
               </div>
               <div class="d-flex align-items-center gap-1 my-2">
                 <mat-form-field subscriptSizing="dynamic">
-                  <mat-select class="d-flex" [(ngModel)]="uiType" matTooltip="选择UI框架">
-                    <mat-option *ngFor="let item of UIType| toKeyValue" [value]="item.value">
-                      {{item.key}}
+                  <mat-label>生成操作</mat-label>
+                  <mat-select placeholder="选择生成操作" class="d-flex" [(ngModel)]="uiType">
+                    <mat-option *ngFor="let item of actions" [value]="item.id" [matTooltip]="item.description??''">
+                      {{item.name}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <button mat-flat-button [matMenuTriggerFor]="menu">生成</button>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="generateUIComponent(ComponentType.Form)">提交表单</button>
-                  <button mat-menu-item (click)="generateUIComponent(ComponentType.Table)">展示表格</button>
-                  <button mat-menu-item (click)="generateUIComponent(ComponentType.Detail)">详情页</button>
-                </mat-menu>
+                <button mat-flat-button (click)="runGenAction()">生成</button>
               </div>
               <div *ngIf="currentModel.propertyInfos">
                 <!--  -->
