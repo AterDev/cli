@@ -123,7 +123,7 @@ public class CommandBuilder
     public void AddApi()
     {
         // api 生成命令
-        System.CommandLine.Command apiCommand = new("webapi", "generate dtos, datastore, manager,api controllers");
+        System.CommandLine.Command apiCommand = new("webapi", "generate dtos, managers and RestfulApi controllers");
         apiCommand.AddAlias("api");
         Argument<string> path = new("entity path", "The entity file path");
         Option<string> dtoOption = new(["--dto", "-d"],
@@ -138,13 +138,10 @@ public class CommandBuilder
             "api controller project directory");
         apiOption.SetDefaultValue(PathConst.APIPath);
 
-        Option<string> typeOption = new(["--type", "-t"],
-            "api type, valid values:rest/grpc/graph, just support rest");
         Option<bool> forceOption = new(["--force", "-f"],
       "force overwrite file");
         forceOption.SetDefaultValue(false);
 
-        typeOption.SetDefaultValue("rest");
         apiCommand.AddArgument(path);
         apiCommand.AddOption(dtoOption);
         apiCommand.AddOption(managerOption);
