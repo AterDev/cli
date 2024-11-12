@@ -35,10 +35,10 @@ public class NgFormGenerate : GenerateBase
 
     public static string GenerateForm(List<PropertyInfo>? propertyInfos)
     {
-        StringBuilder formControls = new();
+        StringBuilder sb = new();
         if (propertyInfos != null)
         {
-            foreach (PropertyInfo input in propertyInfos)
+            foreach (PropertyInfo input in propertyInfos)   
             {
                 NgComponentBuilder inputBuilder = new(input.Type, input.Name, input.CommentSummary ?? input.DisplayName)
                 {
@@ -49,12 +49,12 @@ public class NgFormGenerate : GenerateBase
                     IsEnum = input.IsEnum,
                     IsList = input.IsList
                 };
-                formControls.AppendLine(inputBuilder.ToFormControl());
+                sb.AppendLine(inputBuilder.ToFormControl());
             }
         }
 
         string tplContent = GetTplContent("angular.component.form.component.html.tpl");
-        tplContent = tplContent.Replace("", formControls.ToString());
+        tplContent = tplContent.Replace("", sb.ToString());
         return tplContent;
     }
 

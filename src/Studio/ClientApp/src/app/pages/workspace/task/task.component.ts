@@ -361,7 +361,7 @@ export class TaskComponent implements OnInit {
           if (res.isSuccess) {
             this.snb.open('执行成功');
           } else {
-            this.snb.open('执行失败');
+            this.snb.open('执行失败:' + res.errorMsg);
           }
         },
         error: (error) => {

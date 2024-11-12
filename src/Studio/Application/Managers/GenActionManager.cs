@@ -196,11 +196,15 @@ public class GenActionManager(
             {
                 foreach (var step in action.GenSteps)
                 {
-                    if (step.Path.NotEmpty() && File.Exists(step.Path))
-                    {
-                        step.Content = File.ReadAllText(step.Path);
-                    }
 
+                    if (step.Path.NotEmpty())
+                    {
+                        var filePath = Path.Combine(_projectContext.SolutionPath!, step.Path);
+                        if (File.Exists(filePath))
+                        {
+                            step.Content = File.ReadAllText(filePath);
+                        }
+                    }
                     switch (step.GenStepType)
                     {
                         case GenStepType.File:
@@ -238,18 +242,25 @@ public class GenActionManager(
                             break;
                     }
                 }
+                action.ActionStatus = ActionStatus.Success;
             }
             catch (Exception ex)
             {
                 action.ActionStatus = ActionStatus.Failed;
                 // TODO: 记录执行情况
                 _logger.LogError(ex, "Execute action failed");
+                res.ErrorMsg = ex.Message;
                 await SaveChangesAsync();
                 res.IsSuccess = false;
             }
         }
-
-        action.ActionStatus = ActionStatus.Success;
+        else
+        {
+            action.ActionStatus = ActionStatus.Failed;
+            await SaveChangesAsync();
+            res.IsSuccess = false;
+            res.Equals("未找到任务步骤");
+        }
         await SaveChangesAsync();
         return res;
     }

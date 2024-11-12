@@ -329,7 +329,7 @@
 <ng-template #addDocDialog>
   <h2 mat-dialog-title>添加 swagger 接口文档</h2>
   <mat-dialog-content>
-    <form [formGroup]="addForm" class="d-flex flex-column">
+    <form [formGroup]="addForm" class="d-flex flex-column mt-1">
       <mat-form-field>
         <mat-label>名称</mat-label>
         <input matInput placeholder="文档名称" formControlName="name" required>
@@ -353,7 +353,7 @@
 <ng-template #editDocDialog>
   <h2 mat-dialog-title>更新 swagger 接口文档</h2>
   <mat-dialog-content>
-    <form [formGroup]="editForm" class="d-flex flex-column">
+    <form [formGroup]="editForm" class="d-flex flex-column mt-1">
       <mat-form-field>
         <mat-label>名称</mat-label>
         <input matInput placeholder="文档名称" formControlName="name" required>
@@ -417,7 +417,7 @@
 <ng-template #requestDialog>
   <h2 mat-dialog-title>生成前端请求服务</h2>
   <mat-dialog-content>
-    <form [formGroup]="requestForm" class="d-flex flex-column">
+    <form [formGroup]="requestForm" class="d-flex flex-column mt-1">
       <mat-form-field>
         <mat-label>swagger地址</mat-label>
         <input matInput placeholder="HttpAPI/swagger.json" formControlName="swagger">

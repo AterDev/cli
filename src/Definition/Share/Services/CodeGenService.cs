@@ -274,7 +274,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
         catch (Exception ex)
         {
             _logger.LogError(ex, "Razor generate Error");
-            return string.Empty;
+            throw;
         }
     }
 

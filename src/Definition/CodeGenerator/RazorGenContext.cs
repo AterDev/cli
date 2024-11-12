@@ -3,7 +3,7 @@ using RazorEngineCore;
 namespace CodeGenerator;
 
 /// <summary>
-/// ´úÂëÉú³ÉÏÂÏÂÎÄ
+/// ä»£ç ç”Ÿæˆä¸‹ä¸‹æ–‡
 /// </summary>
 public class RazorGenContext
 {
@@ -14,7 +14,7 @@ public class RazorGenContext
     }
 
     /// <summary>
-    /// ÌØ¶¨ÀàĞÍÉú³É
+    /// ç‰¹å®šç±»å‹ç”Ÿæˆ
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="templateContent"></param>
@@ -31,7 +31,7 @@ public class RazorGenContext
     }
 
     /// <summary>
-    /// ±äÁ¿Ä£°åÌæ»»
+    /// å˜é‡æ¨¡æ¿æ›¿æ¢
     /// </summary>
     /// <param name="templateContent"></param>
     /// <param name="model"></param>
@@ -78,16 +78,16 @@ public class CustomTemplate : RazorEngineTemplateBase
 {
     public Dictionary<string, string> Variables { get; set; } = [];
     /// <summary>
-    /// Ä£ĞÍÃû³Æ
+    /// æ¨¡å‹åç§°
     /// </summary>
     public string? ModelName { get; set; }
     /// <summary>
-    /// ÃüÃû¿Õ¼ä
+    /// å‘½åç©ºé—´
     /// </summary>
     public string? Namespace { get; set; }
 
     /// <summary>
-    /// ÀàĞÍÃèÊö
+    /// ç±»å‹æè¿°
     /// </summary>
     public string? Description { get; set; }
 
@@ -100,16 +100,16 @@ public class ActionRunModel
 {
     public List<Variable> Variables { get; set; } = [];
     /// <summary>
-    /// Ä£ĞÍÃû³Æ
+    /// æ¨¡å‹åç§°
     /// </summary>
     public string? ModelName { get; set; }
     /// <summary>
-    /// ÃüÃû¿Õ¼ä
+    /// å‘½åç©ºé—´
     /// </summary>
     public string? Namespace { get; set; }
 
     /// <summary>
-    /// ÀàĞÍÃèÊö
+    /// ç±»å‹æè¿°
     /// </summary>
     public string? Description { get; set; }
 

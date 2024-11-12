@@ -7,43 +7,25 @@
   <Folder Name="/src/">
   </Folder>
 
-  <Folder Name="/src/Definition/">
-
+  <Folder Name="/src/Definition/" Id="6c4d18c5-5566-cc07-9a5e-d0047fa19ca3">
     <Project Path="src\Definition\CodeGenerator\CodeGenerator.csproj" />
-
-    <Project Path="src\Definition\EntityFramework\EntityFramework.csproj" Type="C#" />
-
+    <Project Path="src\Definition\EntityFramework\EntityFramework.csproj" />
     <Project Path="src\Definition\Entity\Entity.csproj" />
-
     <Project Path="src\Definition\Share\Share.csproj" />
-
   </Folder>
 
-  <Folder Name="/src/Command/">
-
+  <Folder Name="/src/Command/" Id="765e863f-92d1-9ec9-a760-0ce58f35de60">
     <Project Path="src\Command\Command.Share\Command.Share.csproj" />
-
     <Project Path="src\Command\CommandLine\CommandLine.csproj" />
-
-    <Project Path="src\Command\GeneratorForNode\GeneratorForNode.csproj" />
-
-    <Project Path="src\Command\NodeBridge\NodeBridge.csproj" />
-
   </Folder>
-  <Folder Name="/src/Studio/">
+  <Folder Name="/src/Studio/" Id="2b4e54ac-7def-1549-9779-3de57d644187">
     <Project Path="src\Studio\Application\Application.csproj" />
     <Project Path="src\Studio\AterStudio\AterStudio.csproj" />
   </Folder>
 
   <Folder Name="/test/">
-
     <Project Path="test\CodeGenerator.Test\CodeGenerator.Test.csproj" />
-
     <Project Path="test\CommandLine.Test\CommandLine.Test.csproj" />
-
   </Folder>
-  <Properties Name="Visual Studio">
-    <Property Name="OpenWith" Value="Visual Studio Version 17" />
-  </Properties>
 
 </Solution>

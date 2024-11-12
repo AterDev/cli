@@ -77,7 +77,6 @@ export class DocsComponent implements OnInit {
 
   @ViewChild("clientRequestDialog", { static: true })
   clientRequestTmpRef!: TemplateRef<{}>;
-  config: ProjectConfig | null = null;
   restApiGroups = [] as RestApiGroup[];
   filterApiGroups = [] as RestApiGroup[];
   filterModelInfos = [] as ModelInfo[];
@@ -108,7 +107,7 @@ export class DocsComponent implements OnInit {
   ) {
     if (projectState.project) {
       this.projectId = projectState.project.id;
-      this.config = projectState.project.config!;
+      this.project = projectState.project;
     } else {
       this.projectId = '';
       this.router.navigateByUrl('/');
@@ -137,7 +136,7 @@ export class DocsComponent implements OnInit {
     });
 
     // 生成请求表单
-    let defaultPath = this.config?.solutionPath! + '\\src\\ClientApp\\src\\app';
+    let defaultPath = this.project.path + '\\src\\ClientApp\\src\\app';
 
     this.requestForm = new FormGroup({
       swagger: new FormControl<string | null>('./swagger.json', []),
@@ -148,7 +147,7 @@ export class DocsComponent implements OnInit {
     this.clientRequestForm = new FormGroup({
       swagger: new FormControl<string | null>('./swagger.json', []),
       type: new FormControl(null, []),
-      path: new FormControl<string | null>(this.config?.solutionPath + "\\src\\SDK\\", [Validators.required])
+      path: new FormControl<string | null>(this.project.path + "\\src\\SDK\\", [Validators.required])
     });
   }
 
@@ -253,7 +252,7 @@ export class DocsComponent implements OnInit {
 
   openClientRequestDialog(): void {
     this.clientRequestForm.get('swagger')?.setValue(this.currentDoc?.path);
-    this.clientRequestForm.get('path')?.setValue(this.config?.solutionPath + "\\src\\SDK\\");
+    this.clientRequestForm.get('path')?.setValue(this.project.path + "\\src\\SDK\\");
     this.dialogRef = this.dialog.open(this.clientRequestTmpRef, {
       minWidth: 400
     });
@@ -326,7 +325,7 @@ export class DocsComponent implements OnInit {
     if (this.currentModel) {
       this.isSync = true;
       const data = {};
-      
+
 
     }
 
