@@ -260,7 +260,6 @@
                 <button mat-flat-button (click)="runGenAction()" [disabled]="selectedActionId==null">生成</button>
               </div>
               <div *ngIf="currentModel.propertyInfos">
-                <!--  -->
                 <ng-container *ngIf="currentModel.propertyInfos.length>0;else responseElse">
                   <!-- 渲染内容 -->
                   <table mat-table [dataSource]="currentModel.propertyInfos" class="my-2">
@@ -309,15 +308,15 @@
                 </ng-template>
               </div>
             </div>
+            <!-- 生成代码预览 -->
             <div class="col">
-              <ng-container *ngIf="componentCodes">
-                <h2 class="my-1">HTML</h2>
-                <ngx-monaco-editor class="editor-half" [options]="editorHtmlOptions"
-                  [ngModel]="componentCodes.htmlContent"></ngx-monaco-editor>
-                <h2 class="my-1">Typescript</h2>
-                <ngx-monaco-editor class="editor-half" [options]="editorTSOptions"
-                  [ngModel]="componentCodes.tsContent"></ngx-monaco-editor>
-              </ng-container>
+              @if(outputFiles.length>0){
+                @for (file of outputFiles; track $index) {
+                  <h2 class="my-1">{{file.name}}</h2>
+                  <ngx-monaco-editor class="editor-half" [options]="editorHtmlOptions"
+                    [ngModel]="file.content"></ngx-monaco-editor>
+                }
+              }
             </div>
           </div>
         </div>

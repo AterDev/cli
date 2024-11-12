@@ -26,6 +26,7 @@ import { GenActionService } from 'src/app/services/gen-action/gen-action.service
 import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
 import { GenActionItemDto } from 'src/app/services/gen-action/models/gen-action-item-dto.model';
 import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-run-dto.model';
+import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-item-dto.model';
 
 @Component({
   selector: 'app-docs',
@@ -61,8 +62,7 @@ export class DocsComponent implements OnInit {
   dialogRef!: MatDialogRef<{}, any>;
   requestForm!: FormGroup;
   clientRequestForm!: FormGroup;
-
-  componentCodes: NgComponentInfo | null = null;
+  outputFiles: ModelFileItemDto[] = [];
 
   @ViewChild("addDocDialog", { static: true })
   addTmpRef!: TemplateRef<{}>;
@@ -330,6 +330,22 @@ export class DocsComponent implements OnInit {
         onlyOutput: true,
         modelInfo: this.currentModel
       }
+      this.genActionService.execute(data)
+        .subscribe({
+          next: (res) => {
+            if (res) {
+              this.snb.open('生成成功');
+              if (res.outputFiles) {
+                this.outputFiles = res.outputFiles;
+              }
+            }
+          },
+          error: (error) => {
+            this.snb.open(error.detail);
+          },
+          complete: () => {
+          }
+        });
     }
   }
 

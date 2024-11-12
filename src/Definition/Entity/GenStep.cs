@@ -55,13 +55,13 @@ public class GenStep : EntityBase
     /// <returns></returns>
     public string OutputPathFormat(List<Variable> variables)
     {
-        string format = string.Empty;
-        if (OutputPath.NotEmpty())
+        string format = OutputPath ?? string.Empty;
+        if (format.NotEmpty())
         {
             // 循环将vriables中的key 匹配的@{key}替换 成value
             foreach (var variable in variables)
             {
-                format = OutputPath.Replace($"@{{{variable.Key}}}", variable.Value);
+                format = format.Replace($"@{{{variable.Key}}}", variable.Value);
             }
         }
         return format;

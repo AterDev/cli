@@ -177,8 +177,7 @@ public class GenActionManager(
         };
 
         // 解析模型
-        if (action.SourceType is GenSourceType.EntityCLass or GenSourceType.DtoModel
-            && dto.SourceFilePath.NotEmpty())
+        if (action.SourceType is GenSourceType.EntityCLass or GenSourceType.DtoModel)
         {
             // 兼容dto名称
             if (action.SourceType is GenSourceType.DtoModel && dto.ModelInfo != null)
@@ -186,8 +185,15 @@ public class GenActionManager(
                 actionRunModel.ModelName = dto.ModelInfo.Name;
                 actionRunModel.PropertyInfos = dto.ModelInfo.PropertyInfos;
                 actionRunModel.Description = dto.ModelInfo.Summary ?? dto.ModelInfo.Comment;
+
+                // 添加变量
+                actionRunModel.Variables.Add(new Variable
+                {
+                    Key = "ModelName",
+                    Value = dto.ModelInfo.Name
+                });
             }
-            else
+            else if (dto.SourceFilePath.NotEmpty())
             {
                 var entityInfo = _codeAnalysis.GetEntityInfos([dto.SourceFilePath]).FirstOrDefault();
                 if (entityInfo != null)
@@ -196,6 +202,13 @@ public class GenActionManager(
                     actionRunModel.Namespace = entityInfo.NamespaceName;
                     actionRunModel.PropertyInfos = entityInfo.PropertyInfos;
                     actionRunModel.Description = entityInfo.Summary;
+
+                    // 添加变量
+                    actionRunModel.Variables.Add(new Variable
+                    {
+                        Key = "ModelName",
+                        Value = entityInfo.Name
+                    });
                 }
             }
         }
@@ -225,6 +238,7 @@ public class GenActionManager(
                                 // 处理outputPath中的变量
                                 var outputPath = step.OutputPathFormat(actionRunModel.Variables);
                                 outputPath = Path.Combine(_projectContext.SolutionPath!, outputPath);
+
 
                                 if (dto.OnlyOutput)
                                 {
