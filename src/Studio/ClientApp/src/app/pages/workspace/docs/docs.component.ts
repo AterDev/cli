@@ -25,6 +25,7 @@ import { ModelInfo } from 'src/app/services/models/model-info.model';
 import { GenActionService } from 'src/app/services/gen-action/gen-action.service';
 import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
 import { GenActionItemDto } from 'src/app/services/gen-action/models/gen-action-item-dto.model';
+import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-run-dto.model';
 
 @Component({
   selector: 'app-docs',
@@ -35,7 +36,6 @@ export class DocsComponent implements OnInit {
   OperationType = OperationType;
   RequestLibType = RequestLibType;
   ComponentType = ComponentType;
-  UIType = UIType;
   project = {} as Project;
   projectId: string;
   isRefresh = false;
@@ -53,6 +53,7 @@ export class DocsComponent implements OnInit {
   docs = [] as ApiDocInfoItemDto[];
 
   actions = [] as GenActionItemDto[];
+  selectedActionId: string | null = null;
   currentDoc: ApiDocInfoItemDto | null = null;
   newDoc = {} as ApiDocInfo;
   addForm!: FormGroup;
@@ -60,7 +61,7 @@ export class DocsComponent implements OnInit {
   dialogRef!: MatDialogRef<{}, any>;
   requestForm!: FormGroup;
   clientRequestForm!: FormGroup;
-  uiType: UIType = UIType.AngularMaterial;
+
   componentCodes: NgComponentInfo | null = null;
 
   @ViewChild("addDocDialog", { static: true })
@@ -322,45 +323,13 @@ export class DocsComponent implements OnInit {
 
 
   runGenAction(): void {
-    if (this.currentModel) {
+    if (this.currentModel && this.selectedActionId) {
       this.isSync = true;
-      const data = {};
-
-
-    }
-
-  }
-  generateUIComponent(type: ComponentType): void {
-    if (this.currentModel) {
-      this.isSync = true;
-      const data: CreateUIComponentDto = {
-        componentType: type,
-        uiType: this.uiType,
-        modelInfo: this.currentModel,
-        serviceName: ''
-      };
-      // 获取到模型对应的服务名称
-      data.serviceName = this.restApiGroups.find(g =>
-        g.apiInfos?.find(api =>
-          api.requestInfo?.name === this.currentModel?.name
-          || api.responseInfo?.name === this.currentModel?.name))?.name ?? this.currentModel.name;
-
-      this.service.createUIComponent(data)
-        .subscribe({
-          next: res => {
-            if (res) {
-              this.componentCodes = res;
-              this.snb.open('生成成功');
-            }
-            this.isSync = false;
-          },
-          error: error => {
-            this.snb.open(error.detail);
-            this.isSync = false;
-          }
-        })
-    } else {
-      this.snb.open('未选择有效的模型');
+      const data: GenActionRunDto = {
+        id: this.selectedActionId,
+        onlyOutput: true,
+        modelInfo: this.currentModel
+      }
     }
   }
 

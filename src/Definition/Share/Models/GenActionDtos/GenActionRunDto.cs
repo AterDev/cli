@@ -19,5 +19,10 @@ public class GenActionRunDto
     /// </summary>
     public bool OnlyOutput { get; set; }
 
+    /// <summary>
+    /// 额外变量
+    /// </summary>
     public List<Variable>? Variables { get; set; }
+
+    public ModelInfo? ModelInfo { get; set; }
 }

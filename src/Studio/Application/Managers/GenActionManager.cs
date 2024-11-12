@@ -180,13 +180,23 @@ public class GenActionManager(
         if (action.SourceType is GenSourceType.EntityCLass or GenSourceType.DtoModel
             && dto.SourceFilePath.NotEmpty())
         {
-            var entityInfo = _codeAnalysis.GetEntityInfos([dto.SourceFilePath]).FirstOrDefault();
-            if (entityInfo != null)
+            // 兼容dto名称
+            if (action.SourceType is GenSourceType.DtoModel && dto.ModelInfo != null)
             {
-                actionRunModel.ModelName = entityInfo.Name;
-                actionRunModel.Namespace = entityInfo.NamespaceName;
-                actionRunModel.PropertyInfos = entityInfo.PropertyInfos;
-                actionRunModel.Description = entityInfo.Summary;
+                actionRunModel.ModelName = dto.ModelInfo.Name;
+                actionRunModel.PropertyInfos = dto.ModelInfo.PropertyInfos;
+                actionRunModel.Description = dto.ModelInfo.Summary ?? dto.ModelInfo.Comment;
+            }
+            else
+            {
+                var entityInfo = _codeAnalysis.GetEntityInfos([dto.SourceFilePath]).FirstOrDefault();
+                if (entityInfo != null)
+                {
+                    actionRunModel.ModelName = entityInfo.Name;
+                    actionRunModel.Namespace = entityInfo.NamespaceName;
+                    actionRunModel.PropertyInfos = entityInfo.PropertyInfos;
+                    actionRunModel.Description = entityInfo.Summary;
+                }
             }
         }
 

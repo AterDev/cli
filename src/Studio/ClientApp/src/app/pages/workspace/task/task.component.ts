@@ -353,7 +353,7 @@ export class TaskComponent implements OnInit {
     const data: GenActionRunDto = {
       id: this.currentItem.id,
       sourceFilePath: path,
-      onlyOutput: true
+      onlyOutput: false
     }
     this.service.execute(data)
       .subscribe({

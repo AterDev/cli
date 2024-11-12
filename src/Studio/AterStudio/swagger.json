@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-11-03 19:29:47",
+    "description": "Studio API 文档. 更新时间:2024-11-12 16:31:42",
     "version": "v1"
   },
   "paths": {
@@ -2961,6 +2961,17 @@
           "onlyOutput": {
             "type": "boolean",
             "description": "仅输出"
+          },
+          "variables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variable"
+            },
+            "description": "额外变量",
+            "nullable": true
+          },
+          "modelInfo": {
+            "$ref": "#/components/schemas/ModelInfo"
           }
         },
         "additionalProperties": false,
