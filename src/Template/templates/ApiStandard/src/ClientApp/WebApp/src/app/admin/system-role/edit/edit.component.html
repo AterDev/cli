@@ -1,0 +1,28 @@
+<mat-toolbar class="d-flex gap-1">
+  <!-- <mat-icon matTooltip="返回" (click)="back()">arrow_back</mat-icon> -->
+  <span>编辑</span>
+</mat-toolbar>
+<form class="d-flex p-2" *ngIf="!isLoading" [formGroup]="formGroup">
+  <div class="d-flex flex-column w-100">
+
+    <mat-form-field>
+      <mat-label>角色显示名称</mat-label>
+      <input matInput placeholder="角色显示名称,不超过30字" formControlName="name" minlength="" maxlength="30">
+      <mat-error *ngIf="name?.invalid">
+        {{getValidatorMessage('name')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>角色名，系统标识</mat-label>
+      <input matInput placeholder="角色名，系统标识,不超过60字" formControlName="nameValue" minlength="" maxlength="60">
+      <mat-error *ngIf="nameValue?.invalid">
+        {{getValidatorMessage('nameValue')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-slide-toggle class="my-2" color="primary" formControlName="isSystem">是否系统内置,系统内置不可删除</mat-slide-toggle>
+    <div class="d-flex mt-1 justify-content-end">
+      <button class="d-flex flex-column" mat-flat-button color="primary" (click)="edit()">保存</button>
+    </div>
+  </div>
+</form>

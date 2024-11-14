@@ -1,0 +1,5 @@
+{
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "typescript.tsserver.experimental.useVsCodeWatcher": true,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true
+}

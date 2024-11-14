@@ -1,0 +1,54 @@
+<div class="p-2">
+  <h3>快捷录入</h3>
+  <mat-grid-list cols="3" rowHeight="1:1" class="card-style">
+    <mat-grid-tile (click)="goTo('customer/add')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">person_add</mat-icon>
+        <span>添加客户</span>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile (click)="goTo('trial/add')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">post_add</mat-icon>
+        <span>添加试听</span>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile (click)="goTo('order/add')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">add_shopping_cart</mat-icon>
+        <span>添加订单</span>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile (click)="goTo('register')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">share</mat-icon>
+        <span>新登记表</span>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <h3>业务管理</h3>
+  <mat-grid-list cols="3" rowHeight="1:1" class="card-style">
+    <mat-grid-tile (click)="goTo('trial-customer')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">record_voice_over</mat-icon>
+        <span>试听客户</span>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile (click)="goTo('customer')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">badge</mat-icon>
+        <span>学员管理</span>
+      </div>
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="goTo('order')">
+      <div class="d-flex flex-column align-items-center">
+        <mat-icon fontSet="" class="icon">paid</mat-icon>
+        <span>订单管理</span>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

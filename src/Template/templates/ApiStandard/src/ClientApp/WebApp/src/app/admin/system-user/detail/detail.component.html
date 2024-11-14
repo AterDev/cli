@@ -1,0 +1,88 @@
+<mat-toolbar>
+  <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<div *ngIf="!isLoading" class="d-flex">
+  <mat-card class="w-100">
+    <mat-card-content>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>UserName</th>
+            <td class="text-primary">{{data.userName}}</td>
+          </tr>
+          <tr>
+            <th>RealName</th>
+            <td class="text-primary">{{data.realName}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td class="text-primary">{{data.email}}</td>
+          </tr>
+          <tr>
+            <th>EmailConfirmed</th>
+            <td class="text-primary">{{data.emailConfirmed}}</td>
+          </tr>
+          <tr>
+            <th>PhoneNumber</th>
+            <td class="text-primary">{{data.phoneNumber}}</td>
+          </tr>
+          <tr>
+            <th>PhoneNumberConfirmed</th>
+            <td class="text-primary">{{data.phoneNumberConfirmed}}</td>
+          </tr>
+          <tr>
+            <th>TwoFactorEnabled</th>
+            <td class="text-primary">{{data.twoFactorEnabled}}</td>
+          </tr>
+          <tr>
+            <th>LockoutEnd</th>
+            <td class="text-primary">{{data.lockoutEnd|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          </tr>
+          <tr>
+            <th>LockoutEnabled</th>
+            <td class="text-primary">{{data.lockoutEnabled}}</td>
+          </tr>
+          <tr>
+            <th>AccessFailedCount</th>
+            <td class="text-primary">{{data.accessFailedCount}}</td>
+          </tr>
+          <tr>
+            <th>LastLoginTime</th>
+            <td class="text-primary">{{data.lastLoginTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          </tr>
+          <tr>
+            <th>RetryCount</th>
+            <td class="text-primary">{{data.retryCount}}</td>
+          </tr>
+          <tr>
+            <th>Avatar</th>
+            <td class="text-primary">{{data.avatar}}</td>
+          </tr>
+          <tr>
+            <th>Sex</th>
+            <td class="text-primary">{{data.gender}}</td>
+          </tr>
+          <tr>
+            <th>Id</th>
+            <td class="text-primary">{{data.id}}</td>
+          </tr>
+          <tr>
+            <th>CreatedTime</th>
+            <td class="text-primary">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          </tr>
+          <tr>
+            <th>UpdatedTime</th>
+            <td class="text-primary">{{data.updatedTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <!-- <button mat-button></button>
+      <button mat-button></button> -->
+    </mat-card-actions>
+  </mat-card>
+</div>

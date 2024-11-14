@@ -1,0 +1,63 @@
+/* You can add global styles to this file, and also import other style files */
+@import './assets/bootstrap-grid.min.css';
+
+html,
+body {
+  height: 100%;
+  font-family: sans-serif, "微软雅黑", Tahoma, Geneva, Verdana;
+}
+
+body {
+  margin: 0;
+}
+
+img {
+  object-fit: cover;
+}
+
+.loading {
+  margin: 0 auto;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+mat-nav-list .mat-icon {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+mat-panel-title .mat-icon {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.icon {
+  width: 38px;
+  height: 38px;
+  font-size: 20px;
+  line-height: 38px;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #2359be;
+  color: white;
+}
+
+
+.v-middle {
+  vertical-align: middle;
+}
