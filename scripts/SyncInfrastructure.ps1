@@ -4,8 +4,8 @@ $location = Get-Location
 
 # $infrastructurePath = Join-Path $location "../templates/ApiAspire/src/Infrastructure/"
 
-$lightPath = Join-Path $location "../templates/ApiLight/src/Infrastructure/"
-$standardPath = Join-Path $location "../templates/ApiStandard/src/Infrastructure/"
+$lightPath = Join-Path $location "../src/Template/templates/ApiLight/src/Infrastructure/"
+$standardPath = Join-Path $location "../src/Template/templates/ApiStandard/src/Infrastructure/"
 $projects = @(
     "Ater.Web.Core", 
     "Ater.Web.Abstraction", 

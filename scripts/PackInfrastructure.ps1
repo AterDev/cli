@@ -5,7 +5,7 @@ param (
     $version = "1.0.0"
 )
 $location = Get-Location
-$infrastructurePath = Join-Path $location "../templates/ApiStandard/src/Infrastructure/"
+$infrastructurePath = Join-Path $location "../src/Template/templates/ApiStandard/src/Infrastructure/"
 $projects = @(
     "Ater.Web.Core/Ater.Web.Core.csproj", 
     "Ater.Web.Abstraction/Ater.Web.Abstraction.csproj", 
@@ -25,7 +25,7 @@ try {
     }
     foreach ($project in $projects) {
         $csprojPath = Join-Path $infrastructurePath $project
-        dotnet pack $csprojPath -o ../pack
+        dotnet pack $csprojPath -o ../nuget
     }
 }
 catch {

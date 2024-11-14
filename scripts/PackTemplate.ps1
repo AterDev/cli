@@ -3,7 +3,6 @@
 param (
     [Parameter()]
     [System.String]
-    $relativePath = "../../ater.web"
 )
 
 # 模块名称
@@ -12,7 +11,7 @@ $modulesNames = @("CMSMod", "FileManagerMod", "OrderMod", "SystemMod", "Customer
 # 路径定义
 $deployPath = Get-Location
 $rootPath = Join-Path $deployPath ../
-$templatePath = Join-Path $deployPath $relativePath
+$templatePath = Join-Path $deployPath "../src/Template"
 $entityPath = Join-Path $templatePath "templates" "ApiStandard" "src" "Definition" "Entity"
 $commandLinePath = Join-Path $rootPath "src" "Command" "CommandLine"
 $destPath = Join-Path $commandLinePath "template"

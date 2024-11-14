@@ -1,7 +1,6 @@
 # 模块名称
 $modulesNames = @("CMSMod", "FileManagerMod", "OrderMod", "SystemMod", "CustomerMod")
 
-#region 函数定义
 # 移动模块到临时目录
 function TempModule([string]$solutionPath, [string]$moduleName) {
     Write-Host "move module:"$moduleName
@@ -43,20 +42,22 @@ function RestoreModule ([string]$solutionPath, [string]$moduleName) {
     dotnet sln $solutionPath/MyProjectName.sln add $moduleProjectFile
 }
 
-#endregion
+
 $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+
+$location = Get-Location
+$entityPath = Join-Path $location "../src/Template/templates/ApiStandard/src/Entity"
+$solutionPath = Join-Path $location "../src/Template/templates/ApiStandard"
+$tmp = Join-Path $solutionPath "./.tmp"
+
 Write-Host "Clean files"
 # delete files
-if (Test-Path ./nuget) {
-    Remove-Item ./nuget -Force -Recurse
+
+$migrationPath = Join-Path $solutionPath "../src/Template/templates/ApiStandard/src/Http.API/Migrations"
+if (Test-Path $migrationPath) {
+    Remove-Item $migrationPath -Force -Recurse
 }
-if (Test-Path ./templates/ApiStandard/src/Http.API/Migrations) {
-    Remove-Item ./templates/ApiStandard/src/Http.API/Migrations -Force -Recurse
-}
-$location = Get-Location
-$entityPath = Join-Path $location "../templates/ApiStandard/src/Entity"
-$solutionPath = Join-Path $location "../templates/ApiStandard"
-$tmp = Join-Path $solutionPath "./.tmp"
+
 if (!(Test-Path $tmp)) {
     New-Item -Path $tmp -ItemType Directory -Force | Out-Null
 }
@@ -75,7 +76,7 @@ try {
         TempModule $solutionPath $moduleName
     }
 
-    Set-Location ../
+    Set-Location ../src/Template
     # pack
     dotnet pack -c release -o ./nuget
 
