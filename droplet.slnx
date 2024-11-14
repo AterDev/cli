@@ -25,6 +25,9 @@
     <Project Path="src\Studio\Application\Application.csproj" />
     <Project Path="src\Studio\AterStudio\AterStudio.csproj" />
   </Folder>
+  <Folder Name="/src/Template/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
+    <Project Path="src/Template/Pack.csproj" />
+  </Folder>
 
   <Folder Name="/test/">
     <Project Path="test\CodeGenerator.Test\CodeGenerator.Test.csproj" />
