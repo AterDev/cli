@@ -1,6 +1,4 @@
-﻿using Share.Models;
-
-namespace Application.Models;
+﻿namespace Application.Models;
 
 /// <summary>
 /// 接口返回模型

@@ -1,5 +1,4 @@
-﻿using Entity;
-namespace Share.Models.GenStepDtos;
+﻿namespace Share.Models.GenStepDtos;
 /// <summary>
 /// task step详情
 /// </summary>
@@ -40,5 +39,5 @@ public class GenStepDetailDto
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTimeOffset CreatedTime { get; set; }
     public DateTimeOffset UpdatedTime { get; set; }
-    
+
 }

@@ -1,7 +1,4 @@
-﻿using Application.Managers;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AterStudio.Controllers;
+﻿namespace AterStudio.Controllers;
 
 /// <summary>
 /// 功能模块

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Build.Locator;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.MSBuild;
 

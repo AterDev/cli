@@ -180,7 +180,7 @@ public static class ServiceCollectionExtension
             c.SchemaFilter<EnumSchemaFilter>();
             c.MapType<DateOnly>(() => new OpenApiSchema
             {
-                Type = "string",
+                Type = JsonSchemaType.String,
                 Format = "date"
             });
         });

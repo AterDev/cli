@@ -1,5 +1,4 @@
-﻿using Entity;
-namespace Share.Models.GenActionDtos;
+﻿namespace Share.Models.GenActionDtos;
 /// <summary>
 /// 生成操作筛选条件
 /// </summary>
@@ -20,5 +19,5 @@ public class GenActionFilterDto : FilterBase
     /// 操作状态
     /// </summary>
     public ActionStatus? ActionStatus { get; set; }
-    
+
 }

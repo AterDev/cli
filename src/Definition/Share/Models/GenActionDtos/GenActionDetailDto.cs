@@ -1,5 +1,4 @@
-﻿using Entity;
-namespace Share.Models.GenActionDtos;
+﻿namespace Share.Models.GenActionDtos;
 /// <summary>
 /// 生成操作详情
 /// </summary>
@@ -35,5 +34,5 @@ public class GenActionDetailDto
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTimeOffset CreatedTime { get; set; }
     public DateTimeOffset UpdatedTime { get; set; }
-    
+
 }

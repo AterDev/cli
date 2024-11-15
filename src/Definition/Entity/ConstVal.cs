@@ -71,12 +71,12 @@ public static class ConstVal
 /// </summary>
 public static class PathConst
 {
-    public readonly static string APIPath = Path.Combine(ConstVal.SrcDir, ConstVal.APIName);
-    public readonly static string ApplicationPath = Path.Combine(ConstVal.SrcDir, ConstVal.ApplicationName);
-    public readonly static string DefinitionPath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir);
-    public readonly static string SharePath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir, ConstVal.ShareName);
-    public readonly static string EntityPath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir, ConstVal.EntityName);
-    public readonly static string EntityFrameworkPath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir, ConstVal.EntityFrameworkName);
-    public readonly static string ModulesPath = Path.Combine(ConstVal.SrcDir, ConstVal.ModulesDir);
-    public readonly static string MicroservicePath = Path.Combine(ConstVal.SrcDir, ConstVal.MicroserviceDir);
+    public static readonly string APIPath = Path.Combine(ConstVal.SrcDir, ConstVal.APIName);
+    public static readonly string ApplicationPath = Path.Combine(ConstVal.SrcDir, ConstVal.ApplicationName);
+    public static readonly string DefinitionPath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir);
+    public static readonly string SharePath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir, ConstVal.ShareName);
+    public static readonly string EntityPath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir, ConstVal.EntityName);
+    public static readonly string EntityFrameworkPath = Path.Combine(ConstVal.SrcDir, ConstVal.DefinitionDir, ConstVal.EntityFrameworkName);
+    public static readonly string ModulesPath = Path.Combine(ConstVal.SrcDir, ConstVal.ModulesDir);
+    public static readonly string MicroservicePath = Path.Combine(ConstVal.SrcDir, ConstVal.MicroserviceDir);
 }

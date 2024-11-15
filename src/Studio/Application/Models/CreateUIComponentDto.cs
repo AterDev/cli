@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using Share.Models;
-
-namespace Application.Models;
+﻿namespace Application.Models;
 /// <summary>
 /// 生成组件模型
 /// </summary>

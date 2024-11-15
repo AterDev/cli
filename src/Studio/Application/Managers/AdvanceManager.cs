@@ -1,15 +1,9 @@
 ﻿namespace Application.Managers;
 
-public class AdvanceManager
+public class AdvanceManager(CommandDbContext dbContext, IProjectContext projectContext)
 {
-    private readonly CommandDbContext _dbContext;
-    private readonly IProjectContext _projectContext;
-
-    public AdvanceManager(CommandDbContext dbContext, IProjectContext projectContext)
-    {
-        _dbContext = dbContext;
-        _projectContext = projectContext;
-    }
+    private readonly CommandDbContext _dbContext = dbContext;
+    private readonly IProjectContext _projectContext = projectContext;
 
     /// <summary>
     /// 设置配置

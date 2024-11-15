@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Net;
-using System.Text;
-using CodeGenerator.Helper;
+﻿using System.Net;
 
 using Share.Infrastructure.Utils;
 

@@ -1,6 +1,4 @@
-﻿using Share.Models.EntityInfoDtos;
-
-namespace AterStudio.Controllers;
+﻿namespace AterStudio.Controllers;
 
 /// <summary>
 ///  实体
@@ -122,38 +120,6 @@ public class EntityInfoController(
             return NotFound("项目不存在");
         }
         await _manager.BatchGenerateAsync(dto);
-        return true;
-    }
-
-    /// <summary>
-    /// 同步ng页面
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpPost("generateSync/{id}")]
-    public async Task<ActionResult<bool>> GenerateSync([FromRoute] Guid id)
-    {
-        if (_project.Project == null)
-        {
-            return NotFound("项目不存在");
-        }
-        // TODO: 同步ng页面
-        return true;
-    }
-
-    /// <summary>
-    /// 生成NG组件模块
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost("generateNgModule")]
-    public async Task<ActionResult<bool>> GenerateNgModuleAsync(NgModuleDto dto)
-    {
-        if (_project.Project == null)
-        {
-            return NotFound("项目不存在");
-        }
-        // TODO: 生成NG组件模块
-
         return true;
     }
 }

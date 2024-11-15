@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AterStudio.Middlewares;
 
-public class DebugAuthorizationMiddleware
+public class DebugAuthorizationMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public DebugAuthorizationMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
+    private readonly RequestDelegate _next = next;
 
     public async Task InvokeAsync(HttpContext context)
     {
