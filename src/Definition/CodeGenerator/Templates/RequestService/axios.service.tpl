@@ -135,8 +135,7 @@ export class BaseService {
       }
       return Promise.reject(error)
     }
-    //如果没有具体错误内容，找后端
-    console.error(`后端接口未按照约定返回，请注意：\n${response.config.url}`)
+
     return Promise.reject(new Error('未知错误，请稍后再试'))
   }
   blobToJson(blob: any) {
