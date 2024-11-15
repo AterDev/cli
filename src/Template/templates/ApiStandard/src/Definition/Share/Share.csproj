@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>

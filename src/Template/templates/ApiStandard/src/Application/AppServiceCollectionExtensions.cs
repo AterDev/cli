@@ -1,5 +1,4 @@
 ﻿using EntityFramework.DBProvider;
-using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using OpenTelemetry.Exporter;
