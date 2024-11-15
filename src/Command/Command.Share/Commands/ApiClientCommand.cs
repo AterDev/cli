@@ -50,8 +50,8 @@ public class ApiClientCommand : CommandBase
         openApiContent = openApiContent
             .Replace("«", "")
             .Replace("»", "");
-        ApiDocument = new OpenApiStringReader()
-            .Read(openApiContent, out _);
+
+        ApiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
 
         Console.WriteLine(Instructions[0]);
         await GenerateCommonFilesAsync();

@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Any;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
@@ -99,7 +101,7 @@ public class CsharpModelGenerate : GenerateBase
             }
         }
         // 数组
-        List<OpenApiSchema> arr = schema.Properties.Where(p => p.Value.Type == "array")
+        List<OpenApiSchema> arr = schema.Properties.Where(p => p.Value.Type == JsonSchemaType.Array)
             .Select(s => s.Value).ToList();
         if (arr != null)
         {
@@ -256,11 +258,27 @@ public class CsharpModelGenerate : GenerateBase
             .Where(e => e.Key == "x-enumNames")
             .FirstOrDefault();
 
-        if (enumNames.Value is OpenApiArray values)
+        if (enumData.Value is OpenApiAny { Node: JsonArray enums } && enums.Count > 0)
+        {
+            for (int i = 0; i < enums.Count; i++)
+            {
+                var obj = (JsonObject)enums[i]!;
+                string enumName = obj["name"]?.GetValue<string>() ?? "";
+                string enumValue = obj["value"]?.GetValue<string>() ?? "";
+                string enumDesc = obj["description"]?.GetValue<string>() ?? "";
+                propertyString += $"""  
+                      // {enumDesc}
+                      {enumName} = {enumValue},
+
+                    """;
+            }
+        }
+
+        else if (enumNames.Value is OpenApiAny { Node: JsonArray values })
         {
             for (int i = 0; i < values?.Count; i++)
             {
-                propertyString += "    " + ((OpenApiString)values[i]).Value + ',' + Environment.NewLine;
+                propertyString += $"    {values[i]?.GetValue<string>()},{Environment.NewLine}";
             }
         }
         else
@@ -269,12 +287,12 @@ public class CsharpModelGenerate : GenerateBase
             {
                 for (int i = 0; i < schema.Enum.Count; i++)
                 {
-                    if (schema.Enum[i] is OpenApiInteger)
+                    if (schema.Enum[i].GetValueKind() == JsonValueKind.Number)
+
                     {
                         continue;
                     }
-
-                    propertyString += "  " + ((OpenApiString)schema.Enum[i]).Value + ',' + Environment.NewLine;
+                    propertyString += $"  {(schema.Enum[i]).GetValue<string>()},{Environment.NewLine}";
                 }
             }
         }

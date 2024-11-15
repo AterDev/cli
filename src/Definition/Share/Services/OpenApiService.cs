@@ -1,15 +1,14 @@
-﻿using Microsoft.OpenApi.Any;
+﻿using System.Text.Json.Nodes;
 using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
-using Share.Models;
 
-
-namespace Share.Infrastructure.Helper;
+namespace Share.Services;
 /// <summary>
 /// openapi 解析帮助类
 /// </summary>
-public class OpenApiHelper
+public class OpenApiService
 {
     public OpenApiDocument OpenApi { get; set; }
     /// <summary>
@@ -25,7 +24,7 @@ public class OpenApiHelper
     /// </summary>
     public List<ApiDocTag> OpenApiTags { get; set; }
 
-    public OpenApiHelper(OpenApiDocument openApi)
+    public OpenApiService(OpenApiDocument openApi)
     {
         OpenApi = openApi;
         OpenApiTags = openApi.Tags
@@ -203,7 +202,7 @@ public class OpenApiHelper
                 Comment = description,
             };
             // 判断是否为枚举类
-            IList<IOpenApiAny> enumNode = schema.Value.Enum;
+            var enumNode = schema.Value.Enum;
             if (enumNode.Any())
             {
                 model.IsEnum = true;
@@ -222,30 +221,29 @@ public class OpenApiHelper
     public static List<PropertyInfo> GetEnumProperties(OpenApiSchema schema)
     {
         List<PropertyInfo> props = [];
-        List<IOpenApiAny> enums = schema.Enum.ToList();
+        List<JsonNode> enums = [.. schema.Enum];
 
-        KeyValuePair<string, Microsoft.OpenApi.Interfaces.IOpenApiExtension> extEnum = schema.Extensions.Where(e => e.Key == "x-enumNames").FirstOrDefault();
-        KeyValuePair<string, Microsoft.OpenApi.Interfaces.IOpenApiExtension> extEnumData = schema.Extensions.Where(e => e.Key == "x-enumData").FirstOrDefault();
+        KeyValuePair<string, IOpenApiExtension> extEnum = schema.Extensions.FirstOrDefault(e => e.Key == "x-enumNames");
+        KeyValuePair<string, IOpenApiExtension> extEnumData = schema.Extensions.FirstOrDefault(e => e.Key == "x-enumData");
+
         if (extEnumData.Value != null)
         {
-            OpenApiArray? data = extEnumData.Value as OpenApiArray;
-            data?.ForEach(item =>
+            var data = extEnumData.Value as JsonNode as JsonArray;
+            if (data != null && data.Count > 0)
             {
-                PropertyInfo prop = new()
+                foreach (var item in data)
                 {
-                    Name = ((item as OpenApiObject)?["name"] as OpenApiString)?
-                        .Value.ToString() ?? "",
-                    CommentSummary = ((item as OpenApiObject)?["description"] as OpenApiString)?
-                        .Value.ToString() ?? "",
-
-                    Type = "Enum:" + ((item as OpenApiObject)?["value"] as OpenApiInteger)?
-                        .Value.ToString() ?? "",
-                    IsEnum = true,
-                    DefaultValue = ((item as OpenApiObject)?["value"] as OpenApiInteger)?
-                        .Value.ToString() ?? "",
-                };
-                props.Add(prop);
-            });
+                    PropertyInfo prop = new()
+                    {
+                        Name = item["name"]?.GetValue<string>() ?? "",
+                        CommentSummary = item?["description"]?.GetValue<string>() ?? "",
+                        Type = "Enum:" + item?["value"]?.GetValue<string>() ?? "",
+                        IsEnum = true,
+                        DefaultValue = item?["value"]?.GetValue<string>() ?? "",
+                    };
+                    props.Add(prop);
+                }
+            }
         }
         else if (enums != null)
         {
@@ -253,27 +251,33 @@ public class OpenApiHelper
             {
                 PropertyInfo prop = new()
                 {
-                    Name = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString(),
+                    Name = enums[i].GetValue<string>() ?? i.ToString(),
                     Type = "Enum:int",
                     IsEnum = true,
-                    DefaultValue = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString(),
+                    DefaultValue = enums[i].GetValue<int>().ToString() ?? i.ToString(),
                 };
 
-                if (extEnum.Value is OpenApiArray values)
+                if (extEnum.Value is JsonNode values)
                 {
-                    prop.CommentSummary = (values[i] as OpenApiString)!.Value;
-                    prop.Name = (values[i] as OpenApiString)!.Value;
+                    prop.CommentSummary = values[i]?.GetValue<string>();
+                    prop.Name = values[i]?.GetValue<string>();
                 }
                 else
                 {
-                    prop.CommentSummary = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString();
-                    prop.Name = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString();
+                    prop.CommentSummary = enums[i].GetValue<string>() ?? i.ToString();
+                    prop.Name = enums[i].GetValue<string>() ?? i.ToString();
                 }
                 props.Add(prop);
             }
         }
         return props;
     }
+
+    /// <summary>
+    /// 解析枚举扩展内容
+    /// </summary>
+    /// <returns></returns>
+
 
     /// <summary>
     /// 获取所有属性
@@ -365,20 +369,19 @@ public class OpenApiHelper
         // 常规类型
         switch (prop.Type)
         {
-            case "boolean":
+            case JsonSchemaType.Boolean:
                 type = "boolean";
                 break;
-
-            case "integer":
+            case JsonSchemaType.Integer:
                 // 看是否为enum
                 type = prop.Enum.Count > 0
                     ? prop.Reference?.Id
                     : "number";
                 break;
-            case "number":
+            case JsonSchemaType.Number:
                 type = "number";
                 break;
-            case "string":
+            case JsonSchemaType.String:
                 switch (prop.Format)
                 {
                     case "guid":
@@ -394,13 +397,13 @@ public class OpenApiHelper
                         break;
                 }
                 break;
-            case "array":
+            case JsonSchemaType.Array:
                 type = prop.Items.Reference != null
                     ? prop.Items.Reference.Id + "[]"
                     : GetTypeDescription(prop.Items) + "[]";
                 break;
             default:
-                type = prop.Reference?.Id;
+                type = prop.Reference?.Id ?? "any";
                 break;
         }
         // 引用对象
@@ -412,9 +415,8 @@ public class OpenApiHelper
 
         if (prop.Nullable || prop.Reference != null)
         {
-            //type += " | null";
+            type += " | null";
         }
-
         return type ?? "string";
     }
 
@@ -439,10 +441,10 @@ public class OpenApiHelper
         // 常规类型
         switch (schema.Type)
         {
-            case "boolean":
+            case JsonSchemaType.Boolean:
                 type = "boolean";
                 break;
-            case "integer":
+            case JsonSchemaType.Integer:
                 // 看是否为enum
                 if (schema.Enum.Count > 0)
                 {
@@ -458,10 +460,8 @@ public class OpenApiHelper
                     refType = "number";
                 }
                 break;
-            case "file":
-                type = "FormData";
-                break;
-            case "string":
+
+            case JsonSchemaType.String:
                 type = "string";
                 if (!string.IsNullOrWhiteSpace(schema.Format))
                 {
@@ -475,7 +475,7 @@ public class OpenApiHelper
 
                 break;
 
-            case "array":
+            case JsonSchemaType.Array:
                 if (schema.Items.Reference != null)
                 {
                     refType = schema.Items.Reference.Id;
@@ -484,10 +484,10 @@ public class OpenApiHelper
                 else if (schema.Items.Type != null)
                 {
                     // 基础类型处理
-                    refType = schema.Items.Type;
-                    refType = refType switch
+                    var itemType = schema.Items.Type;
+                    refType = itemType switch
                     {
-                        "integer" => "number",
+                        JsonSchemaType.Integer => "number",
                         _ => refType
                     };
                     type = refType + "[]";
@@ -498,7 +498,7 @@ public class OpenApiHelper
                     type = refType + "[]";
                 }
                 break;
-            case "object":
+            case JsonSchemaType.Object:
                 OpenApiSchema obj = schema.Properties.FirstOrDefault().Value;
                 if (obj != null)
                 {
@@ -507,7 +507,6 @@ public class OpenApiHelper
                         type = "FormData";
                     }
                 }
-
                 // TODO:object  字典
                 if (schema.AdditionalProperties != null)
                 {

@@ -1,4 +1,7 @@
-﻿namespace CodeGenerator.Test;
+﻿using Microsoft.OpenApi.Models;
+using Share.Services;
+
+namespace CodeGenerator.Test;
 public class FunctionTest
 {
     [Fact]
@@ -21,9 +24,9 @@ public class FunctionTest
             .Replace("«", "")
             .Replace("»", "");
 
-        Microsoft.OpenApi.Models.OpenApiDocument apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
-        var helper = new OpenApiHelper(apiDocument);
 
+        var apiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        var helper = new OpenApiService(apiDocument);
         var apis = helper.RestApiGroups;
         Assert.NotNull(helper.RestApiGroups);
     }

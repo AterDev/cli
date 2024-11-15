@@ -1,5 +1,5 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.Text.Json.Nodes;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Interfaces;
@@ -254,22 +254,18 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
             return string.Empty;
         }
 
-        if (enumData.Value is OpenApiArray data)
-        {
-            if (!data.Any()) { return string.Empty; }
-        }
-
-
         var caseStrings = "";
-        if (enumData.Value is OpenApiArray array)
+        if (enumData.Value is OpenApiAny { Node: JsonArray array })
         {
+            if (array.Count == 0) { return string.Empty; }
+
             StringBuilder sb = new();
             var whiteSpace = new string(' ', 12);
             for (int i = 0; i < array.Count; i++)
             {
-                OpenApiObject item = (OpenApiObject)array[i];
-                var value = ((OpenApiInteger)item["value"]).Value;
-                var description = ((OpenApiString)item["description"]).Value;
+                JsonObject item = array[i].AsObject();
+                var value = item["value"]?.GetValue<int>();
+                var description = item["description"]?.GetValue<string>();
                 string caseString = string.Format("{0}case {1}: result = '{2}'; break;",
                     whiteSpace, value, description);
                 sb.AppendLine(caseString);
@@ -310,11 +306,11 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
         // 常规类型
         switch (schema.Type)
         {
-            case "boolean":
+            case JsonSchemaType.Boolean:
                 type = "boolean";
                 break;
-            case "integer":
-            case "number":
+            case JsonSchemaType.Integer:
+            case JsonSchemaType.Number:
                 // 看是否为enum
                 if (schema.Enum.Count > 0)
                 {
@@ -330,10 +326,8 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
                     refType = "number";
                 }
                 break;
-            case "file":
-                type = "FormData";
-                break;
-            case "string":
+
+            case JsonSchemaType.String:
                 type = "string";
                 if (!string.IsNullOrWhiteSpace(schema.Format))
                 {
@@ -346,7 +340,7 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
                 }
                 break;
 
-            case "array":
+            case JsonSchemaType.Array:
                 if (schema.Items.Reference != null)
                 {
                     refType = schema.Items.Reference.Id;
@@ -355,10 +349,10 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
                 else if (schema.Items.Type != null)
                 {
                     // 基础类型处理
-                    refType = schema.Items.Type;
-                    refType = refType switch
+                    var itemType = schema.Items.Type;
+                    refType = itemType switch
                     {
-                        "integer" => "number",
+                        JsonSchemaType.Integer => "number",
                         _ => refType
                     };
                     type = refType + "[]";
@@ -369,7 +363,7 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
                     type = refType + "[]";
                 }
                 break;
-            case "object":
+            case JsonSchemaType.Object:
                 OpenApiSchema obj = schema.Properties.FirstOrDefault().Value;
                 if (obj != null)
                 {
@@ -378,14 +372,16 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
                         type = "FormData";
                     }
                 }
-
                 // TODO:object  字典
                 if (schema.AdditionalProperties != null)
                 {
-                    (string inType, string inRefType) = GetTypescriptParamType(schema.AdditionalProperties);
+                    (string inType, string? inRefType) = GetTypescriptParamType(schema.AdditionalProperties);
                     refType = inRefType;
                     type = $"Map<string, {inType}>";
                 }
+                break;
+            case JsonSchemaType.Null:
+                type = "FormData";
                 break;
             default:
                 break;

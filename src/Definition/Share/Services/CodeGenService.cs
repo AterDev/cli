@@ -5,7 +5,6 @@ using CodeGenerator.Generate;
 using CodeGenerator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Readers;
 
 namespace Share.Services;
 /// <summary>
@@ -206,7 +205,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
             .Replace("«", "")
             .Replace("»", "");
 
-        var apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
+        var apiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
         var docName = url.Contains("http")
             ? url.Split('/').Reverse().Skip(1).First()
             : string.Empty;
@@ -223,7 +222,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
         // 枚举pipe
         if (type == RequestLibType.NgHttp)
         {
-            IDictionary<string, OpenApiSchema> schemas = apiDocument!.Components.Schemas;
+            IDictionary<string, OpenApiSchema>? schemas = apiDocument!.Components?.Schemas;
             string pipeContent = RequestGenerate.GetEnumPipeContent(schemas);
             dir = Path.Combine(outputPath, "pipe", docName);
 

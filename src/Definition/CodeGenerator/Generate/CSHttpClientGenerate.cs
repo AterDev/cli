@@ -335,10 +335,10 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
         // 常规类型
         switch (schema.Type)
         {
-            case "boolean":
+            case JsonSchemaType.Boolean:
                 type = "bool";
                 break;
-            case "integer":
+            case JsonSchemaType.Integer:
                 // 看是否为enum
                 if (schema.Enum.Count > 0)
                 {
@@ -355,11 +355,8 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 }
                 break;
 
-            case "file":
-                type = "IFile";
-                break;
 
-            case "string":
+            case JsonSchemaType.String:
                 type = schema.Format switch
                 {
                     "binary" => "IFile",
@@ -370,7 +367,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 };
                 break;
 
-            case "array":
+            case JsonSchemaType.Array:
                 if (schema.Items.Reference != null)
                 {
                     refType = schema.Items.Reference.Id;
@@ -379,10 +376,10 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 else if (schema.Items.Type != null)
                 {
                     // 基础类型处理
-                    refType = schema.Items.Type;
-                    refType = refType switch
+                    var itemType = schema.Items.Type;
+                    refType = itemType switch
                     {
-                        "integer" => "int",
+                        JsonSchemaType.Integer => "int",
                         _ => refType
                     };
                     type = $"List<{refType}>";
@@ -394,7 +391,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 }
                 break;
 
-            case "object":
+            case JsonSchemaType.Object:
                 OpenApiSchema obj = schema.Properties.FirstOrDefault().Value;
                 if (obj != null)
                 {
@@ -412,6 +409,10 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                     type = $"Dictionary<string, {inType}>";
                 }
                 break;
+
+            //case JsonSchemaType.Null:
+            //    type = "IFile";
+            //    break;
             default:
                 break;
         }

@@ -1,4 +1,7 @@
-﻿using Microsoft.OpenApi.Interfaces;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
 namespace CodeGenerator.Generate;
@@ -101,7 +104,7 @@ public class TSModelGenerate : GenerateBase
             }
         }
         // 数组
-        List<OpenApiSchema> arr = schema.Properties.Where(p => p.Value.Type == "array")
+        List<OpenApiSchema> arr = schema.Properties.Where(p => p.Value.Type == JsonSchemaType.Array)
             .Select(s => s.Value).ToList();
         if (arr != null)
         {
@@ -270,14 +273,15 @@ public class TSModelGenerate : GenerateBase
             .Where(e => e.Key == "x-enumNames")
             .FirstOrDefault();
 
-        if (enumData.Value is OpenApiArray enums && enums.Count > 0)
+
+        if (enumData.Value is OpenApiAny { Node: JsonArray enums } && enums.Count > 0)
         {
             for (int i = 0; i < enums.Count; i++)
             {
-                OpenApiObject obj = (OpenApiObject)enums[i];
-                string enumName = ((OpenApiString)obj["name"]).Value;
-                string enumValue = ((OpenApiInteger)obj["value"]).Value.ToString();
-                string enumDesc = ((OpenApiString)obj["description"]).Value;
+                var obj = (JsonObject)enums[i]!;
+                string enumName = obj["name"]?.GetValue<string>() ?? "";
+                string enumValue = obj["value"]?.GetValue<string>() ?? "";
+                string enumDesc = obj["description"]?.GetValue<string>() ?? "";
                 propertyString += $"""  
                       /** {enumDesc} */
                       {enumName} = {enumValue},
@@ -285,12 +289,12 @@ public class TSModelGenerate : GenerateBase
                     """;
             }
         }
-        else if (enumNames.Value is OpenApiArray values)
+        else if (enumNames.Value is OpenApiAny { Node: JsonArray values })
         {
             for (int i = 0; i < values?.Count; i++)
             {
-                var enumValue = ((OpenApiInteger)schema.Enum[i]).Value;
-                propertyString += $"  {((OpenApiString)values[i]).Value} = {enumValue},\n";
+                var enumValue = schema.Enum[i].GetValue<int>();
+                propertyString += $"  {values[i]?.GetValue<string>()} = {enumValue}," + Environment.NewLine;
             }
         }
         else
@@ -299,11 +303,11 @@ public class TSModelGenerate : GenerateBase
             {
                 for (int i = 0; i < schema.Enum.Count; i++)
                 {
-                    if (schema.Enum[i] is OpenApiInteger)
+                    if (schema.Enum[i].GetValueKind() == JsonValueKind.Number)
                     {
                         continue;
                     }
-                    propertyString += $"  {((OpenApiString)schema.Enum[i]).Value} = {i},\n";
+                    propertyString += $"  {(schema.Enum[i]).GetValue<string>()} = {i},\n";
                 }
             }
         }
@@ -334,7 +338,7 @@ public class TSModelGenerate : GenerateBase
             // 泛型处理
             foreach (KeyValuePair<string, OpenApiSchema> prop in schema.Properties)
             {
-                string type = GetTsType(prop.Value);
+                string type = OpenApiHelper.ConvertToTypescriptType(prop.Value);
                 string propComments = "";
                 string name = prop.Key;
 
@@ -389,70 +393,6 @@ public class TSModelGenerate : GenerateBase
         List<TsProperty?> res = tsProperties.GroupBy(p => p.Name)
             .Select(s => s.FirstOrDefault()).ToList();
         return res!;
-    }
-
-    /// <summary>
-    /// 获取转换成ts的类型
-    /// </summary>
-    /// <param name="prop"></param>
-    /// <returns></returns>
-    public static string GetTsType(OpenApiSchema prop)
-    {
-        string? type = "any";
-        // 常规类型
-        switch (prop.Type)
-        {
-            case "boolean":
-                type = "boolean";
-                break;
-
-            case "integer":
-                // 看是否为enum
-                type = prop.Enum.Count > 0
-                    ? prop.Reference?.Id
-                    : "number";
-                break;
-            case "number":
-                type = "number";
-                break;
-            case "string":
-                switch (prop.Format)
-                {
-                    case "guid":
-                        break;
-                    case "binary":
-                        type = "formData";
-                        break;
-                    case "date-time":
-                        type = "Date";
-                        break;
-                    default:
-                        type = "string";
-                        break;
-                }
-                break;
-            case "array":
-                type = prop.Items.Reference != null
-                    ? prop.Items.Reference.Id + "[]"
-                    : GetTsType(prop.Items) + "[]";
-                break;
-            default:
-                type = prop.Reference?.Id ?? "any";
-                break;
-        }
-        // 引用对象
-        if (prop.OneOf.Count > 0)
-        {
-            // 获取引用对象名称
-            type = prop.OneOf.First()?.Reference.Id;
-        }
-
-        if (prop.Nullable || prop.Reference != null)
-        {
-            type += " | null";
-        }
-
-        return type ?? "any";
     }
 }
 

@@ -1,4 +1,4 @@
-using CodeGenerator.Models;
+﻿using CodeGenerator.Models;
 using Microsoft.OpenApi.Models;
 namespace Command.Share.Commands;
 
@@ -54,9 +54,8 @@ public class RequestCommand : CommandBase
         openApiContent = openApiContent
             .Replace("«", "")
             .Replace("»", "");
-        ApiDocument = new OpenApiStringReader()
-            .Read(openApiContent, out _);
 
+        ApiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
 
         Console.WriteLine(Instructions[0]);
         await GenerateCommonFilesAsync();
@@ -73,7 +72,7 @@ public class RequestCommand : CommandBase
         // 枚举pipe
         if (LibType == RequestLibType.NgHttp)
         {
-            IDictionary<string, OpenApiSchema> schemas = ApiDocument!.Components.Schemas;
+            var schemas = ApiDocument!.Components?.Schemas;
             string pipeContent = RequestGenerate.GetEnumPipeContent(schemas);
             dir = Path.Combine(OutputPath, "pipe", DocName);
             await GenerateFileAsync(dir, "enum-text.pipe.ts", pipeContent, true);

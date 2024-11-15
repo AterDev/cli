@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 
 namespace Command.Share.Commands;
 public class DocCommand : CommandBase
@@ -28,9 +28,7 @@ public class DocCommand : CommandBase
             openApiContent = File.ReadAllText(DocUrl);
         }
 
-        ApiDocument = new OpenApiStringReader()
-            .Read(openApiContent, out _);
-
+        ApiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
         Console.WriteLine(Instructions[0]);
         await GenerateDocAsync(ApiDocument.Info.Title);
         Console.WriteLine("😀 markdown generate completed!" + Environment.NewLine);
@@ -38,9 +36,9 @@ public class DocCommand : CommandBase
 
     public async Task GenerateDocAsync(string title)
     {
-        IDictionary<string, OpenApiSchema> schemas = ApiDocument!.Components.Schemas;
+        IDictionary<string, OpenApiSchema>? schemas = ApiDocument!.Components?.Schemas;
         DocGenerate ngGen = new(schemas);
-        if (ApiDocument!.Tags.Any())
+        if (ApiDocument.Tags != null && ApiDocument!.Tags.Any())
         {
             ngGen.SetTags([.. ApiDocument!.Tags]);
         }
