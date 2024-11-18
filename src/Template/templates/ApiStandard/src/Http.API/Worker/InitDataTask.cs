@@ -16,10 +16,11 @@ public class InitDataTask
         IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
 
         var connectionString = context.Database.GetConnectionString();
+#if DEBUG
+        logger.LogDebug("connectString:{cs}", connectionString);
+#endif
         try
         {
-            // 执行迁移,如果手动执行,请删除该代码
-            context.Database.Migrate();
             if (!await context.Database.CanConnectAsync())
             {
                 logger.LogError("数据库无法连接:{message}", connectionString);
@@ -37,9 +38,9 @@ public class InitDataTask
                 // [InitModule]
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("初始化异常,请检查数据库配置并确认已经进行【迁移操作】");
+            logger.LogError("数据库连接成功，但初始化数据失败:{msg}", ex.Message);
         }
     }
 

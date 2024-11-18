@@ -14,7 +14,7 @@ public class QueryDbContextFactory(ITenantProvider tenantProvider, IDistributedC
         // 从缓存或配置中查询连接字符串
         var connectionStrings = _cache.GetString($"{tenantId}_QueryConnectionString");
 
-        builder.UseNpgsql(connectionStrings);
+        builder.UseSqlServer(connectionStrings);
         return new QueryDbContext(builder.Options);
     }
 }

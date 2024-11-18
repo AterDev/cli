@@ -14,7 +14,7 @@ public class CommandDbContextFactory(ITenantProvider tenantProvider, IDistribute
         // 从缓存或配置中查询连接字符串
         var connectionStrings = _cache.GetString($"{tenantId}_CommandConnectionString");
 
-        builder.UseNpgsql(connectionStrings);
+        builder.UseSqlServer(connectionStrings);
         return new CommandDbContext(builder.Options);
     }
 }
