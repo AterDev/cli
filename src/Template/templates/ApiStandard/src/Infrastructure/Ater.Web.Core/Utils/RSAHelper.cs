@@ -50,7 +50,7 @@ public class RSAHelper
     /// <param name="privateKey">私钥。</param>
     /// <param name="data">要签名的数据。</param>
     /// <returns>签名。</returns>
-    public static byte[] SignData(string privateKey, byte[] data)
+    public static byte[] SignData(string privateKey, ReadOnlySpan<byte> data)
     {
         using var rsa = RSA.Create();
         rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
@@ -64,7 +64,7 @@ public class RSAHelper
     /// <param name="data">要验证的数据。</param>
     /// <param name="signature">要验证的签名。</param>
     /// <returns>如果数据和签名有效，则为true；否则为false。</returns>
-    public static bool VerifyData(string publicKey, byte[] data, byte[] signature)
+    public static bool VerifyData(string publicKey, ReadOnlySpan<byte> data, ReadOnlySpan<byte> signature)
     {
         using var rsa = RSA.Create();
         rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);

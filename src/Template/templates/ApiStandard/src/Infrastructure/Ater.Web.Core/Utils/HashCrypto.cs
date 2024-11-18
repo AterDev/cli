@@ -1,4 +1,4 @@
-
+﻿
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
 
@@ -23,7 +23,7 @@ public class HashCrypto
     /// <returns></returns>
     public static string GeneratePwd(string value, string salt)
     {
-        Rfc2898DeriveBytes encrpty = new(value, Encoding.UTF8.GetBytes(salt), 100, HashAlgorithmName.SHA512);
+        using var encrpty = new Rfc2898DeriveBytes(value, Encoding.UTF8.GetBytes(salt), 100, HashAlgorithmName.SHA512);
         var valueBytes = encrpty.GetBytes(32);
         return Convert.ToBase64String(valueBytes);
     }
@@ -37,7 +37,7 @@ public class HashCrypto
     public static string GeneratePAT(string value)
     {
         var salt = BuildSalt();
-        Rfc2898DeriveBytes encrpty = new(value, Encoding.UTF8.GetBytes(salt), 100, HashAlgorithmName.SHA512);
+        using var encrpty = new Rfc2898DeriveBytes(value, Encoding.UTF8.GetBytes(salt), 100, HashAlgorithmName.SHA512);
         var valueBytes = encrpty.GetBytes(32);
         return Convert.ToBase64String(valueBytes);
     }
@@ -61,8 +61,7 @@ public class HashCrypto
     public static string BuildSalt()
     {
         var randomBytes = new byte[128 / 8];
-        using var generator = RandomNumberGenerator.Create();
-        generator.GetBytes(randomBytes);
+        Rng.GetBytes(randomBytes);
         return Convert.ToBase64String(randomBytes);
     }
 
@@ -74,10 +73,9 @@ public class HashCrypto
     /// <returns></returns>
     public static string HMACSHA256(string key, string content)
     {
-        using HMACSHA256 hmac = new(Encoding.UTF8.GetBytes(key));
+        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
         var valueBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(content));
         return Convert.ToBase64String(valueBytes);
-
     }
 
     /// <summary>
@@ -124,9 +122,9 @@ public class HashCrypto
         using var md5 = MD5.Create();
         var data = md5.ComputeHash(stream);
         StringBuilder sBuilder = new();
-        for (var i = 0; i < data.Length; i++)
+        foreach (var b in data)
         {
-            _ = sBuilder.Append(data[i].ToString("x2"));
+            _ = sBuilder.Append(b.ToString("x2"));
         }
         return sBuilder.ToString();
     }
@@ -143,38 +141,33 @@ public class HashCrypto
     /// <returns></returns>
     public static string GetRnd(int length = 4, bool useNum = true, bool useLow = false, bool useUpp = true, bool useSpe = false, string custom = "")
     {
-        var b = new byte[4];
-        string s = string.Empty;
-        var str = custom;
+        var strBuilder = new StringBuilder(custom);
         if (useNum)
         {
-            str += "0123456789";
+            strBuilder.Append("0123456789");
         }
         if (useLow)
         {
-            str += "abcdefghijklmnopqrstuvwxyz";
+            strBuilder.Append("abcdefghijklmnopqrstuvwxyz");
         }
         if (useUpp)
         {
-            str += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            strBuilder.Append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         }
         if (useSpe)
         {
-            str += "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+            strBuilder.Append("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
         }
 
-        // 范围
-        var range = str.Length - 1;
+        ReadOnlySpan<char> strSpan = strBuilder.ToString().AsSpan();
+        var resultBuilder = new StringBuilder(length);
+
         for (var i = 0; i < length; i++)
         {
-            Rng.GetBytes(b);
-            // 随机数
-            var rn = BitConverter.ToUInt32(b, 0) / ((double)uint.MaxValue + 1);
-            // 位置
-            var position = (int)(rn * range);
-            s += str.Substring(position, 1);
+            var position = RandomNumberGenerator.GetInt32(strSpan.Length);
+            resultBuilder.Append(strSpan[position]);
         }
-        return s;
+        return resultBuilder.ToString();
     }
 
     /// <summary>
@@ -239,9 +232,8 @@ public class HashCrypto
 
         if (bytes != null)
         {
-            bytes = bytes.Select(b => b == byte.MaxValue ? byte.MinValue : (byte)(b + 1))
-                .ToArray();
-            bytes = bytes.Reverse().ToArray();
+            bytes = bytes.Select(b => b == byte.MaxValue ? byte.MinValue : (byte)(b + 1)).ToArray();
+            Array.Reverse(bytes);
             return Convert.ToBase64String(bytes);
         }
         return string.Empty;
@@ -258,12 +250,11 @@ public class HashCrypto
         var bytes = Convert.FromBase64String(value);
         if (bytes != null)
         {
-            bytes = bytes.Reverse().ToArray();
-            bytes = bytes.Select(b => b == byte.MinValue ? byte.MaxValue : (byte)(b - 1))
-                .ToArray();
+            Array.Reverse(bytes);
+            bytes = bytes.Select(b => b == byte.MinValue ? byte.MaxValue : (byte)(b - 1)).ToArray();
             var jsonString = Encoding.UTF8.GetString(bytes);
 
-            return JsonSerializer.Deserialize<T>(jsonString, JsonSerializerOptions)!;
+            return JsonSerializer.Deserialize<T>(jsonString, JsonSerializerOptions);
         }
         return null;
     }

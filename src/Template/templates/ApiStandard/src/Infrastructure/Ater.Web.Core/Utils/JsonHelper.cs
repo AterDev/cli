@@ -15,6 +15,7 @@ public class JsonHelper
     {
         JsonElement = jsonElement;
     }
+
     public JsonElement GetJsonNode(string name)
     {
         return JsonElement.GetProperty(name);
@@ -29,6 +30,7 @@ public class JsonHelper
     {
         return JsonElement.TryGetProperty(name, out var value) ? value.GetInt64() : null;
     }
+
     public int? GetJsonInt32(string name)
     {
         return JsonElement.TryGetProperty(name, out var value) ? value.GetInt32() : null;
@@ -44,6 +46,7 @@ public class JsonHelper
     {
         var paths = keyPath.Split('.');
         var current = root;
+
         if (current == null)
         {
             return;
@@ -53,25 +56,23 @@ public class JsonHelper
         {
             for (int i = 0; i < paths.Length - 1; i++)
             {
-                if (current!.AsObject().ContainsKey(paths[i]))
+                if (current[paths[i]] is JsonObject obj)
                 {
-                    current = current[paths[i]];
+                    current = obj;
                 }
                 else
                 {
-                    // add new node with path 
-                    current.AsObject()!.Append(new KeyValuePair<string, JsonNode?>(paths[i], ""));
-                    current = current[paths[i]];
+                    var newNode = new JsonObject();
+                    current[paths[i]] = newNode;
+                    current = newNode;
                 }
+            }
 
-            }
-            if (current != null)
-            {
-                current[paths[^1]] = JsonValue.Create(newValue);
-            }
+            current[paths[^1]] = JsonValue.Create(newValue);
         }
         catch (Exception)
         {
+            // Handle exception or log it
         }
     }
 
@@ -86,23 +87,25 @@ public class JsonHelper
     {
         var paths = keyPath.Split('.');
         var current = node;
+
         if (current == null)
         {
             return default;
         }
 
-        for (int i = 0; i < paths.Length; i++)
+        foreach (var path in paths)
         {
-            if (current!.AsObject().ContainsKey(paths[i]))
+            if (current[path] is JsonNode nextNode)
             {
-                current = current[paths[i]];
+                current = nextNode;
             }
             else
             {
                 return default;
             }
         }
-        return current!.GetValue<T>();
+
+        return current.GetValue<T>();
     }
 
     /// <summary>
@@ -115,22 +118,24 @@ public class JsonHelper
     {
         var paths = keyPath.Split('.');
         var current = root;
+
         if (current == null)
         {
             return default;
         }
 
-        for (int i = 0; i < paths.Length; i++)
+        foreach (var path in paths)
         {
-            if (current!.AsObject().ContainsKey(paths[i]))
+            if (current[path] is JsonNode nextNode)
             {
-                current = current[paths[i]];
+                current = nextNode;
             }
             else
             {
                 return default;
             }
         }
+
         return current;
     }
 }

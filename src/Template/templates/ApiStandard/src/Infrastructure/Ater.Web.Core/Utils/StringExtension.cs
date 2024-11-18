@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -21,13 +21,13 @@ public static class StringExtension
             return string.Empty;
         }
 
+        ReadOnlySpan<char> span = str.AsSpan();
         StringBuilder builder = new();
         var upperNumber = 0;
-        for (var i = 0; i < str.Length; i++)
+        for (var i = 0; i < span.Length; i++)
         {
-            var item = str[i];
-            // 连续的大写只添加一个-
-            var pre = i >= 1 ? str[i - 1] : 'a';
+            var item = span[i];
+            var pre = i >= 1 ? span[i - 1] : 'a';
             if (char.IsUpper(item) && char.IsLower(pre))
             {
                 upperNumber++;
@@ -66,8 +66,10 @@ public static class StringExtension
         {
             return string.Empty;
         }
+
+        ReadOnlySpan<char> span = str.AsSpan();
         StringBuilder resultBuilder = new();
-        foreach (var c in str)
+        foreach (var c in span)
         {
             _ = !char.IsLetterOrDigit(c) ? resultBuilder.Append(' ') : resultBuilder.Append(c);
         }
@@ -90,6 +92,7 @@ public static class StringExtension
         str = str.ToPascalCase();
         return char.ToLower(str[0]) + str[1..];
     }
+
     public static string ToUpperFirst(this string str)
     {
         return string.IsNullOrWhiteSpace(str) ? string.Empty : char.ToUpper(str[0]) + str[1..];
@@ -120,6 +123,7 @@ public static class StringExtension
         var stepsToSame = source.ComputeLevenshteinDistance(target);
         return 1.0 - (stepsToSame / (double)Math.Max(source.Length, target.Length));
     }
+
     /// <summary>
     /// 计算两字符串转变距离
     /// </summary>
@@ -139,10 +143,12 @@ public static class StringExtension
             return source.Length;
         }
 
-        var sourceWordCount = source.Length;
-        var targetWordCount = target.Length;
+        ReadOnlySpan<char> sourceSpan = source.AsSpan();
+        ReadOnlySpan<char> targetSpan = target.AsSpan();
 
-        // Step 1
+        var sourceWordCount = sourceSpan.Length;
+        var targetWordCount = targetSpan.Length;
+
         if (sourceWordCount == 0)
         {
             return targetWordCount;
@@ -155,31 +161,21 @@ public static class StringExtension
 
         var distance = new int[sourceWordCount + 1, targetWordCount + 1];
 
-        // Step 2
-        for (var i = 0; i <= sourceWordCount; distance[i, 0] = i++)
-        {
-            ;
-        }
-
-        for (var j = 0; j <= targetWordCount; distance[0, j] = j++)
-        {
-            ;
-        }
+        for (var i = 0; i <= sourceWordCount; distance[i, 0] = i++) { }
+        for (var j = 0; j <= targetWordCount; distance[0, j] = j++) { }
 
         for (var i = 1; i <= sourceWordCount; i++)
         {
             for (var j = 1; j <= targetWordCount; j++)
             {
-                // Step 3
-                var cost = target[j - 1] == source[i - 1] ? 0 : 1;
-
-                // Step 4
+                var cost = targetSpan[j - 1] == sourceSpan[i - 1] ? 0 : 1;
                 distance[i, j] = Math.Min(Math.Min(distance[i - 1, j] + 1, distance[i, j - 1] + 1), distance[i - 1, j - 1] + cost);
             }
         }
 
         return distance[sourceWordCount, targetWordCount];
     }
+
     /// <summary>
     /// 对比字符串相似度
     /// </summary>
@@ -188,31 +184,31 @@ public static class StringExtension
     /// <returns></returns>
     public static double GetSimilar(this string source, string target)
     {
-        string longerString, shorterString;
+        ReadOnlySpan<char> longerSpan, shorterSpan;
         if (source.Length > target.Length)
         {
-            longerString = source;
-            shorterString = target;
+            longerSpan = source.AsSpan();
+            shorterSpan = target.AsSpan();
         }
         else
         {
-            longerString = target;
-            shorterString = source;
+            longerSpan = target.AsSpan();
+            shorterSpan = source.AsSpan();
         }
 
         var sameNum = 0;
-        for (var i = 0; i < shorterString.Length; i++)
+        for (var i = 0; i < shorterSpan.Length; i++)
         {
-            foreach (var item in longerString)
+            foreach (var item in longerSpan)
             {
-                if (shorterString[i] == item)
+                if (shorterSpan[i] == item)
                 {
                     sameNum++;
                     break;
                 }
             }
         }
-        return sameNum / shorterString.Length;
+        return sameNum / (double)shorterSpan.Length;
     }
 
     /// <summary>
@@ -224,6 +220,7 @@ public static class StringExtension
     {
         return string.IsNullOrWhiteSpace(str);
     }
+
     public static bool NotEmpty([NotNullWhen(true)] this string? str)
     {
         return !string.IsNullOrWhiteSpace(str);
@@ -251,14 +248,12 @@ public static class StringExtension
         {
             return str;
         }
+
+        ReadOnlySpan<char> span = str.AsSpan();
         var result = new StringBuilder();
-        foreach (var item in str)
+        foreach (var item in span)
         {
-            if (char.IsLetterOrDigit(item))
-            {
-                _ = result.Append(item);
-            }
-            if (additionChars != null && additionChars.Contains(item))
+            if (char.IsLetterOrDigit(item) || (additionChars != null && additionChars.Contains(item)))
             {
                 _ = result.Append(item);
             }
@@ -266,7 +261,7 @@ public static class StringExtension
         return result.ToString();
     }
 
-    private static readonly string[] dateFormats = ["yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ssZ"];
+    private static readonly string[] dateFormats = { "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ssZ" };
 
     /// <summary>
     /// 字符串转换为 DateTimeOffset UTC 时间
@@ -279,22 +274,23 @@ public static class StringExtension
         {
             return null;
         }
-        // 尝试解析为 ISO 8601 格式
-        if (DateTimeOffset.TryParseExact(str, dateFormats, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTimeOffset dt))
+
+        ReadOnlySpan<char> span = str.AsSpan();
+
+        if (DateTimeOffset.TryParseExact(span, dateFormats, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTimeOffset dt))
         {
             return dt.ToUniversalTime();
         }
-        else if (str.Contains("/"))
+        else if (span.Contains('/'))
         {
-            // 尝试解析为自定义格式
-            if (DateTimeOffset.TryParseExact(str, ["MM/dd/yyyy HH:mm", "M/d/yyyy HH:mm", "M/dd/yyyy", "M/d/yy", "M/d/yy HH:mm"], CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out dt))
+            if (DateTimeOffset.TryParseExact(span, new[] { "MM/dd/yyyy HH:mm", "M/d/yyyy HH:mm", "M/dd/yyyy", "M/d/yy", "M/d/yy HH:mm" }, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out dt))
             {
                 return dt.ToUniversalTime();
             }
         }
-        else if (str.Contains("."))
+        else if (span.Contains('.'))
         {
-            if (DateTimeOffset.TryParseExact(str, ["yyyy.MM.dd"], CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out dt))
+            if (DateTimeOffset.TryParseExact(span, new[] { "yyyy.MM.dd" }, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out dt))
             {
                 return dt.ToUniversalTime();
             }
@@ -309,16 +305,13 @@ public static class StringExtension
     /// <returns></returns>
     public static string? FromBase64String(this string str)
     {
-        byte[] buffer = new byte[str.Length * 3 / 4];
-        if (Convert.TryFromBase64String(str, buffer, out int bytesWritten))
-        {
-            return Encoding.UTF8.GetString(buffer, 0, bytesWritten);
-        }
-        else
-        {
-            return null;
-        }
+        ReadOnlySpan<byte> span = Convert.TryFromBase64String(str, new Span<byte>(new byte[str.Length * 3 / 4]), out int bytesWritten)
+            ? new Span<byte>(new byte[str.Length * 3 / 4], 0, bytesWritten)
+            : ReadOnlySpan<byte>.Empty;
+
+        return span.IsEmpty ? null : Encoding.UTF8.GetString(span);
     }
+
     /// <summary>
     /// 计算字符串表达式，仅支持整数加减法
     /// </summary>
@@ -332,13 +325,14 @@ public static class StringExtension
             return 0;
         }
 
+        ReadOnlySpan<char> span = expression.AsSpan();
         int result = 0;
         int operand = 0;
         char operation = '+';
 
-        for (int i = 0; i < expression.Length; i++)
+        for (int i = 0; i < span.Length; i++)
         {
-            char currentChar = expression[i];
+            char currentChar = span[i];
 
             if (char.IsDigit(currentChar))
             {

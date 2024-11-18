@@ -14,24 +14,21 @@ public static class EnumHelper
     {
         List<EnumDictionary> result = [];
         var enumNames = Enum.GetNames(type);
-        Array values = Enum.GetValues(type);
+        var values = Enum.GetValues(type);
 
         if (enumNames != null)
         {
             for (var i = 0; i < enumNames.Length; i++)
             {
-                FieldInfo? fi = type.GetField(enumNames[i]);
-                if (fi != null)
+                var fi = type.GetField(enumNames[i], BindingFlags.Public | BindingFlags.Static);
+                if (fi != null && fi.GetCustomAttribute<DescriptionAttribute>(true) is DescriptionAttribute attribute)
                 {
-                    if (fi.GetCustomAttribute(typeof(DescriptionAttribute), true) is DescriptionAttribute attribute)
+                    result.Add(new EnumDictionary
                     {
-                        result.Add(new EnumDictionary
-                        {
-                            Name = fi.Name,
-                            Description = attribute.Description,
-                            Value = Convert.ToInt32(values.GetValue(i))
-                        });
-                    }
+                        Name = fi.Name,
+                        Description = attribute.Description,
+                        Value = Convert.ToInt32(values.GetValue(i))
+                    });
                 }
             }
         }
@@ -45,13 +42,10 @@ public static class EnumHelper
     /// <returns></returns>
     public static string GetDescription(this Enum value)
     {
-        FieldInfo? fi = value.GetType().GetField(value.ToString());
-        if (fi != null)
+        var fi = value.GetType().GetField(value.ToString(), BindingFlags.Public | BindingFlags.Static);
+        if (fi != null && fi.GetCustomAttribute<DescriptionAttribute>(true) is DescriptionAttribute attribute)
         {
-            if (fi.GetCustomAttribute(typeof(DescriptionAttribute), true) is DescriptionAttribute attribute)
-            {
-                return attribute.Description;
-            }
+            return attribute.Description;
         }
         return value.ToString();
     }
@@ -70,17 +64,16 @@ public static class EnumHelper
     /// 获取程序集所有枚举信息
     /// </summary>
     /// <returns></returns>
-    public static Dictionary<string, List<EnumDictionary>> GetAllEnumInfo()
+    public static Dictionary<string, List<EnumDictionary>> GetAllEnumInfo(List<string>? myAssemblies = null)
     {
         Dictionary<string, List<EnumDictionary>> res = [];
-        // TODO:自定义要查询的程序集
-        var myAssemblies = new List<string> { "Share.dll", "Entity.dll", "SystemMod.dll" };
+        myAssemblies ??= ["Share.dll", "Entity.dll"];
 
         List<Type> allTypes = [];
         var assemblies = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => myAssemblies.Contains(a.ManifestModule.Name))
             .ToList();
-        assemblies.ToList().ForEach(assembly =>
+        assemblies.ForEach(assembly =>
         {
             Type[] types = assembly.GetEnumTypes();
             allTypes.AddRange(types);
@@ -93,7 +86,6 @@ public static class EnumHelper
         }
         return res;
     }
-
 }
 
 public struct EnumDictionary
