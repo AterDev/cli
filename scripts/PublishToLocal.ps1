@@ -9,7 +9,7 @@ $OutputEncoding = [System.Console]::OutputEncoding = [System.Console]::InputEnco
 
 $commandLinePath = Join-Path $location "../src/Command/CommandLine";
 $studioPath = Join-Path $location "../src/Studio/AterStudio";
-$dotnetVersion = "net9.0"
+$dotnetVersion = "net8.0"
 
 try {
     Set-Location $location
@@ -47,7 +47,7 @@ try {
     }
     $xml.Save($studioProjectPath)
 
-    # pack modules  use PackModules.ps1
+    # pack modules
     & "./PackTemplate.ps1"
 
     # build web project
@@ -57,7 +57,7 @@ try {
             Remove-Item .\publish -R -Force
         }
         
-        dotnet publish -c release -o ./publish -p:GenerateDocumentationFile=false -p:DebugType=None
+        dotnet publish -f net8.0 -c release -o ./publish -p:GenerateDocumentationFile=false -p:DebugType=None
         # 移除部分 dll文件，减少体积
         $pathsToRemove = @(
             ".\publish\BuildHost-net472",
@@ -74,16 +74,23 @@ try {
             ".\publish\Microsoft.Build.Locator.dll",
             ".\publish\Microsoft.Build.Tasks.Core.dll",
             ".\publish\Microsoft.Build.Utilities.Core.dll",
-            ".\publish\Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
             ".\publish\Microsoft.CodeAnalysis.CSharp.dll",
-            ".\publish\Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll",
-            ".\publish\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
-            ".\publish\Microsoft.CodeAnalysis.Workspaces.dll",
+            ".\publish\Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
             ".\publish\Microsoft.CodeAnalysis.dll",
+            ".\publish\Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll",
+            ".\publish\Microsoft.CodeAnalysis.Workspaces.dll",
+            ".\publish\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
             ".\publish\Microsoft.EntityFrameworkCore.Abstractions.dll",
+            ".\publish\Microsoft.Extensions.Configuration.Abstractions.dll",
+            ".\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+            ".\publish\Microsoft.Extensions.DependencyInjection.dll",
+            ".\publish\Microsoft.Extensions.Logging.Abstractions.dll",
+            ".\publish\Microsoft.Extensions.Logging.dll",
+            ".\publish\Microsoft.Extensions.Options.dll",
+            ".\publish\Microsoft.Extensions.Primitives.dll",
             ".\publish\Microsoft.NET.StringTools.dll",
-            ".\publish\Microsoft.OpenApi.Readers.dll",
             ".\publish\Microsoft.OpenApi.dll",
+            ".\publish\Microsoft.OpenApi.Readers.dll",
             ".\publish\Microsoft.VisualStudio.Setup.Configuration.Interop.dll",
             ".\publish\Newtonsoft.Json.dll",
             ".\publish\RazorEngineCore.dll",
@@ -96,12 +103,16 @@ try {
             ".\publish\System.Composition.Runtime.dll",
             ".\publish\System.Composition.TypedParts.dll",
             ".\publish\System.Configuration.ConfigurationManager.dll",
+            ".\publish\System.Diagnostics.DiagnosticSource.dll",
+            ".\publish\System.Formats.Asn1.dll",
+            ".\publish\System.IO.Pipelines.dll",
             ".\publish\System.Reflection.MetadataLoadContext.dll",
             ".\publish\System.Resources.Extensions.dll",
             ".\publish\System.Security.Cryptography.ProtectedData.dll",
             ".\publish\System.Security.Permissions.dll",
-            ".\publish\System.Windows.Extensions.dll",
-
+            ".\publish\System.Text.Encodings.Web.dll",
+            ".\publish\System.Text.Json.dll",
+            ".\publish\System.Windows.Extensions.dll"
             ".\publish\AterStudio.exe",
             ".\publish\swagger.json"
         );
@@ -119,7 +130,6 @@ try {
                 }
             }
         }
-        
         # remove pdb and xml files
         $files = Get-ChildItem -Path .\publish -Recurse -Include *.pdb, *.xml
         foreach ($file in $files) {
@@ -151,6 +161,13 @@ try {
     foreach ($file in $files) {
         Remove-Item $file.FullName -Force
     }
+    $files = Get-ChildItem -Path "./nupkg/$Version/tools/$dotnetVersion/any" -Recurse -Include *.xml
+    foreach ($file in $files) {
+        Remove-Item $file.FullName -Force
+    }
+
+    # 删除 BuildHost-net472
+    Remove-Item -Path "./nupkg/$Version/tools/$dotnetVersion/any/BuildHost-net472" -Recurse -Force
 
     # 重新将文件压缩，不包含最外层目录
     Compress-Archive -Path "./nupkg/$Version/*" -DestinationPath "./nupkg/$newPackName" -CompressionLevel Optimal -Force

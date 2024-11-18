@@ -102,16 +102,23 @@ public class StudioCommand(ILogger<StudioCommand> logger)
             "Microsoft.Build.Locator",
             "Microsoft.Build.Tasks.Core",
             "Microsoft.Build.Utilities.Core",
-            "Microsoft.CodeAnalysis.CSharp.Workspaces",
             "Microsoft.CodeAnalysis.CSharp",
-            "Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler",
-            "Microsoft.CodeAnalysis.Workspaces.MSBuild",
-            "Microsoft.CodeAnalysis.Workspaces",
+            "Microsoft.CodeAnalysis.CSharp.Workspaces",
             "Microsoft.CodeAnalysis",
+            "Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler",
+            "Microsoft.CodeAnalysis.Workspaces",
+            "Microsoft.CodeAnalysis.Workspaces.MSBuild",
             "Microsoft.EntityFrameworkCore.Abstractions",
+            "Microsoft.Extensions.Configuration.Abstractions",
+            "Microsoft.Extensions.DependencyInjection.Abstractions",
+            "Microsoft.Extensions.DependencyInjection",
+            "Microsoft.Extensions.Logging.Abstractions",
+            "Microsoft.Extensions.Logging",
+            "Microsoft.Extensions.Options",
+            "Microsoft.Extensions.Primitives",
             "Microsoft.NET.StringTools",
-            "Microsoft.OpenApi.Readers",
             "Microsoft.OpenApi",
+            "Microsoft.OpenApi.Readers",
             "Microsoft.VisualStudio.Setup.Configuration.Interop",
             "Newtonsoft.Json",
             "RazorEngineCore",
@@ -124,10 +131,15 @@ public class StudioCommand(ILogger<StudioCommand> logger)
             "System.Composition.Runtime",
             "System.Composition.TypedParts",
             "System.Configuration.ConfigurationManager",
+            "System.Diagnostics.DiagnosticSource",
+            "System.Formats.Asn1",
+            "System.IO.Pipelines",
             "System.Reflection.MetadataLoadContext",
             "System.Resources.Extensions",
             "System.Security.Cryptography.ProtectedData",
             "System.Security.Permissions",
+            "System.Text.Encodings.Web",
+            "System.Text.Json",
             "System.Windows.Extensions",
         ];
 
@@ -184,11 +196,10 @@ public class StudioCommand(ILogger<StudioCommand> logger)
             }
         });
 
-        // copy runtimes目录
-        string runtimesDir = Path.Combine(toolRootPath, "runtimes");
+        string runtimesDir = Path.Combine(toolRootPath, "BuildHost-netcore");
         if (Directory.Exists(runtimesDir))
         {
-            string targetDir = Path.Combine(studioPath, "runtimes");
+            string targetDir = Path.Combine(studioPath, "BuildHost-netcore");
             if (Directory.Exists(targetDir))
             {
                 Directory.Delete(targetDir, true);

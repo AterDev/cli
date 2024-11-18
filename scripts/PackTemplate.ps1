@@ -1,9 +1,5 @@
 # 打包模板中的内容，主要包含模块以及基础设施项目
 [CmdletBinding()]
-param (
-    [Parameter()]
-    [System.String]
-)
 
 # 模块名称
 $modulesNames = @("CMSMod", "FileManagerMod", "OrderMod", "SystemMod", "CustomerMod")
