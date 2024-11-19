@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Nodes;
+using CodeGenerator.Models;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
@@ -221,15 +223,15 @@ public class OpenApiService
     public static List<PropertyInfo> GetEnumProperties(OpenApiSchema schema)
     {
         List<PropertyInfo> props = [];
-        List<JsonNode> enums = [.. schema.Enum];
+        List<IOpenApiAny> enums = schema.Enum.ToList();
+
 
         KeyValuePair<string, IOpenApiExtension> extEnum = schema.Extensions.FirstOrDefault(e => e.Key == "x-enumNames");
         KeyValuePair<string, IOpenApiExtension> extEnumData = schema.Extensions.FirstOrDefault(e => e.Key == "x-enumData");
 
         if (extEnumData.Value != null)
         {
-            var data = extEnumData.Value as JsonNode as JsonArray;
-            if (data != null && data.Count > 0)
+            if (extEnumData.Value as JsonNode is JsonArray data && data.Count > 0)
             {
                 foreach (var item in data)
                 {
@@ -251,21 +253,21 @@ public class OpenApiService
             {
                 PropertyInfo prop = new()
                 {
-                    Name = enums[i].GetValue<string>() ?? i.ToString(),
+                    Name = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString(),
                     Type = "Enum:int",
                     IsEnum = true,
-                    DefaultValue = enums[i].GetValue<int>().ToString() ?? i.ToString(),
+                    DefaultValue = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString(),
                 };
 
-                if (extEnum.Value is JsonNode values)
+                if (extEnum.Value is OpenApiArray values)
                 {
-                    prop.CommentSummary = values[i]?.GetValue<string>();
-                    prop.Name = values[i]?.GetValue<string>();
+                    prop.CommentSummary = (values[i] as OpenApiString)!.Value;
+                    prop.Name = (values[i] as OpenApiString)!.Value;
                 }
                 else
                 {
-                    prop.CommentSummary = enums[i].GetValue<string>() ?? i.ToString();
-                    prop.Name = enums[i].GetValue<string>() ?? i.ToString();
+                    prop.CommentSummary = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString();
+                    prop.Name = (enums[i] as OpenApiInteger)?.Value.ToString() ?? i.ToString();
                 }
                 props.Add(prop);
             }

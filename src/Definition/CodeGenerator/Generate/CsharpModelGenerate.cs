@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Nodes;
-using Microsoft.OpenApi.Any;
+﻿using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
@@ -101,7 +99,7 @@ public class CsharpModelGenerate : GenerateBase
             }
         }
         // 数组
-        List<OpenApiSchema> arr = schema.Properties.Where(p => p.Value.Type == JsonSchemaType.Array)
+        List<OpenApiSchema> arr = schema.Properties.Where(p => p.Value.Type == "array")
             .Select(s => s.Value).ToList();
         if (arr != null)
         {
@@ -258,44 +256,22 @@ public class CsharpModelGenerate : GenerateBase
             .Where(e => e.Key == "x-enumNames")
             .FirstOrDefault();
 
-        if (enumData.Value is OpenApiAny { Node: JsonArray enums } && enums.Count > 0)
+        if (enumData.Value is OpenApiArray values)
         {
-            for (int i = 0; i < enums.Count; i++)
+            for (int i = 0; i < values.Count; i++)
             {
-                var obj = (JsonObject)enums[i]!;
-                string enumName = obj["name"]?.GetValue<string>() ?? "";
-                string enumValue = obj["value"]?.GetValue<string>() ?? "";
-                string enumDesc = obj["description"]?.GetValue<string>() ?? "";
+                var obj = (OpenApiObject)values[i]!;
+                string enumName = ((OpenApiString)obj["name"]).Value ?? "";
+                int enumValue = ((OpenApiInteger)obj["value"]).Value;
+                string enumDesc = ((OpenApiString)obj["description"]).Value ?? "";
                 propertyString += $"""  
                       // {enumDesc}
-                      {enumName} = {enumValue},
+                      {enumName} = {enumValue}
 
                     """;
             }
         }
 
-        else if (enumNames.Value is OpenApiAny { Node: JsonArray values })
-        {
-            for (int i = 0; i < values?.Count; i++)
-            {
-                propertyString += $"    {values[i]?.GetValue<string>()},{Environment.NewLine}";
-            }
-        }
-        else
-        {
-            if (schema.Enum.Any())
-            {
-                for (int i = 0; i < schema.Enum.Count; i++)
-                {
-                    if (schema.Enum[i].GetValueKind() == JsonValueKind.Number)
-
-                    {
-                        continue;
-                    }
-                    propertyString += $"  {(schema.Enum[i]).GetValue<string>()},{Environment.NewLine}";
-                }
-            }
-        }
         string namespaceString = $"namespace {nspName}.Models;" + Environment.NewLine;
         res = @$"{namespaceString}{comment}public enum {name} {{
 {propertyString}

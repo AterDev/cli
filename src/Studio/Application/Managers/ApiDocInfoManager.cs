@@ -1,5 +1,5 @@
 ﻿using CodeGenerator.Models;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 using Share.Models.ApiDocInfoDtos;
 
 namespace Application.Managers;
@@ -91,7 +91,7 @@ public class ApiDocInfoManager(
                .Replace("«", "")
                .Replace("»", "");
 
-        var apiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        var apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
         var helper = new OpenApiService(apiDocument);
         return new ApiDocContent
         {
@@ -126,7 +126,7 @@ public class ApiDocInfoManager(
             .Replace("«", "")
             .Replace("»", "");
 
-        var apiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        var apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
         var helper = new OpenApiService(apiDocument);
         var groups = helper.RestApiGroups;
 

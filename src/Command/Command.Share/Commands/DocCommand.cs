@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 
 namespace Command.Share.Commands;
 public class DocCommand : CommandBase
@@ -28,7 +29,7 @@ public class DocCommand : CommandBase
             openApiContent = File.ReadAllText(DocUrl);
         }
 
-        ApiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        ApiDocument = new OpenApiStringReader().Read(openApiContent, out _);
         Console.WriteLine(Instructions[0]);
         await GenerateDocAsync(ApiDocument.Info.Title);
         Console.WriteLine("😀 markdown generate completed!" + Environment.NewLine);

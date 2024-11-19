@@ -1,5 +1,4 @@
 ﻿using CodeGenerator.Models;
-using Microsoft.OpenApi.Models;
 namespace Command.Share.Commands;
 
 /// <summary>
@@ -55,7 +54,7 @@ public class RequestCommand : CommandBase
             .Replace("«", "")
             .Replace("»", "");
 
-        ApiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        ApiDocument = new OpenApiStringReader().Read(openApiContent, out _);
 
         Console.WriteLine(Instructions[0]);
         await GenerateCommonFilesAsync();

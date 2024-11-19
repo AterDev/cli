@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Text.Json.Nodes;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Interfaces;
@@ -255,7 +254,7 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
         }
 
         var caseStrings = "";
-        if (enumData.Value is OpenApiAny { Node: JsonArray array })
+        if (enumData.Value is OpenApiArray array)
         {
             if (array.Count == 0) { return string.Empty; }
 
@@ -263,9 +262,9 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
             var whiteSpace = new string(' ', 12);
             for (int i = 0; i < array.Count; i++)
             {
-                JsonObject item = array[i].AsObject();
-                var value = item["value"]?.GetValue<int>();
-                var description = item["description"]?.GetValue<string>();
+                OpenApiObject item = (OpenApiObject)array[i];
+                var value = ((OpenApiInteger)item["value"]).Value;
+                var description = ((OpenApiString)item["description"]).Value;
                 string caseString = string.Format("{0}case {1}: result = '{2}'; break;",
                     whiteSpace, value, description);
                 sb.AppendLine(caseString);

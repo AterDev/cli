@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Readers;
 using Share.Services;
 
 namespace CodeGenerator.Test;
@@ -25,7 +25,7 @@ public class FunctionTest
             .Replace("»", "");
 
 
-        var apiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        var apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
         var helper = new OpenApiService(apiDocument);
         var apis = helper.RestApiGroups;
         Assert.NotNull(helper.RestApiGroups);

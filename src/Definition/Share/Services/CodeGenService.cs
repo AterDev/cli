@@ -5,6 +5,7 @@ using CodeGenerator.Generate;
 using CodeGenerator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 
 namespace Share.Services;
 /// <summary>
@@ -205,7 +206,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
             .Replace("«", "")
             .Replace("»", "");
 
-        var apiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        var apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
         var docName = url.Contains("http")
             ? url.Split('/').Reverse().Skip(1).First()
             : string.Empty;

@@ -1,5 +1,6 @@
 ﻿using CodeGenerator.Models;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 namespace Command.Share.Commands;
 /// <summary>
 /// 客户端请求生成
@@ -51,7 +52,7 @@ public class ApiClientCommand : CommandBase
             .Replace("«", "")
             .Replace("»", "");
 
-        ApiDocument = OpenApiDocument.Parse(openApiContent).OpenApiDocument;
+        ApiDocument = new OpenApiStringReader().Read(openApiContent, out _);
 
         Console.WriteLine(Instructions[0]);
         await GenerateCommonFilesAsync();

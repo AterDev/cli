@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Nodes;
-using Microsoft.OpenApi.Any;
+﻿using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -16,15 +15,12 @@ public class EnumSchemaFilter : ISchemaFilter
     {
         if (context.Type.IsEnum)
         {
-            var name = new JsonArray();
-            var enumData = new JsonArray();
-
+            OpenApiArray enumData = [];
             System.Reflection.FieldInfo[] fields = context.Type.GetFields();
             foreach (System.Reflection.FieldInfo f in fields)
             {
                 if (f.Name != "value__")
                 {
-                    name.Add(f.Name);
                     System.Reflection.CustomAttributeData? desAttr = f.CustomAttributes.Where(a => a.AttributeType.Name == "DescriptionAttribute").FirstOrDefault();
 
                     desAttr ??= f.CustomAttributes.Where(a => a.AttributeType.Name == "DisplayAttribute").FirstOrDefault();
@@ -34,18 +30,17 @@ public class EnumSchemaFilter : ISchemaFilter
                         System.Reflection.CustomAttributeTypedArgument des = desAttr.ConstructorArguments.FirstOrDefault();
                         if (des.Value != null)
                         {
-                            enumData.Add(new JsonObject()
+                            enumData.Add(new OpenApiObject()
                             {
-                                ["name"] = f.Name,
-                                ["value"] = (int)f.GetRawConstantValue()!,
-                                ["description"] = des.Value.ToString()
+                                ["name"] = new OpenApiString(f.Name),
+                                ["value"] = new OpenApiInteger((int)f.GetRawConstantValue()!),
+                                ["description"] = new OpenApiString(des.Value.ToString())
                             });
                         }
                     }
                 }
             }
-            model.Extensions.Add("x-enumNames", new OpenApiAny(name));
-            model.Extensions.Add("x-enumData", new OpenApiAny(enumData));
+            model.Extensions.Add("x-enumData", enumData);
         }
     }
 }
