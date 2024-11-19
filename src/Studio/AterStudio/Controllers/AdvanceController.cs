@@ -3,11 +3,10 @@
 /// <summary>
 /// 高级功能
 /// </summary>
-[ApiController]
-[Route("api/[controller]")]
-public class AdvanceController(AdvanceManager entityAdvance, AIService aiService) : ControllerBase
+public class AdvanceController(AdvanceManager manager, AIService aiService,
+    IProjectContext project, ILogger<AdvanceController> logger)
+    : BaseController<AdvanceManager>(manager, project, logger)
 {
-    private readonly AdvanceManager _entityAdvance = entityAdvance;
     private readonly AIService _aiService = aiService;
 
     /// <summary>
@@ -18,7 +17,7 @@ public class AdvanceController(AdvanceManager entityAdvance, AIService aiService
     [HttpGet("config")]
     public ActionResult<ConfigData> GetConfig(string key)
     {
-        ConfigData? data = _entityAdvance.GetConfig(key);
+        ConfigData? data = _manager.GetConfig(key);
         return data != null ? data : Ok();
     }
 
@@ -31,10 +30,9 @@ public class AdvanceController(AdvanceManager entityAdvance, AIService aiService
     [HttpPut("config")]
     public async Task<ActionResult> SetConfigAsync(string key, string value)
     {
-        await _entityAdvance.SetConfigAsync(key, value);
+        await _manager.SetConfigAsync(key, value);
         return Ok();
     }
-
 
     /// <summary>
     /// 测试AI对话

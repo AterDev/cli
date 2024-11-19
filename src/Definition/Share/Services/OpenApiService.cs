@@ -278,7 +278,6 @@ public class OpenApiService
     /// </summary>
     /// <returns></returns>
 
-
     /// <summary>
     /// 获取所有属性
     /// </summary>

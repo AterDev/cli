@@ -132,7 +132,6 @@ public class StudioCommand(ILogger<StudioCommand> logger)
             "System.Composition.TypedParts",
             "System.Configuration.ConfigurationManager",
             "System.Diagnostics.DiagnosticSource",
-            "System.Formats.Asn1",
             "System.IO.Pipelines",
             "System.Reflection.MetadataLoadContext",
             "System.Resources.Extensions",

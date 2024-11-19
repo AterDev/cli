@@ -1,6 +1,7 @@
 ﻿using AterStudio;
 using AterStudio.Worker;
 using Mapster;
+
 TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,10 @@ builder.Logging.AddSimpleConsole(options =>
 {
     options.TimestampFormat = "⏱️ HH:mm:ss ";
 });
+
 builder.AddDefaultComponents();
+
+
 builder.AddDefaultWebServices();
 
 WebApplication app = builder.Build();

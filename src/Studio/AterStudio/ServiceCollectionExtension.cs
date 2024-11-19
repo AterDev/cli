@@ -56,19 +56,14 @@ public static class ServiceCollectionExtension
     {
         // 异常统一处理
         app.UseExceptionHandler(ExceptionHandler.Handler());
-        if (app.Environment.IsProduction())
+        app.UseCors(AterConst.Default);
+
+        app.UseSwagger();
+        app.UseSwaggerUI(op =>
         {
-            app.UseCors(AterConst.Default);
-            // app.UseHsts();
-            // app.UseHttpsRedirection();
-        }
-        else
-        {
-            app.UseCors(AterConst.Default);
-#if DEBUG
-            app.UseSwagger();
-#endif
-        }
+            op.SwaggerEndpoint("/swagger/admin/swagger.json", "admin");
+        });
+
         app.UseStaticFiles();
         app.UseRouting();
         app.UseDebugAuthorization();
@@ -88,9 +83,7 @@ public static class ServiceCollectionExtension
     /// <returns></returns>
     public static IServiceCollection ConfigWebComponents(this IServiceCollection services, IConfiguration configuration)
     {
-#if DEBUG
         services.AddOpenApi();
-#endif
         services.AddAuthorize();
         return services;
     }
@@ -177,12 +170,12 @@ public static class ServiceCollectionExtension
                 var descriptor = (ControllerActionDescriptor)z.ActionDescriptor;
                 return $"{descriptor.ControllerName}_{descriptor.ActionName}";
             });
-            c.SchemaFilter<EnumSchemaFilter>();
-            c.MapType<DateOnly>(() => new OpenApiSchema
-            {
-                Type = JsonSchemaType.String,
-                Format = "date"
-            });
+            //c.SchemaFilter<EnumSchemaFilter>();
+            //c.MapType<DateOnly>(() => new OpenApiSchema
+            //{
+            //    Type = JsonSchemaType.String,
+            //    Format = "date"
+            //});
         });
         return services;
     }

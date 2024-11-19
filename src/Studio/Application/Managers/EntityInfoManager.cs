@@ -463,5 +463,6 @@ public partial class EntityInfoManager(
                 break;
         }
         _codeGenService.GenerateFiles(files);
+        await Task.CompletedTask;
     }
 }

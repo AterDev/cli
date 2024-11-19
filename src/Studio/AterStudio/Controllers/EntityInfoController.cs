@@ -36,25 +36,6 @@ public class EntityInfoController(
     }
 
     /// <summary>
-    /// 创建DTO
-    /// </summary>
-    /// <param name="entityFilePath"></param>
-    /// <param name="name"></param>
-    /// <param name="summary"></param>
-    /// <returns></returns>
-    [HttpPost("dto")]
-    public async Task<ActionResult<string>> CreateDtoAsync(string entityFilePath, string name, string summary)
-    {
-        if (!System.IO.File.Exists(entityFilePath))
-        {
-            return NotFound("不存在的文件");
-        }
-        // TODO:创建DTO
-        //string? res = await manager.CreateDtoAsync(entityFilePath, name, summary);
-        return BadRequest("创建失败");
-    }
-
-    /// <summary>
     /// 清理解决方案
     /// </summary>
     /// <returns></returns>

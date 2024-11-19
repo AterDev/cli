@@ -86,14 +86,6 @@
             不超过200字符
           </mat-error>
         </mat-form-field>
-
-        <mat-form-field class="col-auto">
-          <mat-label>缓存前缀</mat-label>
-          <input matInput placeholder="前缀" formControlName="cacheInstanceName" maxlength="60">
-          <mat-error *ngIf="cacheInstanceName?.hasError('maxlength')">
-            不超过60字符
-          </mat-error>
-        </mat-form-field>
       </div>
     </div>
 

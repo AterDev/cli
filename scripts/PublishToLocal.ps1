@@ -156,15 +156,12 @@ try {
     Rename-Item -Path "./nupkg/$newPackName" -NewName "$zipPackName"
     Expand-Archive -Path "./nupkg/$zipPackName" -DestinationPath "./nupkg/$Version"
 
-    ## 移除pdb xml文件
+    ## 移除pdb文件
     $files = Get-ChildItem -Path "./nupkg/$Version/tools/$dotnetVersion/any" -Recurse -Include *.pdb
     foreach ($file in $files) {
         Remove-Item $file.FullName -Force
     }
-    $files = Get-ChildItem -Path "./nupkg/$Version/tools/$dotnetVersion/any" -Recurse -Include *.xml
-    foreach ($file in $files) {
-        Remove-Item $file.FullName -Force
-    }
+
 
     # 删除 BuildHost-net472
     Remove-Item -Path "./nupkg/$Version/tools/$dotnetVersion/any/BuildHost-net472" -Recurse -Force

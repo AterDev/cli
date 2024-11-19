@@ -98,13 +98,6 @@ public enum DBType
     /// </summary>
     [Description("SQLServer")]
     SQLServer,
-    /// <summary>
-    /// SQLite
-    /// </summary>
-    [Description("SQLite")]
-    SQLite
-
-
 }
 public enum CacheType
 {

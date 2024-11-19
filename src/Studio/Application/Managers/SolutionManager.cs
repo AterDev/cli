@@ -67,15 +67,6 @@ public class SolutionManager(
         // 数据库选择
         ChooseDatabase(dto.DBType, path, dto.IsLight);
 
-        // 移除默认的微服务
-        string defaultServicePath = Path.Combine(path, "src", "Microservice", "StandaloneService");
-        if (Directory.Exists(defaultServicePath))
-        {
-            // 从解决方案移除项目
-            ProcessHelper.RunCommand("dotnet", $"sln {path} remove {Path.Combine(defaultServicePath, "StandaloneService.csproj")}", out string error);
-            Directory.Delete(defaultServicePath, true);
-        }
-
         // 前端项目处理
         if (dto.FrontType == FrontType.None)
         {
@@ -160,32 +151,26 @@ public class SolutionManager(
     {
         List<string> packageNames =
         [
-            "Microsoft.EntityFrameworkCore.Sqlite",
             "Microsoft.EntityFrameworkCore.SqlServer",
             "Npgsql.EntityFrameworkCore.PostgreSQL"
         ];
 
         string useMethod = "UseNpgsql";
         string packageName = "Npgsql.EntityFrameworkCore.PostgreSQL";
-        if (dBType == DBType.SQLite)
-        {
-            useMethod = "UseSqlite";
-            packageName = "Microsoft.EntityFrameworkCore.Sqlite";
-        }
-        else if (dBType == DBType.SQLServer)
+
+        if (dBType == DBType.SQLServer)
         {
             useMethod = "UseSqlServer";
             packageName = "Microsoft.EntityFrameworkCore.SqlServer";
         }
 
-        string appServiceFile = Path.Combine(path, "src", "Application", "AppServiceCollectionExtensions.cs");
+        string appServiceFile = Path.Combine(path, "src", "Application", "AppServiceExtensions.cs");
         string content = File.ReadAllText(appServiceFile);
         content = content.Replace("option.UseNpgsql", "option." + useMethod);
         File.WriteAllText(appServiceFile, content);
 
         string queryFactoryFile = Path.Combine(path, "src", "Definition", "EntityFramework", "DBProvider", "QueryDbContextFactory.cs");
         content = File.ReadAllText(queryFactoryFile);
-
         content = content.Replace("builder.UseNpgsql", "builder." + useMethod);
         File.WriteAllText(queryFactoryFile, content);
 
