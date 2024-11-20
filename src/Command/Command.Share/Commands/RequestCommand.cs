@@ -43,7 +43,6 @@ public class RequestCommand : CommandBase
             };
 
             using HttpClient http = new(handler);
-
             openApiContent = await http.GetStringAsync(DocUrl);
         }
         else

@@ -3,7 +3,5 @@ export enum DBType {
   PostgreSQL = 0,
   /** SQLServer */
   SQLServer = 1,
-  /** SQLite */
-  SQLite = 2,
 
 }

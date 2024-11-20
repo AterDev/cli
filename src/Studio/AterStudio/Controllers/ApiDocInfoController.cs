@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using CodeGenerator.Models;
 using Microsoft.AspNetCore.Authorization;
 using Share.Models.ApiDocInfoDtos;
 
@@ -97,17 +96,6 @@ public class ApiDocInfoController(
         return entity == null
             ? NotFound("未找到该对象")
             : await _manager.DeleteAsync([id], false);
-    }
-
-    /// <summary>
-    /// 生成页面组件
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    [HttpPost("component")]
-    public NgComponentInfo? CreateUIComponent(CreateUIComponentDto dto)
-    {
-        return _manager.CreateUIComponent(dto);
     }
 
     /// <summary>

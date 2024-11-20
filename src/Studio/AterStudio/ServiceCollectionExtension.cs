@@ -5,6 +5,7 @@ using Application.Services;
 using Ater.Web.Core.Converters;
 using AterStudio;
 using AterStudio.Middlewares;
+using CodeGenerator.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.IdentityModel.Tokens;
@@ -59,11 +60,6 @@ public static class ServiceCollectionExtension
         app.UseCors(AterConst.Default);
 
         app.UseSwagger();
-        app.UseSwaggerUI(op =>
-        {
-            op.SwaggerEndpoint("/swagger/admin/swagger.json", "admin");
-        });
-
         app.UseStaticFiles();
         app.UseRouting();
         app.UseDebugAuthorization();
@@ -170,12 +166,12 @@ public static class ServiceCollectionExtension
                 var descriptor = (ControllerActionDescriptor)z.ActionDescriptor;
                 return $"{descriptor.ControllerName}_{descriptor.ActionName}";
             });
-            //c.SchemaFilter<EnumSchemaFilter>();
-            //c.MapType<DateOnly>(() => new OpenApiSchema
-            //{
-            //    Type = JsonSchemaType.String,
-            //    Format = "date"
-            //});
+            c.SchemaFilter<EnumSchemaFilter>();
+            c.MapType<DateOnly>(() => new OpenApiSchema
+            {
+                Type = JsonSchemaType.String,
+                Format = "date"
+            });
         });
         return services;
     }

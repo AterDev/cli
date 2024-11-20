@@ -13,9 +13,9 @@ export class ToolsBaseService extends BaseService {
    * 转换成类
    * @param data ConvertDto
    */
-  convertToClass(data: ConvertDto): Observable<string[]> {
+  convertToClass(data: ConvertDto): Observable<[]> {
     const _url = `/api/Tools/classModel`;
-    return this.request<string[]>('post', _url, data);
+    return this.request<[]>('post', _url, data);
   }
 
   /**

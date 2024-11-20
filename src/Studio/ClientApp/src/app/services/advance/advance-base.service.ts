@@ -13,7 +13,7 @@ export class AdvanceBaseService extends BaseService {
    * @param key 
    */
   getConfig(key: string | null): Observable<ConfigData> {
-    const _url = `/api/Advance/config?key=${key ?? ''}`;
+    const _url = `/api/admin/Advance/config?key=${key ?? ''}`;
     return this.request<ConfigData>('get', _url);
   }
 
@@ -23,7 +23,7 @@ export class AdvanceBaseService extends BaseService {
    * @param value 
    */
   setConfig(key: string | null, value: string | null): Observable<any> {
-    const _url = `/api/Advance/config?key=${key ?? ''}&value=${value ?? ''}`;
+    const _url = `/api/admin/Advance/config?key=${key ?? ''}&value=${value ?? ''}`;
     return this.request<any>('put', _url);
   }
 
@@ -32,7 +32,7 @@ export class AdvanceBaseService extends BaseService {
    * @param prompt 
    */
   chat(prompt: string | null): Observable<any> {
-    const _url = `/api/Advance/chat?prompt=${prompt ?? ''}`;
+    const _url = `/api/admin/Advance/chat?prompt=${prompt ?? ''}`;
     return this.request<any>('get', _url);
   }
 
@@ -40,7 +40,7 @@ export class AdvanceBaseService extends BaseService {
    * 清除对话
    */
   clearChat(): Observable<any> {
-    const _url = `/api/Advance/chat`;
+    const _url = `/api/admin/Advance/chat`;
     return this.request<any>('delete', _url);
   }
 

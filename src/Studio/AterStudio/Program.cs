@@ -13,7 +13,6 @@ builder.Logging.AddSimpleConsole(options =>
 
 builder.AddDefaultComponents();
 
-
 builder.AddDefaultWebServices();
 
 WebApplication app = builder.Build();

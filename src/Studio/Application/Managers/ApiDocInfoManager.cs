@@ -209,23 +209,6 @@ public class ApiDocInfoManager(
         return await query.FirstOrDefaultAsync();
     }
 
-    /// <summary>
-    /// 生成页面组件
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    public NgComponentInfo? CreateUIComponent(CreateUIComponentDto dto)
-    {
-        return dto.ComponentType switch
-        {
-            ComponentType.Form => GenFormComponent(dto.ModelInfo, dto.ServiceName),
-            //ComponentType.Table => GenTableComponent(dto.ModelInfo, dto.ServiceName),
-            //ComponentType.Detail => GenDetailComponent(dto.ModelInfo, dto.ServiceName),
-
-            _ => default!,
-        };
-    }
-
     public NgComponentInfo? GenFormComponent(ModelInfo modelInfo, string serviceName)
     {
         return default;

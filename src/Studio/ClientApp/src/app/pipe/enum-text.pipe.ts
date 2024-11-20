@@ -66,7 +66,6 @@ export class EnumTextPipe implements PipeTransform {
           switch (value) {
             case 0: result = 'PostgreSQL'; break;
             case 1: result = 'SQLServer'; break;
-            case 2: result = 'SQLite'; break;
             default: result = '默认'; break;
           }
         }

@@ -2,11 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-11-12 16:31:42",
+    "description": "Studio API 文档. 更新时间:2024-11-20 11:30:13",
     "version": "v1"
   },
   "paths": {
-    "/api/Advance/config": {
+    "/api/admin/Advance/config": {
       "get": {
         "tags": [
           "Advance"
@@ -27,17 +27,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConfigData"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConfigData"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ConfigData"
                 }
@@ -77,7 +67,7 @@
         }
       }
     },
-    "/api/Advance/chat": {
+    "/api/admin/Advance/chat": {
       "get": {
         "tags": [
           "Advance"
@@ -503,92 +493,6 @@
         }
       }
     },
-    "/api/admin/EntityInfo/dto": {
-      "post": {
-        "tags": [
-          "EntityInfo"
-        ],
-        "summary": "创建DTO",
-        "operationId": "EntityInfo_CreateDto",
-        "parameters": [
-          {
-            "name": "entityFilePath",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "EntityInfo"
-        ],
-        "summary": "更新内容",
-        "operationId": "EntityInfo_UpdateDtoContent",
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateDtoDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateDtoDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateDtoDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/admin/EntityInfo": {
       "delete": {
         "tags": [
@@ -650,6 +554,47 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityFile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/EntityInfo/dto": {
+      "put": {
+        "tags": [
+          "EntityInfo"
+        ],
+        "summary": "更新内容",
+        "operationId": "EntityInfo_UpdateDtoContent",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDtoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDtoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDtoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -721,79 +666,6 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/BatchGenerateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/admin/EntityInfo/generateSync/{id}": {
-      "post": {
-        "tags": [
-          "EntityInfo"
-        ],
-        "summary": "同步ng页面",
-        "operationId": "EntityInfo_GenerateSync",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/admin/EntityInfo/generateNgModule": {
-      "post": {
-        "tags": [
-          "EntityInfo"
-        ],
-        "summary": "生成NG组件模块",
-        "operationId": "EntityInfo_GenerateNgModule",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NgModuleDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NgModuleDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NgModuleDto"
               }
             }
           }
@@ -1913,12 +1785,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "NotStarted",
-          "InProgress",
-          "Success",
-          "Failed"
-        ],
         "x-enumData": [
           {
             "name": "NotStarted",
@@ -2178,10 +2044,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Redis",
-          "Memory"
-        ],
         "x-enumData": [
           {
             "name": "Redis",
@@ -2206,13 +2068,6 @@
         "type": "integer",
         "description": "命令类型",
         "format": "int32",
-        "x-enumNames": [
-          "Dto",
-          "Manager",
-          "API",
-          "Protobuf",
-          "Clear"
-        ],
         "x-enumData": [
           {
             "name": "Dto",
@@ -2249,11 +2104,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Form",
-          "Table",
-          "Detail"
-        ],
         "x-enumData": [
           {
             "name": "Form",
@@ -2316,11 +2166,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Client",
-          "Admin",
-          "Both"
-        ],
         "x-enumData": [
           {
             "name": "Client",
@@ -2453,16 +2298,10 @@
       "DBType": {
         "enum": [
           0,
-          1,
-          2
+          1
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "PostgreSQL",
-          "SQLServer",
-          "SQLite"
-        ],
         "x-enumData": [
           {
             "name": "PostgreSQL",
@@ -2473,11 +2312,6 @@
             "name": "SQLServer",
             "value": 1,
             "description": "SQLServer"
-          },
-          {
-            "name": "SQLite",
-            "value": 2,
-            "description": "SQLite"
           }
         ]
       },
@@ -2616,11 +2450,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Guid",
-          "Int",
-          "String"
-        ],
         "x-enumData": [ ]
       },
       "FrontType": {
@@ -2631,11 +2460,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "None",
-          "Angular",
-          "Blazor"
-        ],
         "x-enumData": [
           {
             "name": "Angular",
@@ -3026,11 +2850,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "EntityCLass",
-          "DtoModel",
-          "OpenAPI"
-        ],
         "x-enumData": [
           {
             "name": "EntityCLass",
@@ -3310,11 +3129,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "File",
-          "Command",
-          "Script"
-        ],
         "x-enumData": [
           {
             "name": "File",
@@ -3514,28 +3328,6 @@
         },
         "additionalProperties": false
       },
-      "NgModuleDto": {
-        "required": [
-          "entityName",
-          "rootPath"
-        ],
-        "type": "object",
-        "properties": {
-          "entityName": {
-            "type": "string",
-            "description": "实体名"
-          },
-          "rootPath": {
-            "type": "string",
-            "description": "目标路径"
-          },
-          "isMobile": {
-            "type": "boolean",
-            "description": "是否移动端"
-          }
-        },
-        "additionalProperties": false
-      },
       "OperationType": {
         "enum": [
           0,
@@ -3549,16 +3341,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Get",
-          "Put",
-          "Post",
-          "Delete",
-          "Options",
-          "Head",
-          "Patch",
-          "Trace"
-        ],
         "x-enumData": [
           {
             "name": "Get",
@@ -3736,14 +3518,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Web",
-          "Console",
-          "Lib",
-          "Module",
-          "WebAPI",
-          "GRPC"
-        ],
         "x-enumData": [ ]
       },
       "PropertyInfo": {
@@ -3871,10 +3645,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "NgHttp",
-          "Axios"
-        ],
         "x-enumData": [
           {
             "name": "NgHttp",
@@ -3963,11 +3733,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "DotNet",
-          "Node",
-          "Else"
-        ],
         "x-enumData": [
           {
             "name": "DotNet",
@@ -3996,13 +3761,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Guid",
-          "NamePolicy",
-          "Encode",
-          "Decode",
-          "EnCrypt"
-        ],
         "x-enumData": [
           {
             "name": "Guid",
@@ -4058,11 +3816,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "AngularMaterial",
-          "NGZORRO",
-          "VueElement"
-        ],
         "x-enumData": [ ]
       },
       "UpdateDtoDto": {
@@ -4092,13 +3845,6 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumNames": [
-          "Integer",
-          "Double",
-          "String",
-          "Boolean",
-          "Encrypt"
-        ],
         "x-enumData": [ ]
       },
       "Variable": {
@@ -4127,10 +3873,6 @@
       "description": "高级功能"
     },
     {
-      "name": "Tools",
-      "description": "Tools"
-    },
-    {
       "name": "ApiDocInfo",
       "description": "api文档"
     },
@@ -4153,6 +3895,10 @@
     {
       "name": "Solution",
       "description": "功能模块"
+    },
+    {
+      "name": "Tools",
+      "description": "Tools"
     }
   ]
 }
