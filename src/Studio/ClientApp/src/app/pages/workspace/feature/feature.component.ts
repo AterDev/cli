@@ -11,9 +11,10 @@ import { SolutionService } from 'src/app/services/solution/solution.service';
 import { SubProjectInfo } from 'src/app/services/solution/models/sub-project-info.model';
 
 @Component({
-  selector: 'app-feature',
-  templateUrl: './feature.component.html',
-  styleUrls: ['./feature.component.css']
+    selector: 'app-feature',
+    templateUrl: './feature.component.html',
+    styleUrls: ['./feature.component.css'],
+    standalone: false
 })
 export class FeatureComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

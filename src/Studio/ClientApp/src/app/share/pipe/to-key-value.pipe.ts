@@ -1,7 +1,8 @@
 import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'toKeyValue'
+    name: 'toKeyValue',
+    standalone: false
 })
 export class ToKeyValuePipe implements PipeTransform {
   transform(enumData: any): { key: string, value: number }[] {

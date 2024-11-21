@@ -11,9 +11,10 @@ import { SolutionService } from 'src/app/services/solution/solution.service';
 
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+    selector: 'app-create',
+    templateUrl: './create.component.html',
+    styleUrls: ['./create.component.css'],
+    standalone: false
 })
 export class CreateComponent {
   addForm!: FormGroup;

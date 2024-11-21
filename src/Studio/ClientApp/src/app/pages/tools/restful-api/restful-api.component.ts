@@ -4,9 +4,10 @@ import { ToolsService } from 'src/app/services/tools/tools.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-restful-api',
-  templateUrl: './restful-api.component.html',
-  styleUrl: './restful-api.component.css'
+    selector: 'app-restful-api',
+    templateUrl: './restful-api.component.html',
+    styleUrl: './restful-api.component.css',
+    standalone: false
 })
 export class RestfulAPIComponent {
   editorOptions = { theme: 'vs-dark', language: 'csharp', minimap: { enabled: false } };

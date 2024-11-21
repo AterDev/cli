@@ -8,9 +8,10 @@ import { EntityInfoService } from 'src/app/services/entity-info/entity-info.serv
 import { EntityFile } from 'src/app/services/entity-info/models/entity-file.model';
 
 @Component({
-  selector: 'app-dto',
-  templateUrl: './dto.component.html',
-  styleUrls: ['./dto.component.css']
+    selector: 'app-dto',
+    templateUrl: './dto.component.html',
+    styleUrls: ['./dto.component.css'],
+    standalone: false
 })
 export class DtoComponent implements OnInit {
   name: string | null = null;

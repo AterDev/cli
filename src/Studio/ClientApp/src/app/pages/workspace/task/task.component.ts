@@ -21,9 +21,10 @@ import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-
 import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-run-dto.model';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './task.component.html',
-  styleUrls: ['./task.component.scss']
+    selector: 'app-index',
+    templateUrl: './task.component.html',
+    styleUrls: ['./task.component.scss'],
+    standalone: false
 })
 export class TaskComponent implements OnInit {
   GenSourceType = GenSourceType;

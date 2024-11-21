@@ -16,9 +16,10 @@ import { GenStepItemDto } from 'src/app/services/gen-step/models/gen-step-item-d
 import { GenStepUpdateDto } from 'src/app/services/gen-step/models/gen-step-update-dto.model';
 
 @Component({
-  selector: 'app-step',
-  templateUrl: './step.component.html',
-  styleUrl: './step.component.css'
+    selector: 'app-step',
+    templateUrl: './step.component.html',
+    styleUrl: './step.component.css',
+    standalone: false
 })
 export class StepComponent {
   GenStepType = GenStepType;

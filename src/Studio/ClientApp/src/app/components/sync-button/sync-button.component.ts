@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'sync-button',
-  templateUrl: './sync-button.component.html',
-  styleUrl: './sync-button.component.css'
+    selector: 'sync-button',
+    templateUrl: './sync-button.component.html',
+    styleUrl: './sync-button.component.css',
+    standalone: false
 })
 export class SyncButtonComponent {
   @Input() isSync: boolean;

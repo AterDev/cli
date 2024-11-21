@@ -3,9 +3,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToolsService } from 'src/app/services/tools/tools.service';
 
 @Component({
-  selector: 'app-json2-type',
-  templateUrl: './json2-type.component.html',
-  styleUrls: ['./json2-type.component.css']
+    selector: 'app-json2-type',
+    templateUrl: './json2-type.component.html',
+    styleUrls: ['./json2-type.component.css'],
+    standalone: false
 })
 export class Json2TypeComponent {
   editorOptions = { theme: 'vs-dark', language: 'csharp', minimap: { enabled: false } };

@@ -2,7 +2,8 @@
 import { Injectable, NgModule, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'enumText'
+    name: 'enumText',
+    standalone: false
 })
 @Injectable({ providedIn: 'root' })
 export class EnumTextPipe implements PipeTransform {

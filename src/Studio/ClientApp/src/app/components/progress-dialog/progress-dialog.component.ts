@@ -4,11 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-progress-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatProgressBarModule, MatButtonModule],
-  templateUrl: './progress-dialog.component.html',
-  styleUrl: './progress-dialog.component.css'
+    selector: 'app-progress-dialog',
+    imports: [MatDialogModule, MatProgressBarModule, MatButtonModule],
+    templateUrl: './progress-dialog.component.html',
+    styleUrl: './progress-dialog.component.css'
 })
 export class ProgressDialogComponent {
 

@@ -6,9 +6,10 @@ import { AdvanceService } from 'src/app/services/advance/advance.service';
 import { ProjectStateService } from 'src/app/share/project-state.service';
 
 @Component({
-  selector: 'app-entity',
-  templateUrl: './entity.component.html',
-  styleUrls: ['./entity.component.css']
+    selector: 'app-entity',
+    templateUrl: './entity.component.html',
+    styleUrls: ['./entity.component.css'],
+    standalone: false
 })
 export class EntityComponent {
   isProcessing = false;

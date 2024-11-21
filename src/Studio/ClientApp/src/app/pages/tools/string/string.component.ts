@@ -11,12 +11,11 @@ import { ToolsService } from 'src/app/services/tools/tools.service';
 import { ToKeyValuePipeModule } from 'src/app/share/pipe/to-key-value.pipe';
 
 @Component({
-  selector: 'app-string',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, FormsModule, MatInputModule,
-    EnumTextPipeModule, ToKeyValuePipeModule,],
-  templateUrl: './string.component.html',
-  styleUrl: './string.component.css'
+    selector: 'app-string',
+    imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, FormsModule, MatInputModule,
+        EnumTextPipeModule, ToKeyValuePipeModule,],
+    templateUrl: './string.component.html',
+    styleUrl: './string.component.css'
 })
 export class StringComponent {
   StringConvertType = StringConvertType;

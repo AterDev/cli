@@ -29,9 +29,10 @@ import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-r
 import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-item-dto.model';
 
 @Component({
-  selector: 'app-docs',
-  templateUrl: './docs.component.html',
-  styleUrls: ['./docs.component.css'],
+    selector: 'app-docs',
+    templateUrl: './docs.component.html',
+    styleUrls: ['./docs.component.css'],
+    standalone: false
 })
 export class DocsComponent implements OnInit {
   OperationType = OperationType;

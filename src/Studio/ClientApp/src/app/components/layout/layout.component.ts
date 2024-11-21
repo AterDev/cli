@@ -12,9 +12,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { StringComponent } from 'src/app/pages/tools/string/string.component';
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrls: ['./layout.component.css'],
+    standalone: false
 })
 export class LayoutComponent implements OnInit {
   isLogin = false;

@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
-  selector: 'admin-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css']
+    selector: 'admin-navigation',
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.css'],
+    standalone: false
 })
 export class NavigationComponent implements OnInit {
   events: string[] = [];

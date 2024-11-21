@@ -4,9 +4,10 @@ import { ProjectService } from 'src/app/services/project/project.service';
 import { ProjectStateService } from 'src/app/share/project-state.service';
 
 @Component({
-  selector: 'app-setting',
-  templateUrl: './setting.component.html',
-  styleUrls: ['./setting.component.css']
+    selector: 'app-setting',
+    templateUrl: './setting.component.html',
+    styleUrls: ['./setting.component.css'],
+    standalone: false
 })
 export class SettingComponent implements OnInit {
   isLoading = true;

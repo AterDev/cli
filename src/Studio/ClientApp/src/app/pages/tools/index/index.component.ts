@@ -4,9 +4,10 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrl: './index.component.css'
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrl: './index.component.css',
+    standalone: false
 })
 export class IndexComponent {
   constructor(

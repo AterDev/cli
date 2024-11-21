@@ -25,9 +25,10 @@ import { ProgressDialogComponent } from 'src/app/components/progress-dialog/prog
 import { SubProjectInfo } from 'src/app/services/solution/models/sub-project-info.model';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.css'],
+    standalone: false
 })
 export class IndexComponent implements OnInit {
   RequestLibType = RequestLibType;

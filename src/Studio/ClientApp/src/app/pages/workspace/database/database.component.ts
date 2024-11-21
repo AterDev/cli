@@ -8,10 +8,11 @@ import 'prismjs/components/prism-markup.min.js';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-database',
-  templateUrl: './database.component.html',
-  styleUrls: ['./database.component.css'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-database',
+    templateUrl: './database.component.html',
+    styleUrls: ['./database.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class DatabaseComponent implements OnInit {
   isLoding = true;

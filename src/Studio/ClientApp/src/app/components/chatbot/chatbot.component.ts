@@ -16,9 +16,10 @@ export enum ToolType {
 }
 
 @Component({
-  selector: 'app-chatbot',
-  templateUrl: './chatbot.component.html',
-  styleUrls: ['./chatbot.component.css']
+    selector: 'app-chatbot',
+    templateUrl: './chatbot.component.html',
+    styleUrls: ['./chatbot.component.css'],
+    standalone: false
 })
 export class ChatBotComponent {
   isLoading = true;
