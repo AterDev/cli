@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-    selector: 'app-quick-nav',
-    imports: [MatButtonModule, MatIconModule, MatTooltipModule],
-    templateUrl: './quick-nav.component.html',
-    styleUrl: './quick-nav.component.scss'
+  selector: 'app-quick-nav',
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule],
+  standalone: true,
+  templateUrl: './quick-nav.component.html',
+  styleUrl: './quick-nav.component.scss'
 })
 export class QuickNavComponent {
   showMore = false;

@@ -127,28 +127,6 @@
   </table>
 </div>
 
-<ng-template #syncDialog>
-  <h2 mat-dialog-title>生成页面</h2>
-  <mat-dialog-content>
-    <p>生成页面仅用于使用了
-      <strong>Ater.web.template</strong>
-      模板的项目，对添加了[NgPage]特性的实体，会生成
-      <strong>Angular</strong>组件内容
-    </p>
-    <p>
-      相关代码生成到
-      <strong>Http.API</strong>
-      目录下的
-      <strong>ClientApp</strong>
-      中。
-    </p>
-  </mat-dialog-content>
-  <mat-dialog-actions class="justify-content-end">
-    <button mat-button mat-dialog-close>取消</button>
-    <button mat-button (click)="generateSync()" color="primary" [disabled]="isSync">生成</button>
-  </mat-dialog-actions>
-</ng-template>
-
 <ng-template #generateDialog>
   <h2 mat-dialog-title>
     生成{{currentType==CommandType.Dto?'DTO':currentType==CommandType.Manager?'Manager':'APIControler'}}
@@ -178,23 +156,6 @@
   <mat-dialog-actions class="justify-content-end">
     <button mat-button mat-dialog-close>取消</button>
     <button mat-button (click)="batch(CommandType.Protobuf)" color="primary" [disabled]="isSync">生成</button>
-  </mat-dialog-actions>
-</ng-template>
-
-<ng-template #ngPagesDialog>
-  <h2 mat-dialog-title>生成Ng页面组件(Material)</h2>
-  <mat-dialog-content class="p-4">
-    <p>注：页面依赖ts模型和请求服务，可在Swagger中生成对应的TS代码!</p>
-    <mat-form-field class="w-100">
-      <mat-label>输出路径</mat-label>
-      <input matInput placeholder="路径" [(ngModel)]="webPath" required>
-    </mat-form-field>
-    <mat-slide-toggle [(ngModel)]="isMobile">移动端</mat-slide-toggle>
-  </mat-dialog-content>
-  <mat-dialog-actions class="justify-content-end">
-    <button mat-button mat-dialog-close>取消</button>
-    <sync-button [isSync]="isSync" (click)="genNgModule()">生成</sync-button>
-
   </mat-dialog-actions>
 </ng-template>
 
@@ -242,24 +203,4 @@
   <button mat-menu-item (click)="openAddDtoDialog(data)">
     <span>添加DTO</span>
   </button>
-</ng-template>
-
-<ng-template #addDtoDialog>
-  <h2 mat-dialog-title>创建新DTO</h2>
-  <mat-dialog-content>
-    <div class="d-flex flex-column">
-      <mat-form-field>
-        <mat-label>文件名</mat-label>
-        <input matInput placeholder="Dto文件名称,不用输入.cs后缀" [(ngModel)]="newDtoFileName" name="dtoName" required>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>说明</mat-label>
-        <input matInput placeholder="Dto说明" [(ngModel)]="newDtoDescription" name="dtoSummary" required>
-      </mat-form-field>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions class="justify-content-end">
-    <button mat-button color="primary" (click)="addDto()">创建</button>
-    <button mat-button color="primary" (click)="addDto(true)">创建并打开</button>
-  </mat-dialog-actions>
 </ng-template>

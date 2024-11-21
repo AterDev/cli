@@ -9,13 +9,11 @@ import { ToolsRoutingModule } from './tools-routing.module';
 import { Json2TypeComponent } from './json2-type/json2-type.component';
 import { RestfulAPIComponent } from './restful-api/restful-api.component';
 
-
 @NgModule({
   declarations: [
     IndexComponent,
     Json2TypeComponent,
     RestfulAPIComponent
-
   ],
   imports: [
     ComponentsModule,

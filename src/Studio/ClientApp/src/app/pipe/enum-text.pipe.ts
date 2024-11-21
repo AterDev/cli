@@ -1,9 +1,8 @@
 // 该文件自动生成，会被覆盖更新
-import { Injectable, NgModule, Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'enumText',
-    standalone: false
+  name: 'enumText'
 })
 @Injectable({ providedIn: 'root' })
 export class EnumTextPipe implements PipeTransform {
@@ -42,16 +41,6 @@ export class EnumTextPipe implements PipeTransform {
           }
         }
         break;
-      case 'ComponentType':
-        {
-          switch (value) {
-            case 0: result = '提交表单'; break;
-            case 1: result = '展示表格'; break;
-            case 2: result = '详情字段'; break;
-            default: result = '默认'; break;
-          }
-        }
-        break;
       case 'ControllerType':
         {
           switch (value) {
@@ -71,9 +60,20 @@ export class EnumTextPipe implements PipeTransform {
           }
         }
         break;
+      case 'EntityKeyType':
+        {
+          switch (value) {
+            case 0: result = ''; break;
+            case 1: result = ''; break;
+            case 2: result = ''; break;
+            default: result = '默认'; break;
+          }
+        }
+        break;
       case 'FrontType':
         {
           switch (value) {
+            case 0: result = ''; break;
             case 1: result = 'Angular'; break;
             case 2: result = 'Blazor'; break;
             default: result = '默认'; break;
@@ -115,6 +115,19 @@ export class EnumTextPipe implements PipeTransform {
           }
         }
         break;
+      case 'ProjectType':
+        {
+          switch (value) {
+            case 0: result = 'web服务'; break;
+            case 1: result = '控制台应用'; break;
+            case 2: result = '类库'; break;
+            case 3: result = '模块'; break;
+            case 4: result = '接口服务'; break;
+            case 5: result = 'gPRC服务'; break;
+            default: result = '默认'; break;
+          }
+        }
+        break;
       case 'RequestLibType':
         {
           switch (value) {
@@ -146,6 +159,18 @@ export class EnumTextPipe implements PipeTransform {
           }
         }
         break;
+      case 'ValueType':
+        {
+          switch (value) {
+            case 0: result = ''; break;
+            case 1: result = ''; break;
+            case 2: result = ''; break;
+            case 3: result = ''; break;
+            case 4: result = ''; break;
+            default: result = '默认'; break;
+          }
+        }
+        break;
 
       default:
         break;
@@ -153,9 +178,3 @@ export class EnumTextPipe implements PipeTransform {
     return result;
   }
 }
-
-
-@NgModule({
-  declarations: [EnumTextPipe], exports: [EnumTextPipe]
-})
-export class EnumTextPipeModule { }

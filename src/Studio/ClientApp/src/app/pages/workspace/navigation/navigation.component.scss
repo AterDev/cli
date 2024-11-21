@@ -1,4 +1,4 @@
-@import '../../../../vars.scss';
+@use '../../../../theme.scss' as theme;
 
 .sidenav-container {
   height: calc(100vh - 64px);
@@ -32,7 +32,7 @@ mat-panel-title {
 .nav-title {
   font-weight: bold;
   padding: 0 8px;
-  color: $dark-primary-color;
+  color: theme.$dark-primary-text;
   font-size: 16px;
 }
 

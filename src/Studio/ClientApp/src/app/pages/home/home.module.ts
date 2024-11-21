@@ -9,8 +9,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { MarkdownModule } from 'ngx-markdown';
-import { EnumTextPipeModule } from 'src/app/pipe/enum-text.pipe';
 import { ToKeyValuePipeModule } from 'src/app/share/pipe/to-key-value.pipe';
+import { EnumTextPipe } from 'src/app/pipe/enum-text.pipe';
 
 
 @NgModule({
@@ -24,9 +24,9 @@ import { ToKeyValuePipeModule } from 'src/app/share/pipe/to-key-value.pipe';
     HomeRoutingModule,
     MatTableModule,
     MatPaginatorModule,
+    EnumTextPipe,
     MatSortModule,
     MonacoEditorModule,
-    EnumTextPipeModule,
     ToKeyValuePipeModule,
     MarkdownModule.forRoot()
   ]

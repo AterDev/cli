@@ -3,10 +3,8 @@ import { BaseService } from '../base.service';
 import { Observable } from 'rxjs';
 import { ApiDocInfoAddDto } from './models/api-doc-info-add-dto.model';
 import { ApiDocInfoUpdateDto } from './models/api-doc-info-update-dto.model';
-import { CreateUIComponentDto } from './models/create-uicomponent-dto.model';
 import { ApiDocInfoItemDto } from './models/api-doc-info-item-dto.model';
 import { ApiDocContent } from './models/api-doc-content.model';
-import { NgComponentInfo } from './models/ng-component-info.model';
 import { RequestLibType } from '../enum/models/request-lib-type.model';
 
 /**
@@ -67,15 +65,6 @@ export class ApiDocInfoBaseService extends BaseService {
   export(id: string): Observable<Blob> {
     const _url = `/api/admin/ApiDocInfo/export/${id}`;
     return this.downloadFile('get', _url);
-  }
-
-  /**
-   * 生成页面组件
-   * @param data CreateUIComponentDto
-   */
-  createUIComponent(data: CreateUIComponentDto): Observable<NgComponentInfo> {
-    const _url = `/api/admin/ApiDocInfo/component`;
-    return this.request<NgComponentInfo>('post', _url, data);
   }
 
   /**

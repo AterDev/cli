@@ -322,34 +322,6 @@ export class IndexComponent implements OnInit {
     }, 1500);
   }
 
-  addDto(open: boolean = false): void {
-    if (!this.newDtoDescription || !this.newDtoFileName) {
-      this.snb.open("请填写文件名和描述");
-      return;
-    }
-
-    if (this.previewItem?.baseDirPath && this.previewItem?.baseDirPath) {
-      const path = this.previewItem?.baseDirPath + this.previewItem?.baseDirPath;
-      this.service.createDto(path, this.newDtoFileName, this.newDtoDescription)
-        .subscribe({
-          next: (res) => {
-            if (res) {
-              this.snb.open('添加成功');
-              this.dialogRef.close();
-              if (open) {
-                window.open(`vscode://file/${res}`);
-              }
-            }
-          },
-          error: (error) => {
-            this.snb.open(error.detail);
-          },
-          complete: () => {
-          }
-        });
-    }
-  }
-
   openInfo(url: string): void {
     window.open(url, '_blank');
   }
@@ -410,39 +382,6 @@ export class IndexComponent implements OnInit {
     this.dialogRef = this.dialog.open(this.generateTmpRef, {
       minWidth: 300,
     });
-  }
-
-  genNgModule(): void {
-    if (this.currentEntity && this.webPath) {
-      this.isSync = true;
-      const dto: NgModuleDto = {
-        entityName: this.currentEntity.name!,
-        rootPath: this.webPath,
-        isMobile: this.isMobile
-      };
-      this.service.generateNgModule(dto)
-        .subscribe({
-          next: (res) => {
-            if (res) {
-              this.snb.open('生成成功');
-              this.dialogRef.close();
-            } else {
-              this.snb.open('生成失败');
-            }
-          },
-          error: (error) => {
-            this.snb.open(error.detail);
-            console.log(error.detail);
-            this.isSync = false;
-          },
-          complete: () => {
-            this.isSync = false;
-          }
-        });
-
-    } else {
-      this.snb.open('请填写路径');
-    }
   }
 
   generate(): void {
@@ -549,23 +488,7 @@ export class IndexComponent implements OnInit {
     var data = event.source.selectedOptions.selected;
     this.selectedWebProjectIds = data.map<string>(d => d.value);
   }
-  generateSync(): void {
-    this.isSync = true;
-    this.service.generateSync(this.projectId!)
-      .subscribe({
-        next: (res) => {
-          if (res) {
-            this.snb.open('同步前端成功');
-            this.dialogRef.close();
-          }
-          this.isSync = false;
-        },
-        error: () => {
-          this.isSync = false;
-        }
-      })
-  }
-
+  
   goToDto(entity: EntityFile): void {
     this.projectState.currentEntity.set(entity);
     this.router.navigate(['../dto', entity.name], { relativeTo: this.route });

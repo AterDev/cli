@@ -17,8 +17,8 @@
 
   <div class="d-flex gap-1 flex-wrap mt-2" *ngIf="!isLoading">
     @if(projects.length==0){
-    <span>暂无任何项目，请添加已存在的本地项目或点击</span>
-    <span class="strong">+</span> 创建新解决方案！
+      <span>暂无任何项目，请添加已存在的本地项目或点击</span>
+      <span class="strong">+</span> 创建新解决方案！
     }
 
     <mat-card *ngFor="let item of projects" class="col" style="min-width: 300px;" appearance="outlined">
@@ -120,7 +120,7 @@
         <mat-label>控制器类型</mat-label>
         <mat-radio-group formControlName="controllerType" class="d-flex gap-2">
           @for (item of ControllerType | toKeyValue; track $index) {
-          <mat-radio-button [value]="item.value"> {{ item.value | enumText:'ControllerType' }}</mat-radio-button>
+            <mat-radio-button [value]="item.value"> {{ item.value | enumText:'ControllerType' }}</mat-radio-button>
           }
         </mat-radio-group>
       </form>

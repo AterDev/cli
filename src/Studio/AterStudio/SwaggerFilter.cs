@@ -1,7 +1,9 @@
-﻿using Microsoft.OpenApi.Any;
+﻿using System.ComponentModel.DataAnnotations;
+using Ater.Web.Core.Utils;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-
 using Swashbuckle.AspNetCore.SwaggerGen;
+using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace AterStudio;
 
@@ -16,31 +18,53 @@ public class EnumSchemaFilter : ISchemaFilter
         if (context.Type.IsEnum)
         {
             OpenApiArray enumData = [];
-            System.Reflection.FieldInfo[] fields = context.Type.GetFields();
-            foreach (System.Reflection.FieldInfo f in fields)
+            var fields = context.Type.GetFields();
+            int i = 0;
+            foreach (var f in fields)
             {
                 if (f.Name != "value__")
                 {
-                    System.Reflection.CustomAttributeData? desAttr = f.CustomAttributes.Where(a => a.AttributeType.Name == "DescriptionAttribute").FirstOrDefault();
-
+                    var description = string.Empty;
+                    var desAttr = f.CustomAttributes.Where(a => a.AttributeType.Name == "DescriptionAttribute").FirstOrDefault();
                     desAttr ??= f.CustomAttributes.Where(a => a.AttributeType.Name == "DisplayAttribute").FirstOrDefault();
-
                     if (desAttr != null)
                     {
-                        System.Reflection.CustomAttributeTypedArgument des = desAttr.ConstructorArguments.FirstOrDefault();
+                        var des = desAttr.ConstructorArguments.FirstOrDefault();
                         if (des.Value != null)
                         {
-                            enumData.Add(new OpenApiObject()
-                            {
-                                ["name"] = new OpenApiString(f.Name),
-                                ["value"] = new OpenApiInteger((int)f.GetRawConstantValue()!),
-                                ["description"] = new OpenApiString(des.Value.ToString())
-                            });
+                            description = des.Value.ToString();
                         }
                     }
+                    var value = f.GetRawConstantValue();
+                    var intValue = value == null ? i : (int)value;
+                    enumData.Add(new OpenApiObject()
+                    {
+                        ["name"] = new OpenApiString(f.Name),
+                        ["value"] = new OpenApiInteger(intValue),
+                        ["description"] = new OpenApiString(description)
+                    });
+                    i++;
                 }
             }
             model.Extensions.Add("x-enumData", enumData);
+        }
+        else
+        {
+            PropertyInfo[] properties = context.Type.GetProperties();
+
+            foreach (KeyValuePair<string, OpenApiSchema> property in model.Properties)
+            {
+                PropertyInfo? prop = properties.FirstOrDefault(x => x.Name.ToCamelCase() == property.Key);
+                if (prop != null)
+                {
+                    var isRequired = Attribute.IsDefined(prop, typeof(RequiredAttribute));
+                    if (isRequired)
+                    {
+                        property.Value.Nullable = false;
+                        _ = model.Required.Add(property.Key);
+                    }
+                }
+            }
         }
     }
 }

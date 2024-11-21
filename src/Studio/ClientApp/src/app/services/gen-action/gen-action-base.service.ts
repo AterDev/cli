@@ -38,9 +38,9 @@ export class GenActionBaseService extends BaseService {
   /**
    * 添加操作步骤
    * @param id 
-   * @param data []
+   * @param data string[]
    */
-  addSteps(id: string, data: []): Observable<boolean> {
+  addSteps(id: string, data: string[]): Observable<boolean> {
     const _url = `/api/admin/GenAction/steps/${id}`;
     return this.request<boolean>('post', _url, data);
   }

@@ -489,7 +489,7 @@ public class OpenApiService
                     refType = itemType switch
                     {
                         JsonSchemaType.Integer => "number",
-                        _ => refType
+                        _ => itemType
                     };
                     type = refType + "[]";
                 }

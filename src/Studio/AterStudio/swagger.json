@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "AterStudio API doc",
-    "description": "Studio API 文档. 更新时间:2024-11-20 11:30:13",
+    "description": "Studio API 文档. 更新时间:2024-11-21 12:31:59",
     "version": "v1"
   },
   "paths": {
@@ -318,47 +318,6 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/admin/ApiDocInfo/component": {
-      "post": {
-        "tags": [
-          "ApiDocInfo"
-        ],
-        "summary": "生成页面组件",
-        "operationId": "ApiDocInfo_CreateUIComponent",
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUIComponentDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUIComponentDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUIComponentDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NgComponentInfo"
                 }
               }
             }
@@ -2096,32 +2055,6 @@
           }
         ]
       },
-      "ComponentType": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enumData": [
-          {
-            "name": "Form",
-            "value": 0,
-            "description": "提交表单"
-          },
-          {
-            "name": "Table",
-            "value": 1,
-            "description": "展示表格"
-          },
-          {
-            "name": "Detail",
-            "value": 2,
-            "description": "详情字段"
-          }
-        ]
-      },
       "ConfigData": {
         "required": [
           "key",
@@ -2269,28 +2202,6 @@
             "items": {
               "type": "string"
             }
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateUIComponentDto": {
-        "required": [
-          "modelInfo",
-          "serviceName"
-        ],
-        "type": "object",
-        "properties": {
-          "uiType": {
-            "$ref": "#/components/schemas/UIType"
-          },
-          "componentType": {
-            "$ref": "#/components/schemas/ComponentType"
-          },
-          "modelInfo": {
-            "$ref": "#/components/schemas/ModelInfo"
-          },
-          "serviceName": {
-            "type": "string"
           }
         },
         "additionalProperties": false
@@ -2450,7 +2361,23 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumData": [ ]
+        "x-enumData": [
+          {
+            "name": "Guid",
+            "value": 0,
+            "description": ""
+          },
+          {
+            "name": "Int",
+            "value": 1,
+            "description": ""
+          },
+          {
+            "name": "String",
+            "value": 2,
+            "description": ""
+          }
+        ]
       },
       "FrontType": {
         "enum": [
@@ -2461,6 +2388,11 @@
         "type": "integer",
         "format": "int32",
         "x-enumData": [
+          {
+            "name": "None",
+            "value": 0,
+            "description": ""
+          },
           {
             "name": "Angular",
             "value": 1,
@@ -3299,35 +3231,6 @@
         },
         "additionalProperties": false
       },
-      "NgComponentInfo": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "routing": {
-            "type": "string",
-            "nullable": true
-          },
-          "tsContent": {
-            "type": "string",
-            "nullable": true
-          },
-          "htmlContent": {
-            "type": "string",
-            "nullable": true
-          },
-          "cssContent": {
-            "type": "string",
-            "nullable": true
-          },
-          "moduleName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "OperationType": {
         "enum": [
           0,
@@ -3518,7 +3421,38 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumData": [ ]
+        "x-enumData": [
+          {
+            "name": "Web",
+            "value": 0,
+            "description": "web服务"
+          },
+          {
+            "name": "Console",
+            "value": 1,
+            "description": "控制台应用"
+          },
+          {
+            "name": "Lib",
+            "value": 2,
+            "description": "类库"
+          },
+          {
+            "name": "Module",
+            "value": 3,
+            "description": "模块"
+          },
+          {
+            "name": "WebAPI",
+            "value": 4,
+            "description": "接口服务"
+          },
+          {
+            "name": "GRPC",
+            "value": 5,
+            "description": "gPRC服务"
+          }
+        ]
       },
       "PropertyInfo": {
         "required": [
@@ -3808,16 +3742,6 @@
         },
         "additionalProperties": false
       },
-      "UIType": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enumData": [ ]
-      },
       "UpdateDtoDto": {
         "required": [
           "content",
@@ -3845,7 +3769,33 @@
         ],
         "type": "integer",
         "format": "int32",
-        "x-enumData": [ ]
+        "x-enumData": [
+          {
+            "name": "Integer",
+            "value": 0,
+            "description": ""
+          },
+          {
+            "name": "Double",
+            "value": 1,
+            "description": ""
+          },
+          {
+            "name": "String",
+            "value": 2,
+            "description": ""
+          },
+          {
+            "name": "Boolean",
+            "value": 3,
+            "description": ""
+          },
+          {
+            "name": "Encrypt",
+            "value": 4,
+            "description": ""
+          }
+        ]
       },
       "Variable": {
         "required": [

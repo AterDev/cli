@@ -380,7 +380,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                     refType = itemType switch
                     {
                         JsonSchemaType.Integer => "int",
-                        _ => refType
+                        _ => itemType
                     };
                     type = $"List<{refType}>";
                 }

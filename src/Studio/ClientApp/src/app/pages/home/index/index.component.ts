@@ -17,10 +17,10 @@ import { ControllerType } from 'src/app/services/enum/models/controller-type.mod
 import { ProjectConfig } from 'src/app/services/project/models/project-config.model';
 
 @Component({
-    selector: 'app-index',
-    templateUrl: './index.component.html',
-    styleUrls: ['./index.component.css'],
-    standalone: false
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.css'],
+  standalone: false
 })
 export class IndexComponent implements OnInit {
   @ViewChild("addDialog", { static: true }) dialogTmpRef!: TemplateRef<{}>;

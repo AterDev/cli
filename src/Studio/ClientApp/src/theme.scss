@@ -1,126 +1,37 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@import './vars.scss';
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
-html {
-  @include mat.all-component-themes($dark-theme);
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+        primary: mat.$violet-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: (use-system-variables: false),
+    ));
 
-  .text-primary {
-    @include mat.icon-color($dark-theme, $color-variant: primary);
-    @include mat.chips-color($dark-theme, $color-variant: primary);
-    @include mat.button-color($dark-theme, $color-variant: primary);
-  }
+$light-theme: mat.define-theme((color: (theme-type: light,
+        primary: mat.$violet-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: (use-system-variables: false),
+    ));
 
-  .text-accent {
-    @include mat.icon-color($dark-theme, $color-variant: tertiary);
-    @include mat.button-color($dark-theme, $color-variant: tertiary);
-  }
+$dark-primary-color: mat.get-theme-color($dark-theme, primary, 60);
+$light-primary-color: mat.get-theme-color($light-theme, primary, 40);
 
-  .text-danger {
-    @include mat.icon-color($dark-theme, $color-variant: error);
-  }
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
 
-  .active {
-    background-color: mat.get-theme-color($dark-theme, primary, 60) !important;
-  }
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
 
-  a {
-    color: mat.get-theme-color($dark-theme, primary, 30);
-  }
-
-  .drag-container {
-    width: 400px;
-    max-width: 100%;
-    display: inline-block;
-    vertical-align: top;
-  }
-
-  .drag-list {
-    border: solid 1px lighten($color: $dark-primary-text, $amount: 20%);
-    background-color: $dark-focused;
-    min-height: 200px;
-    border-radius: 4px;
-    overflow: hidden;
-    display: block;
-  }
-
-  .drag-box {
-    height: 40px;
-    padding: 12px 8px;
-    background-color: darken($color: $dark-color, $amount: 2%);
-    border: solid 1px lighten($color: $dark-color, $amount: 5%);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    cursor: move;
-    /* background: white; */
-    font-size: 14px;
-  }
-
-  .cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-      0 8px 10px 1px rgba(0, 0, 0, 0.14),
-      0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
-
-  .cdk-drag-placeholder {
-    opacity: 0.3;
-  }
-
-  .cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  .drag-box:last-child {
-    border: none;
-  }
-
-  .drag-list.cdk-drop-list-dragging .drag-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  @media (prefers-color-scheme: light) {
-    @include mat.all-component-colors($light-theme);
-
-    .text-primary {
-      @include mat.icon-color($light-theme, $color-variant: primary);
-      @include mat.chips-color($light-theme, $color-variant: primary);
-      @include mat.button-color($light-theme, $color-variant: primary);
-    }
-
-    .text-accent {
-      @include mat.icon-color($light-theme, $color-variant: tertiary);
-      @include mat.button-color($light-theme, $color-variant: tertiary);
-
-    }
-
-    .text-danger {
-      @include mat.icon-color($light-theme, $color-variant: error);
-      @include mat.button-color($light-theme, $color-variant: error);
-    }
-
-    .active {
-      background-color: mat.get-theme-color($light-theme, primary, 60) !important;
-    }
-
-    a {
-      color: mat.get-theme-color($light-theme, primary, 90);
-    }
-
-    .drag-list {
-      border: solid 1px darken($color: $light-primary-text, $amount: 20%);
-      background-color: $light-primary-text;
-    }
-
-    .drag-box {
-      background-color: lighten($color: $light-color, $amount: 1%);
-      border: solid 1px darken($color: $light-color, $amount: 6%);
-    }
-  }
-}
+$light-color: #f5f5f5;
+$dark-color: #212121;
