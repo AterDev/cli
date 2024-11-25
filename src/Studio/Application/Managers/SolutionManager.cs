@@ -93,14 +93,8 @@ public class SolutionManager(
             //}
         }
 
-        // TODO:保存项目信息
-        //string? addRes = await _projectManager.AddAsync(dto.Name, path);
-        //if (addRes != null)
-        //{
-        //    ErrorMsg = addRes;
-        //    return false;
-        //}
-
+        // 保存项目信息
+        var id = await _projectManager.AddAsync(dto.Name, path);
         // restore & build solution
         Console.WriteLine("⛏️ restore & build project!");
         if (!ProcessHelper.RunCommand("dotnet", $"build {path}", out _))

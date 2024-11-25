@@ -1,0 +1,38 @@
+<Solution>
+  <Folder Name="/config/">
+    <File Path=".config/dotnet-tools.json" />
+    <File Path=".dry-config.json" />
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/docs/">
+    <File Path="docs/docs.md" />
+  </Folder>
+  <Folder Name="/scripts/">
+    <File Path="scripts/EFMigrations.ps1" />
+    <File Path="scripts/RunAPI.ps1" />
+    <File Path="scripts/UpdateMenus.ps1" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Application/Application.csproj" />
+    <Project Path="src/AspireHost/AspireHost.csproj" />
+    <Project Path="src/Http.API/Http.API.csproj" />
+    <Project Path="src/ServiceDefaults/ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/Definition/">
+    <Project Path="src/Definition/Entity/Entity.csproj" />
+    <Project Path="src/Definition/EntityFramework/EntityFramework.csproj" />
+    <Project Path="src/Definition/Share/Share.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/Ater.Web.Abstraction/Ater.Web.Abstraction.csproj" />
+    <Project Path="src/Infrastructure/Ater.Web.Core/Ater.Web.Core.csproj" />
+    <Project Path="src/Infrastructure/Ater.Web.Extension/Ater.Web.Extension.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/">
+    <Project Path="src/Modules/CMSMod/CMSMod.csproj" />
+    <Project Path="src/Modules/CustomerMod/CustomerMod.csproj" />
+    <Project Path="src/Modules/FileManagerMod/FileManagerMod.csproj" />
+    <Project Path="src/Modules/OrderMod/OrderMod.csproj" />
+    <Project Path="src/Modules/SystemMod/SystemMod.csproj" />
+  </Folder>
+</Solution>
