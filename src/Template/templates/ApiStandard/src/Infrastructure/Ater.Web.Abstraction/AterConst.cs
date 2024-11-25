@@ -8,6 +8,10 @@ public static class AterConst
     public const string DefaultStateName = "statestore";
     public const string DefaultPubSubName = "pubsub";
     public const string TenantId = "TenantId";
+
+    public const string CommandDb = "CommandDb";
+    public const string QueryDb = "QueryDb";
+    public const string Cache = "Cache";
     /// <summary>
     /// 超级管理员
     /// </summary>

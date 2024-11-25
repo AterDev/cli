@@ -1,17 +1,11 @@
-{
+﻿{
   "version": 1,
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version": "8.0.0",
+      "version": "9.0.0",
       "commands": [
         "dotnet-ef"
-      ]
-    },
-    "ater.dry": {
-      "version": "9.0.0-preview1",
-      "commands": [
-        "dry"
       ]
     }
   }

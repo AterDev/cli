@@ -1,11 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using Entity.SystemMod;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EntityFramework.DBProvider;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 public partial class ContextBase(DbContextOptions options) : DbContext(options)
 {
+
     public DbSet<User> Users { get; set; }
+
+    public DbSet<SystemUser> SystemUsers { get; set; }
+    public DbSet<SystemRole> SystemRoles { get; set; }
+    public DbSet<SystemConfig> SystemConfigs { get; set; }
+    /// <summary>
+    /// 菜单
+    /// </summary>
+    public DbSet<SystemMenu> SystemMenus { get; set; }
+    public DbSet<SystemPermission> SystemPermissions { get; set; }
+    /// <summary>
+    /// 权限组
+    /// </summary>
+    public DbSet<SystemPermissionGroup> SystemPermissionGroups { get; set; }
+    public DbSet<SystemLogs> SystemLogs { get; set; }
+    public DbSet<SystemOrganization> SystemOrganizations { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

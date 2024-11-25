@@ -7,7 +7,7 @@ namespace Entity;
 [Index(nameof(ActionType))]
 [Index(nameof(ActionUserName))]
 [Index(nameof(CreatedTime))]
-public class UserLogs : EntityBase
+public class UserLog : EntityBase
 {
     /// <summary>
     /// 操作人名称
@@ -47,9 +47,9 @@ public class UserLogs : EntityBase
     public Guid UserId { get; set; } = default!;
 
 
-    public static UserLogs NewLog(string userName, Guid userId, UserActionType actionType, object? entity, string? route = null, string? description = null)
+    public static UserLog NewLog(string userName, Guid userId, UserActionType actionType, object? entity, string? route = null, string? description = null)
     {
-        return new UserLogs
+        return new UserLog
         {
             UserId = userId,
             ActionUserName = userName,
