@@ -50,7 +50,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefaults", "src\Serv
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{F3FDFE0C-D1D5-4AA5-AE37-FA7456FEE8A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSMod", "src\Modules\CMSMod\CMSMod.csproj", "{4A66A606-D635-4F8E-86FC-3CD2D512D176}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSMod", "src\Modules\CMSMod\CMSMod.csproj", "{B55E769D-CA8E-403F-A3EA-3FC22B7CF5B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManagerMod", "src\Modules\FileManagerMod\FileManagerMod.csproj", "{9724ACF2-FEF6-4254-A062-CD4BAF20D7C9}"
 EndProject
