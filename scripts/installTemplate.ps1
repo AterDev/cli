@@ -1,28 +1,28 @@
 # 模块名称
-$modulesNames = @("CMSMod", "FileManagerMod", "OrderMod", "SystemMod", "CustomerMod")
+$modulesNames = @("CMSMod", "FileManagerMod", "OrderMod", "CustomerMod")
 
 # 移动模块到临时目录
 function TempModule([string]$solutionPath, [string]$moduleName) {
     Write-Host "move module:"$moduleName
-    $tmp = Join-Path $solutionPath "./.tmp"
-    $entityPath = Join-Path $solutionPath "./src/Definition/Entity" $moduleName
+    # $tmp = Join-Path $solutionPath "./.tmp"
+    # $entityPath = Join-Path $solutionPath "./src/Definition/Entity" $moduleName
 
-    $destDir = Join-Path $tmp $moduleName
+    # $destDir = Join-Path $tmp $moduleName
 
-    # move entity to tmp   
-    $entityDestDir = Join-Path $destDir "Entities"
-    if (!(Test-Path $entityDestDir)) {
-        New-Item -Path $entityDestDir -ItemType Directory -Force | Out-Null
-    }
-    # get entity names by cs file name without extension
-    Move-Item -Path $entityPath\* -Destination $entityDestDir -Force
+    # # move entity to tmp   
+    # $entityDestDir = Join-Path $destDir "Entities"
+    # if (!(Test-Path $entityDestDir)) {
+    #     New-Item -Path $entityDestDir -ItemType Directory -Force | Out-Null
+    # }
+    # # get entity names by cs file name without extension
+    # Move-Item -Path $entityPath\* -Destination $entityDestDir -Force
 
     # remove module reference project
     $moduleProjectFile = Join-Path $solutionPath "src/Modules/"$moduleName "$moduleName.csproj"
     $apiProjectFile = Join-Path $solutionPath "src/Http.API/Http.API.csproj"
 
     dotnet remove $apiProjectFile reference $moduleProjectFile
-    dotnet sln $solutionPath/MyProjectName.sln remove $moduleProjectFile
+    # dotnet sln $solutionPath/MyProjectName.slnx remove $moduleProjectFile
 }
 
 # 复原模块内容
@@ -39,7 +39,7 @@ function RestoreModule ([string]$solutionPath, [string]$moduleName) {
     }
     # recover module reference project
     $moduleProjectFile = Join-Path $solutionPath "src/Modules/"$moduleName "$moduleName.csproj"
-    dotnet sln $solutionPath/MyProjectName.sln add $moduleProjectFile
+    dotnet sln $solutionPath/MyProjectName.slnx add $moduleProjectFile
 }
 
 
@@ -67,8 +67,7 @@ try {
     $apiProjectFile = Join-Path $solutionPath "src/Http.API/Http.API.csproj"
     Copy-Item -Path $apiProjectFile -Destination $tmp -Force
 
-    $moduleContextBaseFile = Join-Path $solutionPath "src/Definition/EntityFramework/DBProvider/ModuleContextBase.cs"
-    Move-Item -Path $moduleContextBaseFile -Destination $tmp -Force
+
 
     Write-Host "find modules:"$modulesNames;
 
@@ -80,13 +79,12 @@ try {
     # pack
     dotnet pack -c release -o ./nuget
 
-    foreach ($moduleName in $modulesNames) {
-        RestoreModule $solutionPath $moduleName
-    }
+    # foreach ($moduleName in $modulesNames) {
+    #     RestoreModule $solutionPath $moduleName
+    # }
 
     # restore  files
     Copy-Item -Path $tmp\Http.API.csproj -Destination $solutionPath\src\Http.API -Force
-    Copy-Item -Path $tmp\ModuleContextBase.cs -Destination $solutionPath\src\Definition\EntityFramework\DBProvider -Force
 
     # delete tmp directory
     Remove-Item $tmp -Force -Recurse
