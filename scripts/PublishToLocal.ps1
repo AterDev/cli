@@ -57,7 +57,7 @@ try {
             Remove-Item .\publish -R -Force
         }
         
-        dotnet publish -f net8.0 -c release -o ./publish -p:GenerateDocumentationFile=false -p:DebugType=None
+        dotnet publish -c release -o ./publish -p:GenerateDocumentationFile=false -p:DebugType=None
         # 移除部分 dll文件，减少体积
         $pathsToRemove = @(
             ".\publish\BuildHost-net472",
@@ -161,7 +161,6 @@ try {
     foreach ($file in $files) {
         Remove-Item $file.FullName -Force
     }
-
 
     # 删除 BuildHost-net472
     Remove-Item -Path "./nupkg/$Version/tools/$dotnetVersion/any/BuildHost-net472" -Recurse -Force
