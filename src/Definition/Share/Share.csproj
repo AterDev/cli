@@ -15,6 +15,9 @@
     <ItemGroup>
         <Folder Include="Models\ToolsDtos\" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" Version="9.0.0" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\CodeGenerator\CodeGenerator.csproj" />

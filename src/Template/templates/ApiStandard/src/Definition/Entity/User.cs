@@ -68,13 +68,16 @@ public enum UserType
     /// <summary>
     /// 普通用户
     /// </summary>
+    [Description("普通用户")]
     Normal,
     /// <summary>
     /// 认证用户
     /// </summary>
+    [Description("认证用户")]
     Verify,
     /// <summary>
     /// 会员
     /// </summary>
+    [Description("会员")]
     Member
 }

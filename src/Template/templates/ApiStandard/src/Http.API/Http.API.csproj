@@ -11,20 +11,15 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="9.0.0" />
-    </ItemGroup>
-    
-    <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
-    </ItemGroup>
 
+    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Application\Application.csproj" />
         <ProjectReference Include="..\Infrastructure\Ater.Web.Extension\Ater.Web.Extension.csproj" />
+        <ProjectReference Include="..\Modules\SystemMod\SystemMod.csproj" />
         <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 </Project>
