@@ -22,7 +22,7 @@ public static class ServiceCollectionExtension
     /// <returns></returns>
     public static IServiceCollection AddDefaultWebServices(this WebApplicationBuilder builder)
     {
-        builder.Services.ConfigWebComponents(builder.Configuration);
+        builder.Services.ConfigureWebMiddleware(builder.Configuration);
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IUserContext, UserContext>();
         builder.Services.AddScoped<ITenantProvider, TenantProvider>();
@@ -92,7 +92,7 @@ public static class ServiceCollectionExtension
     /// <param name="services"></param>
     /// <param name="configuration"></param>
     /// <returns></returns>
-    public static IServiceCollection ConfigWebComponents(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureWebMiddleware(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwagger();
         services.AddJwtAuthentication(configuration);

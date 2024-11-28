@@ -1,5 +1,4 @@
 using Application.Managers;
-
 using Share.Models.UserDtos;
 
 namespace Http.API.Controllers;

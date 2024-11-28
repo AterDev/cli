@@ -1,12 +1,9 @@
 ﻿using System.Diagnostics;
-
-using Ater.Web.Abstraction.Interface;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
-namespace Ater.Web.Abstraction;
+namespace Application.Implement;
 
 /// <summary>
 /// 管理后台权限控制器
@@ -41,7 +38,7 @@ public class ClientControllerBase<TManager>(
 }
 
 /// <summary>
-/// http api 基类，重写ControllerBase中的方法
+/// RestApi base
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -114,6 +111,7 @@ public class RestControllerBase : ControllerBase
     /// 500业务错误
     /// </summary>
     /// <param name="detail"></param>
+    /// <param name="status"></param>
     /// <returns></returns>
     [NonAction]
     public ObjectResult Problem(string? detail = null, int status = 500)
