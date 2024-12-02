@@ -80,17 +80,16 @@ public class SolutionManager(
         if (!dto.IsLight)
         {
             List<string> allModules = ModuleInfo.GetModules().Select(m => m.Value).ToList();
-            // TODO:模块处理
-            //ModuleCommand moduleCommand = new(path, allModules);
-            //List<string> notChoseModules = allModules.Except(dto.Modules).ToList();
-            //foreach (string? item in notChoseModules)
-            //{
-            //    moduleCommand.CleanModule(item);
-            //}
-            //foreach (string item in dto.Modules)
-            //{
-            //    await moduleCommand.CreateModuleAsync(item);
-            //}
+
+            List<string> notChoseModules = allModules.Except(dto.Modules).ToList();
+            foreach (string? item in notChoseModules)
+            {
+                _solution.CleanModule(item);
+            }
+            foreach (string item in dto.Modules)
+            {
+                await CreateModuleAsync(item);
+            }
         }
 
         // 保存项目信息
