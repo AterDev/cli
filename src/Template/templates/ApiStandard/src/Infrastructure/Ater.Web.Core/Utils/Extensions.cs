@@ -1,3 +1,4 @@
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using Ater.Web.Core.Models;
 using Ater.Web.Core.Utils;
@@ -94,7 +95,7 @@ public static partial class Extensions
         }
         return source;
     }
-
+  
     public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable source)
     {
         return source.ProjectToType<TResult>();
@@ -143,6 +144,34 @@ public static partial class Extensions
             orderQuery = (IOrderedQueryable<T>)query.Provider.CreateQuery<T>(expression);
             query = orderQuery;
             count++;
+        }
+        return orderQuery;
+    }
+
+
+    public static IOrderedQueryable<T> ThenBy<T>(this IQueryable<T> query, Dictionary<string, bool> dic)
+    {
+        IOrderedQueryable<T> orderQuery = default!;
+        ParameterExpression parameter = Expression.Parameter(typeof(T), "e");
+        foreach (KeyValuePair<string, bool> item in dic)
+        {
+            MemberExpression prop = Expression.PropertyOrField(parameter, item.Key);
+            MemberExpression body = Expression.MakeMemberAccess(parameter, prop.Member);
+            LambdaExpression selector = Expression.Lambda(body, parameter);
+            MethodCallExpression expression = item.Value
+                    ? Expression.Call(typeof(Queryable),
+                                              "ThenBy",
+                                              [typeof(T), body.Type],
+                                              query.Expression,
+                                              Expression.Quote(selector))
+                    : Expression.Call(typeof(Queryable),
+                                              "ThenByDescending",
+                                              [typeof(T), body.Type],
+                                              query.Expression,
+                                              Expression.Quote(selector));
+
+            orderQuery = (IOrderedQueryable<T>)query.Provider.CreateQuery<T>(expression);
+            query = orderQuery;
         }
         return orderQuery;
     }
