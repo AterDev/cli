@@ -94,7 +94,11 @@ public class SolutionManager(
         }
 
         // 保存项目信息
-        var id = await _projectManager.AddAsync(dto.Name, path);
+        var projectFilePath = Directory.GetFiles(path, $"*{ConstVal.SolutionExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        projectFilePath ??= Directory.GetFiles(path, $"*{ConstVal.SolutionXMLExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        projectFilePath ??= Directory.GetFiles(path, $"*{ConstVal.CSharpProjectExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        projectFilePath ??= Directory.GetFiles(path, ConstVal.NodeProjectFile, SearchOption.TopDirectoryOnly).FirstOrDefault();
+        var id = await _projectManager.AddAsync(dto.Name, projectFilePath);
         // restore & build solution
         Console.WriteLine("⛏️ restore & build project!");
         if (!ProcessHelper.RunCommand("dotnet", $"build {path}", out _))
