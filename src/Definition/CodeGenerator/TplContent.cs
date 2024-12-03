@@ -140,9 +140,9 @@ public class TplContent
                 }
             }
             """ :
-            """
+            $$"""
             namespace @(Model.Namespace);
-            public static partial class ManagerServiceCollectionExtensions
+            public static partial class {{ConstVal.ManagerServiceExtensionsFile}}
             {
                 public static IServiceCollection AddManagers(this IServiceCollection services)
                 {

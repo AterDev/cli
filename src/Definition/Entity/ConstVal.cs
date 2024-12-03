@@ -63,7 +63,7 @@ public static class ConstVal
 
     public const string GlobalUsingsFile = "GlobalUsings.cs";
     public const string ServiceExtensionsFile = "ServiceCollectionExtensions.cs";
-    public const string ManagerServiceExtensionsFile = "ManagerServiceCollectionExtensions.cs";
+    public const string ManagerServiceExtensionsFile = "AppManagerServiceExtensions.cs";
 }
 
 /// <summary>

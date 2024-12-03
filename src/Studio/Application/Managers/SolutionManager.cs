@@ -35,7 +35,7 @@ public class SolutionManager(
     public async Task<bool> CreateNewSolutionAsync(CreateSolutionDto dto)
     {
         // 生成项目
-        string path = Path.Combine(dto.Path, dto.Name);
+        string solutionPath = Path.Combine(dto.Path, dto.Name);
         string apiName = "Http.API";
         string templateType = dto.IsLight ? "atlight" : "atapi";
 
@@ -53,24 +53,24 @@ public class SolutionManager(
 
         if (!Directory.Exists(dto.Path))
         {
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(solutionPath);
         }
-        if (!ProcessHelper.RunCommand("dotnet", $"new {templateType} -o {path} --force", out _))
+        if (!ProcessHelper.RunCommand("dotnet", $"new {templateType} -o {solutionPath} --force", out _))
         {
             ErrorMsg = "创建项目失败，请尝试使用空目录创建";
             return false;
         }
-        await Console.Out.WriteLineAsync($"✅ create new solution {path}");
+        await Console.Out.WriteLineAsync($"✅ create new solution {solutionPath}");
 
         // 更新配置文件
-        UpdateAppSettings(dto, path, apiName);
+        UpdateAppSettings(dto, solutionPath, apiName);
         // 数据库选择
-        ChooseDatabase(dto.DBType, path, dto.IsLight);
+        ChooseDatabase(dto.DBType, solutionPath, dto.IsLight);
 
         // 前端项目处理
         if (dto.FrontType == FrontType.None)
         {
-            string appPath = Path.Combine(path, "src", "ClientApp");
+            string appPath = Path.Combine(solutionPath, "src", "ClientApp");
             if (Directory.Exists(appPath))
             {
                 Directory.Delete(appPath, true);
@@ -88,19 +88,19 @@ public class SolutionManager(
             }
             foreach (string item in dto.Modules)
             {
-                await CreateModuleAsync(item);
+                SolutionService.AddDefaultModule(item, solutionPath);
             }
         }
 
         // 保存项目信息
-        var projectFilePath = Directory.GetFiles(path, $"*{ConstVal.SolutionExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
-        projectFilePath ??= Directory.GetFiles(path, $"*{ConstVal.SolutionXMLExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
-        projectFilePath ??= Directory.GetFiles(path, $"*{ConstVal.CSharpProjectExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
-        projectFilePath ??= Directory.GetFiles(path, ConstVal.NodeProjectFile, SearchOption.TopDirectoryOnly).FirstOrDefault();
+        var projectFilePath = Directory.GetFiles(solutionPath, $"*{ConstVal.SolutionExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        projectFilePath ??= Directory.GetFiles(solutionPath, $"*{ConstVal.SolutionXMLExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        projectFilePath ??= Directory.GetFiles(solutionPath, $"*{ConstVal.CSharpProjectExtension}", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        projectFilePath ??= Directory.GetFiles(solutionPath, ConstVal.NodeProjectFile, SearchOption.TopDirectoryOnly).FirstOrDefault();
         var id = await _projectManager.AddAsync(dto.Name, projectFilePath);
         // restore & build solution
         Console.WriteLine("⛏️ restore & build project!");
-        if (!ProcessHelper.RunCommand("dotnet", $"build {path}", out _))
+        if (!ProcessHelper.RunCommand("dotnet", $"build {solutionPath}", out _))
         {
             ErrorMsg = "项目创建成功，但构建失败，请查看错误信息!";
             return false;

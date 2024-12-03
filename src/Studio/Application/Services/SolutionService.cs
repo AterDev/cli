@@ -28,6 +28,7 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
             _logger.LogInformation("⚠️ 该模块已存在");
             return;
         }
+
         // 基础类
         string projectPath = Path.Combine(moduleDir, moduleName);
         await Console.Out.WriteLineAsync($"🚀 create module:{moduleName} ➡️ {projectPath}");
@@ -55,7 +56,6 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
         await AssemblyHelper.GenerateFileAsync(projectPath, "InitModule.cs", GetInitModuleContent(moduleName));
         await AssemblyHelper.GenerateFileAsync(projectPath, ConstVal.ServiceExtensionsFile, TplContent.ModuleServiceCollection(moduleName));
 
-        await AddDefaultModuleAsync(moduleName);
         await AddModuleConstFieldAsync(moduleName);
         // update solution file
         UpdateSolutionFile(Path.Combine(projectPath, $"{moduleName}{ConstVal.CSharpProjectExtension}"));
@@ -99,8 +99,8 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
         {
             Directory.Delete(entityPath, true);
             // 从解决方案移除项目
-            var modulePath = Path.Combine(_projectContext.ModulesPath!, moduleName + "Mod");
-            var moduleProjectFilePath = Path.Combine(modulePath, $"{moduleName}Mod{ConstVal.CSharpProjectExtension}");
+            var modulePath = Path.Combine(_projectContext.ModulesPath!, moduleName);
+            var moduleProjectFilePath = Path.Combine(modulePath, $"{moduleName}{ConstVal.CSharpProjectExtension}");
             ProcessHelper.RunCommand("dotnet", $"sln {SolutionPath} remove {moduleProjectFilePath}", out string error);
             Directory.Delete(modulePath, true);
         }
@@ -187,7 +187,7 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
     /// <summary>
     /// 添加默认模块
     /// </summary>
-    private async Task AddDefaultModuleAsync(string moduleName)
+    public static void AddDefaultModule(string moduleName, string solutionPath)
     {
         var moduleNames = ModuleInfo.GetModules().Select(m => m.Value).ToList();
         if (!moduleNames.Contains(moduleName))
@@ -198,22 +198,19 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
         string sourcePath = Path.Combine(studioPath, "Modules", moduleName);
         if (!Directory.Exists(sourcePath))
         {
-            _logger.LogInformation($"🦘 no default {moduleName}, just init it!");
             return;
         }
 
-        string databasePath = _projectContext.EntityFrameworkPath!;
-        string entityPath = Path.Combine(_projectContext.EntityPath!, moduleName);
-        string modulePath = Path.Combine(SolutionPath, PathConst.ModulesPath, moduleName);
+        string modulePath = Path.Combine(solutionPath, PathConst.ModulesPath, moduleName);
+        string entityPath = Path.Combine(solutionPath, PathConst.EntityPath, moduleName);
+        string databasePath = Path.Combine(solutionPath, PathConst.EntityFrameworkPath);
 
-        _logger.LogInformation("🚀 copy module files");
         // copy entities
         CopyModuleFiles(Path.Combine(sourcePath, "Entity"), entityPath);
 
         // copy module files
         CopyModuleFiles(sourcePath, modulePath);
 
-        _logger.LogInformation("🚀 update ContextBase DbSet");
         string dbContextFile = Path.Combine(databasePath, "DBProvider", "ContextBase.cs");
         string dbContextContent = File.ReadAllText(dbContextFile);
 
@@ -233,7 +230,6 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
             if (!compilation.PropertyExist(plural))
             {
                 compilation.AddClassProperty(propertyString);
-                _logger.LogInformation($"  ℹ️ add new property {plural} ➡️ ContextBase");
             }
         });
 
@@ -246,17 +242,9 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
         string newLine = @$"global using Entity.{moduleName};";
         if (!globalUsingsContent.Contains(newLine))
         {
-            _logger.LogInformation($"  ℹ️ add new using {newLine} ➡️ GlobalUsings");
             globalUsingsContent = globalUsingsContent.Replace("global using Entity;", $"global using Entity;{Environment.NewLine}{newLine}");
             File.WriteAllText(globalUsingsFile, globalUsingsContent);
         }
-
-        // 重新生成依赖注入服务
-        string applicationPath = _projectContext.ApplicationPath!;
-        string entityFrameworkPath = _projectContext.EntityFrameworkPath!;
-
-        string content = ManagerGenerate.GetManagerServiceContent(applicationPath, moduleName);
-        await IOHelper.WriteToFileAsync(Path.Combine(applicationPath, "ManagerServiceCollectionExtensions.cs"), content);
     }
 
     /// <summary>
@@ -265,7 +253,7 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
     /// <param name="sourceDir"></param>`
     /// <param name="destinationDir"></param>
     /// <param name="recursive"></param>
-    private void CopyModuleFiles(string sourceDir, string destinationDir)
+    private static void CopyModuleFiles(string sourceDir, string destinationDir)
     {
         DirectoryInfo dir = new(sourceDir);
         if (!dir.Exists) { return; }
@@ -278,7 +266,6 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
         {
             string targetFilePath = Path.Combine(destinationDir, file.Name);
             file.CopyTo(targetFilePath, true);
-            _logger.LogInformation($"  ℹ️ copy {file.Name} ➡️ {targetFilePath}");
         }
 
         foreach (DirectoryInfo subDir in dirs)

@@ -12,14 +12,15 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { StringComponent } from 'src/app/pages/tools/string/string.component';
 @Component({
-    selector: 'app-layout',
-    templateUrl: './layout.component.html',
-    styleUrls: ['./layout.component.css'],
-    standalone: false
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.css'],
+  standalone: false
 })
 export class LayoutComponent implements OnInit {
   isLogin = false;
   isAdmin = false;
+  isDarkTheme = true;
   openedChat = false;
   username?: string | null = null;
   type: string | null = null;
@@ -66,6 +67,20 @@ export class LayoutComponent implements OnInit {
     this.projectName = this.projectState.project?.displayName || '';
     this.version = this.projectState.version;
     this.filteredOptions = this.toolsOptions.slice();
+
+    const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+    if (themeMedia.matches) {
+      this.isDarkTheme = true;
+    } else {
+      this.isDarkTheme = false;
+    }
+    themeMedia.addEventListener('change', (e) => {
+      if (e.matches) {
+        this.isDarkTheme = true;
+      } else {
+        this.isDarkTheme = false;
+      }
+    });
   }
 
   filter(value: string): void {
