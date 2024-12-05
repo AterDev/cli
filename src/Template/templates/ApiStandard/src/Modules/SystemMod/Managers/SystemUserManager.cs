@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 using Ater.Web.Extension;
@@ -142,13 +142,13 @@ public class SystemUserManager(
             JwtService jwt = new(jwtOption.Sign, jwtOption.ValidAudiences, jwtOption.ValidIssuer)
             {
                 TokenExpires = expiredSeconds,
+                Claims =
+                [
+                    new Claim(ClaimTypes.Name,user.UserName),
+                    new Claim(ClaimTypes.Role, AterConst.AdminUser)
+                ]
             };
-            // 添加管理员用户标识
-            if (!roles.Contains(AterConst.AdminUser))
-            {
-                roles.Add(AterConst.AdminUser);
-            }
-            jwt.Claims = [new(ClaimTypes.Name, user.UserName),];
+
             var token = jwt.GetToken(user.Id.ToString(), [.. roles]);
 
             return new AuthResult
@@ -326,7 +326,6 @@ public class SystemUserManager(
             .Include(q => q.SystemRoles)
             .FirstOrDefaultAsync();
     }
-
 
     public async Task<SystemUser?> FindByUserNameAsync(string userName)
     {
