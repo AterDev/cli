@@ -18,13 +18,12 @@
         </PackageReleaseNotes>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.14.1" />
         <PackageReference Include="Ater.DeepSeek.Core" Version="1.0.1" />
+        <PackageReference Include="AWSSDK.S3" Version="3.7.410.1" />
         <PackageReference Include="MailKit" Version="4.8.0" />
         <PackageReference Include="MiniExcel" Version="1.35.0" />
-        <PackageReference Include="SkiaSharp" Version="2.88.9" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.9" />
-        <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.40" />
+        <PackageReference Include="SkiaSharp" Version="3.116.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.116.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Ater.Web.Abstraction\Ater.Web.Abstraction.csproj" />
@@ -39,5 +38,8 @@
             <PackagePath>
             </PackagePath>
         </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Options\" />
     </ItemGroup>
 </Project>
