@@ -1,6 +1,4 @@
 ﻿using CodeGenerator.Models;
-using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Readers;
 namespace Command.Share.Commands;
 /// <summary>
 /// 客户端请求生成
@@ -86,6 +84,7 @@ public class ApiClientCommand : CommandBase
         }
         var serviceNames = services.Select(s => s.Name.TrimEnd(".cs".ToCharArray())).ToList();
         string extensionContent = CSHttpClientGenerate.GetExtensionContent(nspName, serviceNames);
+
         await GenerateFileAsync(OutputPath, "Extension.cs", extensionContent, true);
 
         List<GenFileInfo> models = gen.GetModelFiles(nspName);

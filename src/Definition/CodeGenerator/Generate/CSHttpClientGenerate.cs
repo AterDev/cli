@@ -52,7 +52,8 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
     public static string GetGlobalUsing(string name)
     {
         string content = GetTplContent("RequestService.GlobalUsings.tpl");
-        content = content + $"global using {name}.Models;" + Environment.NewLine;
+        content = content + Environment.NewLine + $"global using {name}.Models;";
+        content = content + Environment.NewLine + $"global using {name}.Services;";
         return content;
     }
 
@@ -70,9 +71,9 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 <Nullable>enable</Nullable>
               </PropertyGroup>
               <ItemGroup>
-                <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-                <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.1" />
-                <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+                <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+                <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.0" />
+                <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
               </ItemGroup>
             </Project>
             """;
@@ -88,7 +89,6 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
     public static string GetExtensionContent(string namespaceName, List<string> services)
     {
         string tplContent = GetTplContent("RequestService.Extension.tpl");
-        Console.WriteLine(tplContent);
         tplContent = tplContent.Replace("#@Namespace#", namespaceName);
 
         string serviceContent = "";
@@ -120,7 +120,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
             currentTag ??= new OpenApiTag { Name = group.Key, Description = group.Key };
             RequestServiceFile serviceFile = new()
             {
-                Description = currentTag.Description,
+                Description = currentTag.Description?.Replace("\r\n", ","),
                 Name = currentTag.Name!,
                 Functions = tagFunctions
             };
@@ -161,7 +161,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
         List<string> refTypes = [];
         if (functions != null)
         {
-            functionstr = string.Join("\n", functions.Select(f => ToRequestFunction(f)).ToArray());
+            functionstr = string.Join("\n", functions.Select(ToRequestFunction).ToArray());
 
         }
         string result = $$"""
@@ -170,7 +170,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
         /// <summary>
         /// {{serviceFile.Description}}
         /// </summary>
-        public class {{serviceFile.Name}}Service(IHttpClientFactory httpClient) : BaseService(httpClient)
+        public class {{serviceFile.Name}}Service(IHttpClientFactory httpClientFactory) : BaseService(httpClientFactory)
         {
         {{functionstr}}
         }

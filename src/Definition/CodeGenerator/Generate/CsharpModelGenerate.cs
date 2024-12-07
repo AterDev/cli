@@ -266,7 +266,7 @@ public class CsharpModelGenerate : GenerateBase
                 string enumDesc = ((OpenApiString)obj["description"]).Value ?? "";
                 propertyString += $"""  
                       // {enumDesc}
-                      {enumName} = {enumValue}
+                      {enumName} = {enumValue},
 
                     """;
             }

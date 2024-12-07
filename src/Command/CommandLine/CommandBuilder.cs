@@ -25,6 +25,7 @@ public class CommandBuilder
         AddNgService();
         AddRequest();
         AddStudio();
+        AddCsharpClient();
         return RootCommand;
     }
 
@@ -151,6 +152,28 @@ public class CommandBuilder
         apiCommand.SetHandler(_runner.GenerateApiAsync, path, dtoOption, managerOption, apiOption, forceOption);
 
         RootCommand.Add(apiCommand);
+    }
+
+    public void AddCsharpClient()
+    {
+        System.CommandLine.Command clientCommand = new("client", "generate csharp request   client from OpenAPI json");
+        clientCommand.AddAlias("client");
+        Argument<string> url = new("Url or Path", "openApi json file url or local path");
+        Option<string> outputOption = new(["--output", "-o"])
+        {
+            IsRequired = true,
+            Description = "client project path",
+        };
+        var language = new Option<LanguageType>(["--language", "-l"], "client language type, ");
+        language.SetDefaultValue(LanguageType.CSharp);
+        language.IsRequired = false;
+        language.IsHidden = true;
+
+        clientCommand.AddArgument(url);
+        clientCommand.AddOption(outputOption);
+        clientCommand.SetHandler(CommandRunner.GenerateCSharpApiClientAsync, url, outputOption, language);
+
+        RootCommand.Add(clientCommand);
     }
 
     public void AddNgService()
