@@ -142,7 +142,8 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
 
                     GenFileInfo file = new(baseFileName, content)
                     {
-                        FullName = path
+                        FullName = path,
+                        IsCover = true,
                     };
                     files.Add(file);
 
@@ -150,7 +151,6 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
                     content = ToNgRequestService(serviceFile);
                     file = new(fileName, content)
                     {
-                        IsCover = false,
                         FullName = path
                     };
                     files.Add(file);
