@@ -3,7 +3,7 @@
 /// <summary>
 /// 登录
 /// </summary>
-public class LoginDto
+public class SystemLoginDto
 {
     [MaxLength(50)]
     public string UserName { get; set; } = default!;

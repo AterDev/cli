@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.RateLimiting;
+﻿using Microsoft.AspNetCore.RateLimiting;
 using SystemMod.Models;
 using SystemMod.Models.SystemUserDtos;
 using SystemMod.Services;
@@ -72,7 +72,7 @@ public class SystemUserController(
     /// <returns></returns>
     [HttpPut("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<AuthResult>> LoginAsync(LoginDto dto)
+    public async Task<ActionResult<AuthResult>> LoginAsync(SystemLoginDto dto)
     {
         dto.Password = dto.Password.Trim();
         // 查询用户
