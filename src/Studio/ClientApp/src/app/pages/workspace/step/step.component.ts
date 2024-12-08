@@ -16,10 +16,10 @@ import { GenStepItemDto } from 'src/app/services/gen-step/models/gen-step-item-d
 import { GenStepUpdateDto } from 'src/app/services/gen-step/models/gen-step-update-dto.model';
 
 @Component({
-    selector: 'app-step',
-    templateUrl: './step.component.html',
-    styleUrl: './step.component.css',
-    standalone: false
+  selector: 'app-step',
+  templateUrl: './step.component.html',
+  styleUrl: './step.component.css',
+  standalone: false
 })
 export class StepComponent {
   GenStepType = GenStepType;
@@ -32,6 +32,7 @@ export class StepComponent {
   dataSource!: MatTableDataSource<GenStepItemDto>;
   dialogRef!: MatDialogRef<{}, any>;
   @ViewChild('addDialog', { static: true }) addTmpl!: TemplateRef<{}>;
+  @ViewChild('helpDialog', { static: true }) helpTmpl!: TemplateRef<{}>;
   isEditable = false;
   addForm!: FormGroup;
   addDto: GenStepAddDto | null = null;
@@ -121,11 +122,16 @@ export class StepComponent {
     this.addForm = new FormGroup({
       name: new FormControl(null, [Validators.maxLength(100), Validators.required]),
       content: new FormControl(null, [Validators.maxLength(100_000)]),
-      path: new FormControl(null, [Validators.maxLength(400)]),
-      outputPath: new FormControl(null, [Validators.maxLength(400)]),
+      path: new FormControl('templates/', [Validators.maxLength(400)]),
+      outputPath: new FormControl('src/', [Validators.maxLength(400)]),
       genStepType: new FormControl(GenStepType.File, [Validators.required])
     });
+  }
 
+  openHelpDialog(): void {
+    this.dialog.open(this.helpTmpl, {
+      minWidth: '400px',
+    })
   }
   async openAddDialog(id: string | null = null, isEditable = false): Promise<void> {
     this.initForm();

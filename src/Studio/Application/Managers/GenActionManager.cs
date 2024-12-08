@@ -159,7 +159,7 @@ public class GenActionManager(
         var res = new GenActionResultDto();
         var action = await Command.Where(a => a.Id == dto.Id)
             .Include(a => a.GenSteps)
-            .FirstAsync();
+            .SingleAsync();
         action.ActionStatus = ActionStatus.InProgress;
         await SaveChangesAsync();
 
@@ -173,7 +173,7 @@ public class GenActionManager(
         }
         var actionRunModel = new ActionRunModel
         {
-            Variables = variables
+            Variables = [.. variables]
         };
 
         // 解析模型
@@ -251,7 +251,11 @@ public class GenActionManager(
                                 }
                                 else
                                 {
-                                    File.WriteAllText(outputPath, step.OutputContent);
+                                    if (!Directory.Exists(Path.GetDirectoryName(outputPath)))
+                                    {
+                                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+                                    }
+                                    File.WriteAllText(outputPath, step.OutputContent, Encoding.UTF8);
                                 }
                                 res.IsSuccess = true;
                             }

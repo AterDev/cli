@@ -127,7 +127,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
 
             string content = ToRequestService(serviceFile, namespaceName);
 
-            string fileName = currentTag.Name + "Service.cs";
+            string fileName = currentTag.Name + "RestService.cs";
             GenFileInfo file = new(fileName, content)
             {
                 ModelName = currentTag.Name
@@ -170,7 +170,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
         /// <summary>
         /// {{serviceFile.Description}}
         /// </summary>
-        public class {{serviceFile.Name}}Service(IHttpClientFactory httpClientFactory) : BaseService(httpClientFactory)
+        public class {{serviceFile.Name}}RestService(IHttpClientFactory httpClientFactory) : BaseService(httpClientFactory)
         {
         {{functionstr}}
         }

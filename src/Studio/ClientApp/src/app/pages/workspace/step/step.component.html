@@ -13,6 +13,11 @@
         </div>
       </div>
       <div class="d-flex flex-grow-1"></div>
+      <button mat-flat-button color="primary" (click)="openHelpDialog()">
+        模板使用帮助
+      </button>
+
+
       <button mat-flat-button color="primary" (click)="openAddDialog()">
         <mat-icon>add</mat-icon>
         步骤
@@ -96,6 +101,104 @@
     }
   }
 </div>
+
+<ng-template #helpDialog>
+  <h2 mat-dialog-title>模板变量说明</h2>
+  <mat-dialog-content>
+    <div class="d-flex flex-column">
+      <h3>内置结构</h3>
+      <table class="default">
+        <tr>
+          <th>属性</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td>命名空间</td>
+          <td>&#64;Namespace</td>
+        </tr>
+        <tr>
+          <td>模型名称</td>
+          <td>&#64;ModelName</td>
+        </tr>
+        <tr>
+          <td>类型描述</td>
+          <td>&#64;Description</td>
+        </tr>
+        <tr>
+          <td>属性列表</td>
+          <td>&#64;PropertyInfos</td>
+        </tr>
+        <tr>
+          <td>变量列表</td>
+          <td>&#64;Variables</td>
+        </tr>
+      </table>
+      <h3>&#64;PropertyInfos变量</h3>
+      <table class="default">
+        <tr>
+          <th>属性</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td>类型</td>
+          <td>Type</td>
+        </tr>
+        <tr>
+          <td>名称</td>
+          <td>Name</td>
+        </tr>
+        <tr>
+          <td>显示名称</td>
+          <td>DisplayName</td>
+        </tr>
+        <tr>
+          <td>是否数组</td>
+          <td>IsList</td>
+        </tr>
+        <tr>
+          <td>是否公开</td>
+          <td>IsPublic</td>
+        </tr>
+        <tr>
+          <td>是否导航属性</td>
+          <td>IsNavigation</td>
+        </tr>
+        <tr>
+          <td>是否枚举</td>
+          <td>IsEnum</td>
+        </tr>
+        <tr>
+          <td>xml注释</td>
+          <td>CommentXml</td>
+        </tr>
+        <tr>
+          <td>注释摘要</td>
+          <td>CommentSummary</td>
+        </tr>
+        <tr>
+          <td>是否必须</td>
+          <td>IsRequired</td>
+        </tr>
+        <tr>
+          <td>是否可空</td>
+          <td>IsNullable</td>
+        </tr>
+        <tr>
+          <td>最小长度</td>
+          <td>MinLength</td>
+        </tr>
+        <tr>
+          <td>最大长度</td>
+          <td>MaxLength</td>
+        </tr>
+      </table>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions class="justify-content-end">
+    <button mat-button color="primary" mat-dialog-close>确认</button>
+  </mat-dialog-actions>
+</ng-template>
 
 <ng-template #addDialog>
   <h2 mat-dialog-title>
