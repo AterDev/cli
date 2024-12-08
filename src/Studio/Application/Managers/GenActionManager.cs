@@ -192,6 +192,11 @@ public class GenActionManager(
                     Key = "ModelName",
                     Value = dto.ModelInfo.Name
                 });
+                actionRunModel.Variables.Add(new Variable
+                {
+                    Key = "ModelNameHyphen",
+                    Value = dto.ModelInfo.Name.ToHyphen()
+                });
             }
             else if (dto.SourceFilePath.NotEmpty())
             {
@@ -208,6 +213,11 @@ public class GenActionManager(
                     {
                         Key = "ModelName",
                         Value = entityInfo.Name
+                    });
+                    actionRunModel.Variables.Add(new Variable
+                    {
+                        Key = "ModelNameHyphen",
+                        Value = entityInfo.Name.ToHyphen()
                     });
                 }
             }

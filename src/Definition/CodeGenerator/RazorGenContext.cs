@@ -1,4 +1,4 @@
-using RazorEngineCore;
+﻿using RazorEngineCore;
 
 namespace CodeGenerator;
 
@@ -52,7 +52,7 @@ public class RazorGenContext
     public string GenTemplate(string templateContent, ActionRunModel model)
     {
         templateContent = "@using Ater.Web.Core.Utils;" + Environment.NewLine + templateContent;
-        var dictionary = model.Variables.ToDictionary(v => v.Key, v => v.Value);
+        var dictionary = model.Variables.DistinctBy(v => v.Key).ToDictionary(v => v.Key, v => v.Value);
 
         var template = RazorEngine.Compile<CustomTemplate>(templateContent, builder =>
         {
@@ -107,11 +107,9 @@ public class ActionRunModel
     /// 命名空间
     /// </summary>
     public string? Namespace { get; set; }
-
     /// <summary>
     /// 类型描述
     /// </summary>
     public string? Description { get; set; }
-
     public List<PropertyInfo> PropertyInfos { get; set; } = [];
 }
