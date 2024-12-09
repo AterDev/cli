@@ -303,9 +303,40 @@ public partial class EntityInfoManager(
                 var managerFiles = _codeGenService.GenerateManager(entityInfo, applicationPath, tplContent, dto.Force);
                 files.AddRange(managerFiles);
 
-                tplContent = TplContent.ControllerTpl();
-                var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
-                files.AddRange(controllerFiles);
+                var controllerType = _projectContext.Project?.Config.ControllerType;
+
+                switch (controllerType)
+                {
+                    case ControllerType.Client:
+                    {
+                        tplContent = TplContent.ControllerTpl(false);
+                        var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
+                        files.AddRange(controllerFiles);
+                        break;
+                    }
+                    case ControllerType.Admin:
+                    {
+                        tplContent = TplContent.ControllerTpl();
+                        apiPath = Path.Combine(apiPath, "AdminControllers");
+                        var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
+                        files.AddRange(controllerFiles);
+                        break;
+                    }
+                    case ControllerType.Both:
+                    {
+                        tplContent = TplContent.ControllerTpl(false);
+                        var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
+                        files.AddRange(controllerFiles);
+
+                        tplContent = TplContent.ControllerTpl();
+                        apiPath = Path.Combine(apiPath, "AdminControllers");
+                        controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
+                        files.AddRange(controllerFiles);
+                        break;
+                    }
+                    default:
+                        break;
+                }
                 break;
             }
             default:

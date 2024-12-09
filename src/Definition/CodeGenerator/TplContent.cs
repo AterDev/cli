@@ -154,9 +154,10 @@ public class TplContent
             """;
 
     }
-    public static string ControllerTpl()
+    public static string ControllerTpl(bool isAdmin = true)
     {
-        return """
+        var baseClass = isAdmin ? "ClientControllerBase" : "RestControllerBase";
+        return $$"""
             using @(Model.ShareNamespace).Models.@(Model.EntityName)Dtos;
             namespace @(Model.Namespace).Controllers;
 
@@ -165,7 +166,7 @@ public class TplContent
                 IUserContext user,
                 ILogger<@(Model.EntityName)Controller> logger,
                 @(Model.EntityName)Manager manager
-                ) : RestControllerBase<@(Model.EntityName)Manager>(manager, user, logger)
+                ) : {{baseClass}}<@(Model.EntityName)Manager>(manager, user, logger)
             {
                 /// <summary>
                 /// 分页数据 🛑
