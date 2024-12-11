@@ -235,6 +235,7 @@ public class OpenApiService
             {
                 foreach (var item in data)
                 {
+                    if (item == null) { continue; }
                     PropertyInfo prop = new()
                     {
                         Name = item["name"]?.GetValue<string>() ?? "",

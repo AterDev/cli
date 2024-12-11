@@ -223,7 +223,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
         // 枚举pipe
         if (type == RequestLibType.NgHttp)
         {
-            IDictionary<string, OpenApiSchema>? schemas = apiDocument!.Components?.Schemas;
+            var schemas = apiDocument!.Components.Schemas;
             string pipeContent = RequestGenerate.GetEnumPipeContent(schemas);
             dir = Path.Combine(outputPath, "pipe", docName);
 

@@ -145,7 +145,7 @@ public class CSharpCovertHelper
     private string ConvertToType(JsonElement element, string? propertyName = null)
     {
         // 类型处理
-        string? csharpType = element.ValueKind switch
+        var csharpType = element.ValueKind switch
         {
             JsonValueKind.Number => "int",
             JsonValueKind.String => "string?",
@@ -204,7 +204,7 @@ public class CSharpCovertHelper
                 csharpType = "DateTime";
             }
         }
-        return csharpType;
+        return csharpType ?? "object";
     }
 
 }

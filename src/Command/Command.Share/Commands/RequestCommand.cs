@@ -70,7 +70,7 @@ public class RequestCommand : CommandBase
         // 枚举pipe
         if (LibType == RequestLibType.NgHttp)
         {
-            var schemas = ApiDocument!.Components?.Schemas;
+            var schemas = ApiDocument!.Components.Schemas;
             string pipeContent = RequestGenerate.GetEnumPipeContent(schemas);
             dir = Path.Combine(OutputPath, "pipe", DocName);
             await GenerateFileAsync(dir, "enum-text.pipe.ts", pipeContent, true);

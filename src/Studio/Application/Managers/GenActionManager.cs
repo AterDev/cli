@@ -263,7 +263,7 @@ public class GenActionManager(
                                 {
                                     if (!Directory.Exists(Path.GetDirectoryName(outputPath)))
                                     {
-                                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+                                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
                                     }
                                     File.WriteAllText(outputPath, step.OutputContent, Encoding.UTF8);
                                 }

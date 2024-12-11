@@ -37,7 +37,7 @@ public class DocCommand : CommandBase
 
     public async Task GenerateDocAsync(string title)
     {
-        IDictionary<string, OpenApiSchema>? schemas = ApiDocument!.Components?.Schemas;
+        var schemas = ApiDocument!.Components.Schemas;
         if (schemas == null || !schemas.Any())
         {
             Console.WriteLine("❌ no schemas found.");
