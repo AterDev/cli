@@ -1,4 +1,5 @@
-﻿using Share.Models.GenActionDtos;
+﻿using Application.Services;
+using Share.Models.GenActionDtos;
 using Share.Models.GenStepDtos;
 namespace AterStudio.Controllers;
 
@@ -99,7 +100,6 @@ public class GenActionController(
         return await _manager.ExecuteActionAsync(dto);
     }
 
-
     /// <summary>
     /// 获取详情
     /// </summary>
@@ -125,5 +125,35 @@ public class GenActionController(
         if (entity == null) { return NotFound(); };
         // return Forbid();
         return await _manager.DeleteAsync(entity, false);
+    }
+
+    /// <summary>
+    /// 从本地导入
+    /// </summary>
+    /// <param name="service"></param>
+    /// <returns></returns>
+    [HttpGet("syncTemplate")]
+    public async Task<ActionResult<string>> SyncAsync([FromServices] SolutionService service)
+    {
+        var res = await service.SyncDataFromLocalAsync();
+        if (res.res)
+        {
+            return Ok(res.message);
+        }
+        else
+        {
+            return Problem(res.message);
+        }
+    }
+
+    /// <summary>
+    /// 保存配置
+    /// </summary>
+    /// <param name="service"></param>
+    /// <returns></returns>
+    [HttpGet("saveTemplate")]
+    public async Task<ActionResult<bool>> SaveSyncDataAsync([FromServices] SolutionService service)
+    {
+        return await service.SaveSyncDataLocalAsync();
     }
 }

@@ -243,7 +243,7 @@ public class TplContent
     {
         return """
             // 该文件自动生成，会被覆盖更新
-            import { Injectable, NgModule, Pipe, PipeTransform } from '@@angular/core';
+            import { Injectable, Pipe, PipeTransform } from '@@angular/core';
 
             @@Pipe({
               name: 'enumText'
@@ -260,12 +260,6 @@ public class TplContent
                 return result;
               }
             }
-
-
-            @@NgModule({
-              declarations: [EnumTextPipe], exports: [EnumTextPipe]
-            })
-            export class EnumTextPipeModule { }
 
             """;
     }

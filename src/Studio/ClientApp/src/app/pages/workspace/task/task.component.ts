@@ -414,4 +414,36 @@ export class TaskComponent implements OnInit {
       });
   }
 
+  saveTemplate(): void {
+    this.service.saveSyncData()
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.snb.open('保存成功');
+          } else {
+            this.snb.open('');
+          }
+        },
+        error: (error) => {
+          this.snb.open(error.detail);
+        }
+      });
+  }
+
+  syncTemplate(): void {
+    this.service.sync()
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.snb.open(res);
+          } else {
+            this.snb.open(res);
+          }
+        },
+        error: (error) => {
+          this.snb.open(error.detail);
+        }
+      });
+  }
+
 }

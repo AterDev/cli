@@ -20,8 +20,8 @@ public class OpenApiHelper
             if (data != null && data.Count > 0)
             {
                 return data.ToFrozenDictionary(
-                    x => x["name"]?.GetValue<string>() ?? "",
-                    x => x["value"]?.GetValue<int>() ?? 0);
+                    x => x!["name"]?.GetValue<string>() ?? "",
+                    x => x!["value"]?.GetValue<int>() ?? 0);
             }
         }
         return default;

@@ -404,7 +404,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 // TODO:object  字典
                 if (schema.AdditionalProperties != null)
                 {
-                    (string inType, string inRefType) = GetCsharpParamType(schema.AdditionalProperties);
+                    (string inType, string? inRefType) = GetCsharpParamType(schema.AdditionalProperties);
                     refType = inRefType;
                     type = $"Dictionary<string, {inType}>";
                 }

@@ -100,4 +100,20 @@ export class GenActionBaseService extends BaseService {
     return this.request<GenActionResultDto>('post', _url, data);
   }
 
+  /**
+   * 从本地导入
+   */
+  sync(): Observable<string> {
+    const _url = `/api/admin/GenAction/syncTemplate`;
+    return this.request<string>('get', _url);
+  }
+
+  /**
+   * 保存配置
+   */
+  saveSyncData(): Observable<boolean> {
+    const _url = `/api/admin/GenAction/saveTemplate`;
+    return this.request<boolean>('get', _url);
+  }
+
 }

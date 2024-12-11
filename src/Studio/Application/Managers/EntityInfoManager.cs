@@ -146,7 +146,7 @@ public partial class EntityInfoManager(
 
         string[] dirs = [];
 
-        foreach (string path in dirPaths.Where(p => p.NotEmpty()))
+        foreach (var path in dirPaths.Where(p => p.NotEmpty()))
         {
             string rootPath = Path.Combine(_projectContext.SolutionPath!, path!);
             if (!Directory.Exists(rootPath))

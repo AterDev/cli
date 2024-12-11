@@ -386,7 +386,7 @@ public class CompilationHelper
             if (propertyNode != null)
             {
                 SyntaxRoot = SyntaxRoot.RemoveNode(propertyNode, SyntaxRemoveOptions.KeepNoTrivia);
-                ClassNode = SyntaxRoot.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
+                ClassNode = SyntaxRoot!.DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
             }
         }
     }

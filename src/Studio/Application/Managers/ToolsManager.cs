@@ -68,7 +68,7 @@ public class ToolsManager
 
         return res;
 
-        string Basse64ToString(string str)
+        string? Basse64ToString(string str)
         {
             byte[] buffer = new byte[str.Length * 3 / 4];
             return Convert.TryFromBase64String(str, buffer, out int bytesWritten) ? Encoding.UTF8.GetString(buffer, 0, bytesWritten) : null;

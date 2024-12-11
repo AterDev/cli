@@ -21,6 +21,7 @@ public static class ConstVal
     public const string ManagersDir = "Managers";
     public const string ControllersDir = "Controllers";
     public const string SrcDir = "src";
+    public const string TemplateDir = "templates";
     public const string MicroserviceDir = "Microservice";
 
     public const string StudioDir = "DryStudio";
@@ -52,6 +53,7 @@ public static class ConstVal
     // files 
     public const string TemplateZip = "template.zip";
     public const string StudioZip = "studio.zip";
+    public const string SyncJson = "sync.json";
 
     public const string SolutionExtension = ".sln";
     public const string SolutionXMLExtension = ".slnx";

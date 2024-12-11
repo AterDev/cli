@@ -6,10 +6,14 @@ namespace Application.Services;
 /// <summary>
 /// 解决方案相关功能
 /// </summary>
-public class SolutionService(IProjectContext projectContext, ILogger<SolutionService> logger)
+public class SolutionService(IProjectContext projectContext, ILogger<SolutionService> logger,
+    CommandDbContext context)
 {
     private readonly IProjectContext _projectContext = projectContext;
     private readonly ILogger<SolutionService> _logger = logger;
+    private readonly CommandDbContext _context = context;
+
+
     public string SolutionPath { get; set; } = projectContext.SolutionPath ?? string.Empty;
 
     /// <summary>
@@ -103,6 +107,93 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
             var moduleProjectFilePath = Path.Combine(modulePath, $"{moduleName}{ConstVal.CSharpProjectExtension}");
             ProcessHelper.RunCommand("dotnet", $"sln {SolutionPath} remove {moduleProjectFilePath}", out string error);
             Directory.Delete(modulePath, true);
+        }
+    }
+
+    /// <summary>
+    /// 项目配置保存
+    /// </summary>
+    /// <returns></returns>
+    public async Task<bool> SaveSyncDataLocalAsync()
+    {
+        var actions = await _context.GenActions.ToListAsync();
+        var steps = await _context.GenSteps.ToListAsync();
+        var relation = await _context.GenActionGenSteps.ToListAsync();
+
+        var data = new SyncModel
+        {
+            TemplateSync = new TemplateSync
+            {
+                GenActions = actions,
+                GenSteps = steps,
+                GenActionGenSteps = relation
+            }
+        };
+
+        try
+        {
+            var templatePath = Path.Combine(_projectContext.SolutionPath!, ConstVal.TemplateDir);
+            if (!Directory.Exists(templatePath))
+            {
+                Directory.CreateDirectory(templatePath);
+            }
+            var filePath = Path.Combine(templatePath, ConstVal.SyncJson);
+            var json = JsonSerializer.Serialize(data);
+            await File.WriteAllTextAsync(filePath, json);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("同步数据到本地失败！{message}", ex.Message);
+            return false;
+        }
+    }
+
+    public async Task<(bool res, string? message)> SyncDataFromLocalAsync()
+    {
+        var filePath = Path.Combine(_projectContext.SolutionPath!, ConstVal.TemplateDir, ConstVal.SyncJson);
+        if (!File.Exists(filePath))
+        {
+            return (false, "templates/sync.json 文件不存在，无法同步");
+        }
+
+        var data = File.ReadAllText(filePath);
+        var model = JsonSerializer.Deserialize<SyncModel>(data);
+        if (model == null)
+        {
+            return (false, "没有有效数据");
+        }
+
+        try
+        {
+            var actions = await _context.GenActions.ToListAsync();
+            var steps = await _context.GenSteps.ToListAsync();
+            var relation = await _context.GenActionGenSteps.ToListAsync();
+
+            // 去重并添加
+            var newActions = model.TemplateSync?.GenActions.Except(actions).ToList();
+            var newSteps = model.TemplateSync?.GenSteps.Except(steps).ToList();
+            var newRelation = model.TemplateSync?.GenActionGenSteps.Except(relation).ToList();
+
+            if (newActions != null && newActions.Count > 0)
+            {
+                await _context.GenActions.AddRangeAsync(newActions);
+            }
+            if (newSteps != null && newSteps.Count > 0)
+            {
+                await _context.GenSteps.AddRangeAsync(newSteps);
+            }
+            if (newRelation != null && newRelation.Count > 0)
+            {
+                await _context.GenActionGenSteps.AddRangeAsync(newRelation);
+            }
+            await _context.SaveChangesAsync();
+            // 新增数量
+            return (true, $"新增数据：{newActions?.Count}个操作，{newSteps?.Count}个步骤，{newRelation?.Count}个关联");
+        }
+        catch (Exception ex)
+        {
+            return (false, ex.Message);
         }
     }
 
