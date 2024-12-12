@@ -312,7 +312,7 @@ public class CsharpModelGenerate : GenerateBase
                             /// </summary>
                         """ + Environment.NewLine;
                 }
-                CSProperty property = new()
+                CSProperty property = new CSProperty()
                 {
                     Comments = propComments,
                     IsNullable = prop.Value.Nullable,
@@ -380,6 +380,10 @@ public class CSProperty
         if (!IsNullable && !IsEnum && !IsList)
         {
             defaultValue = " = default!;";
+        }
+        if (IsList && !IsNullable)
+        {
+            defaultValue = " = [];";
         }
 
         return $"{Comments}    public {type} {Name?.ToPascalCase()} {{ get; set; }}{defaultValue}" + Environment.NewLine;

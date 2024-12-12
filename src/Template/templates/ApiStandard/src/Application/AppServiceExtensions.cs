@@ -42,13 +42,17 @@ public static partial class AppServiceExtensions
         builder.AddRedisClient(connectionName: "cache");
         // 分布式缓存
         var cache = builder.Configuration.GetConnectionString(AterConst.Cache);
-        if (cache.NotEmpty())
+        if (cache.NotEmpty() && cache != "Memory")
         {
             builder.Services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = builder.Configuration.GetConnectionString(AterConst.Cache);
                 options.InstanceName = Constant.ProjectName;
             });
+        }
+        else
+        {
+            builder.Services.AddDistributedMemoryCache();
         }
         // 内存缓存
         builder.Services.AddMemoryCache();
