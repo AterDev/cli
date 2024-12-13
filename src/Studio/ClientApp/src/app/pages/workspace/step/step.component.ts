@@ -133,6 +133,7 @@ export class StepComponent {
       minWidth: '400px',
     })
   }
+
   async openAddDialog(id: string | null = null, isEditable = false): Promise<void> {
     this.initForm();
     this.isEditable = isEditable;
@@ -146,6 +147,29 @@ export class StepComponent {
         this.outputPath.setValue(item.outputPath);
         this.genStepType.setValue(item.genStepType);
       }
+    }
+    this.dialogRef = this.dialog.open(this.addTmpl, {
+      minWidth: '650px',
+      maxHeight: '98vh'
+    })
+    this.dialogRef.afterClosed()
+      .subscribe(res => {
+        if (res)
+          this.getList();
+      });
+  }
+
+  async copy(id: string): Promise<void> {
+    const item = await firstValueFrom(this.service.getDetail(id));
+    this.isEditable = false;
+    if (item) {
+      this.initForm();
+      this.currentItem = item;
+      this.name.setValue(item.name);
+      this.path.setValue(item.path);
+      this.content.setValue(item.content);
+      this.outputPath.setValue(item.outputPath);
+      this.genStepType.setValue(item.genStepType);
     }
     this.dialogRef = this.dialog.open(this.addTmpl, {
       minWidth: '650px',

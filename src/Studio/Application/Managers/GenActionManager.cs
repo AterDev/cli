@@ -229,26 +229,24 @@ public class GenActionManager(
             {
                 foreach (var step in action.GenSteps)
                 {
-
+                    var content = string.Empty;
                     if (step.Path.NotEmpty())
                     {
                         var filePath = Path.Combine(_projectContext.SolutionPath!, step.Path);
                         if (File.Exists(filePath))
                         {
-                            step.Content = File.ReadAllText(filePath);
+                            content = File.ReadAllText(filePath);
                         }
                     }
                     switch (step.GenStepType)
                     {
                         case GenStepType.File:
-
-                            step.OutputContent = _codeGen.GenTemplateFile(step.Content ?? "", actionRunModel);
+                            var outputContent = _codeGen.GenTemplateFile(content, actionRunModel);
                             if (step.OutputPath.NotEmpty())
                             {
                                 // 处理outputPath中的变量
                                 var outputPath = step.OutputPathFormat(actionRunModel.Variables);
                                 outputPath = Path.Combine(_projectContext.SolutionPath!, outputPath);
-
 
                                 if (dto.OnlyOutput)
                                 {
@@ -256,7 +254,7 @@ public class GenActionManager(
                                     {
                                         Name = Path.GetFileName(outputPath),
                                         FullName = outputPath,
-                                        Content = step.OutputContent
+                                        Content = outputContent
                                     });
                                 }
                                 else

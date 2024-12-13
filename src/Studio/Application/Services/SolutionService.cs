@@ -116,9 +116,9 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
     /// <returns></returns>
     public async Task<bool> SaveSyncDataLocalAsync()
     {
-        var actions = await _context.GenActions.ToListAsync();
-        var steps = await _context.GenSteps.ToListAsync();
-        var relation = await _context.GenActionGenSteps.ToListAsync();
+        var actions = await _context.GenActions.AsNoTracking().ToListAsync();
+        var steps = await _context.GenSteps.AsNoTracking().ToListAsync();
+        var relation = await _context.GenActionGenSteps.AsNoTracking().ToListAsync();
 
         var data = new SyncModel
         {
@@ -138,7 +138,7 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
                 Directory.CreateDirectory(templatePath);
             }
             var filePath = Path.Combine(templatePath, ConstVal.SyncJson);
-            var json = JsonSerializer.Serialize(data);
+            var json = JsonSerializer.Serialize(data, ConstVal.DefaultJsonSerializerOptions);
             await File.WriteAllTextAsync(filePath, json);
             return true;
         }

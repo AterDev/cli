@@ -1,7 +1,14 @@
-﻿namespace Entity;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Entity;
 public static class ConstVal
 {
     public static Guid PROJECT_ID;
+    public static JsonSerializerOptions DefaultJsonSerializerOptions = new JsonSerializerOptions
+    {
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
+    };
 
     public const string DbName = "ater.dry.db";
     public const string ConfigFileName = ".dry-config.json";
