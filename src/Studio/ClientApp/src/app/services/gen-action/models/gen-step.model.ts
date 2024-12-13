@@ -12,6 +12,7 @@ export interface GenStep {
   path?: string | null;
   outputPath?: string | null;
   genStepType?: GenStepType | null;
+  fileType?: string | null;
   genActions?: GenAction[];
   project?: Project | null;
   projectId: string;

@@ -152,6 +152,8 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
     public async Task<(bool res, string? message)> SyncDataFromLocalAsync()
     {
         var filePath = Path.Combine(_projectContext.SolutionPath!, ConstVal.TemplateDir, ConstVal.SyncJson);
+        var projectId = _projectContext.ProjectId;
+
         if (!File.Exists(filePath))
         {
             return (false, "templates/sync.json 文件不存在，无法同步");
@@ -166,23 +168,34 @@ public class SolutionService(IProjectContext projectContext, ILogger<SolutionSer
 
         try
         {
-            var actions = await _context.GenActions.ToListAsync();
-            var steps = await _context.GenSteps.ToListAsync();
-            var relation = await _context.GenActionGenSteps.ToListAsync();
+
+            var actions = await _context.GenActions.Where(a => a.ProjectId == projectId)
+                .Include(a => a.GenSteps)
+                .ToListAsync();
+
+            _context.RemoveRange(actions);
+            await _context.SaveChangesAsync();
+
+            //var steps = await _context.GenSteps.Where(a => a.ProjectId == projectId).ToListAsync();
+            //var relation = await _context.GenActionGenSteps.ToListAsync();
 
             // 去重并添加
-            var newActions = model.TemplateSync?.GenActions.Except(actions).ToList();
-            var newSteps = model.TemplateSync?.GenSteps.Except(steps).ToList();
-            var newRelation = model.TemplateSync?.GenActionGenSteps.Except(relation).ToList();
+            var newActions = model.TemplateSync?.GenActions.ToList();
+            var newSteps = model.TemplateSync?.GenSteps.ToList();
+            var newRelation = model.TemplateSync?.GenActionGenSteps.ToList();
 
             if (newActions != null && newActions.Count > 0)
             {
+                newActions.ForEach(a => a.ProjectId = projectId);
                 await _context.GenActions.AddRangeAsync(newActions);
             }
             if (newSteps != null && newSteps.Count > 0)
             {
+                newSteps.ForEach(a => a.ProjectId = projectId);
                 await _context.GenSteps.AddRangeAsync(newSteps);
             }
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
             if (newRelation != null && newRelation.Count > 0)
             {
                 await _context.GenActionGenSteps.AddRangeAsync(newRelation);

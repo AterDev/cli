@@ -436,6 +436,7 @@ export class TaskComponent implements OnInit {
         next: (res) => {
           if (res) {
             this.snb.open(res);
+            this.getList();
           } else {
             this.snb.open(res);
           }

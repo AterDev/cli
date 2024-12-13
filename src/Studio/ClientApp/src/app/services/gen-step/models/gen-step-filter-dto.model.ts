@@ -9,5 +9,6 @@ export interface GenStepFilterDto {
   name?: string | null;
   genStepType?: GenStepType | null;
   projectId?: string | null;
+  fileType?: string | null;
 
 }

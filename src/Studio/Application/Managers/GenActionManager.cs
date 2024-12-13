@@ -229,7 +229,7 @@ public class GenActionManager(
             {
                 foreach (var step in action.GenSteps)
                 {
-                    var content = string.Empty;
+                    var content = step.Content ?? string.Empty;
                     if (step.Path.NotEmpty())
                     {
                         var filePath = Path.Combine(_projectContext.SolutionPath!, step.Path);
@@ -263,7 +263,7 @@ public class GenActionManager(
                                     {
                                         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
                                     }
-                                    File.WriteAllText(outputPath, step.OutputContent, Encoding.UTF8);
+                                    File.WriteAllText(outputPath, outputContent, Encoding.UTF8);
                                 }
                                 res.IsSuccess = true;
                             }

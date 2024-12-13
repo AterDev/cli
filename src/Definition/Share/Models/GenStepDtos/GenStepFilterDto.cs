@@ -11,4 +11,6 @@ public class GenStepFilterDto : FilterBase
     /// </summary>
     public GenStepType? GenStepType { get; set; }
     public Guid? ProjectId { get; set; }
+
+    public string? FileType { get; set; }
 }
