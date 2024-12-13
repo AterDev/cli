@@ -42,6 +42,12 @@ public class GenStep : EntityBase
     /// </summary>
     public GenStepType GenStepType { get; set; }
 
+    /// <summary>
+    /// 文件类型
+    /// </summary>
+    [MaxLength(20)]
+    public string? FileType { get; set; }
+
     public ICollection<GenAction> GenActions { get; set; } = [];
 
     [ForeignKey(nameof(ProjectId))]

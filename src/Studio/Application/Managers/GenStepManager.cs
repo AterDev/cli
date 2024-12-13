@@ -22,8 +22,11 @@ public class GenStepManager(
     {
         var entity = dto.MapTo<GenStepAddDto, GenStep>();
         entity.ProjectId = _projectContext.ProjectId;
-        // TODO:完善添加逻辑
-        return await base.AddAsync(entity) ? entity.Id : null;
+
+        var fileExt = Path.GetExtension(dto.OutputPath ?? "");
+        entity.FileType = fileExt;
+
+        return await AddAsync(entity) ? entity.Id : null;
     }
 
     /// <summary>
@@ -35,8 +38,9 @@ public class GenStepManager(
     public async Task<bool> UpdateAsync(GenStep entity, GenStepUpdateDto dto)
     {
         entity.Merge(dto);
-        // TODO:完善更新逻辑
-        return await base.UpdateAsync(entity);
+        var fileExt = Path.GetExtension(dto.OutputPath ?? "");
+        entity.FileType = fileExt;
+        return await UpdateAsync(entity);
     }
 
     public async Task<PageList<GenStepItemDto>> ToPageAsync(GenStepFilterDto filter)
