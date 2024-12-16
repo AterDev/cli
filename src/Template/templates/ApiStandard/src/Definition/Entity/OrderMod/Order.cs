@@ -14,12 +14,14 @@ public class Order : EntityBase
 {
     #region 关联属性
     [ForeignKey(nameof(UserId))]
-    public User User { get; set; } = null!;
+    public User? User { get; set; }
     public Guid UserId { get; set; }
 
     [ForeignKey(nameof(CustomerInfoId))]
-    public CustomerInfo CustomerInfo { get; set; } = null!;
+    public CustomerInfo? CustomerInfo { get; set; }
     public Guid CustomerInfoId { get; set; }
+
+
     #endregion
 
     /// <summary>

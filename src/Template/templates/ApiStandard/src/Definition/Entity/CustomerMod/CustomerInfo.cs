@@ -17,11 +17,10 @@ namespace Entity.CustomerMod;
 public class CustomerInfo : EntityBase
 {
     #region 关联属性
-
     /// <summary>
-    /// 订单
+    /// 关联账号
     /// </summary>
-    public List<Order> Orders { get; set; } = [];
+    public CustomerAccount? Account { get; set; }
 
     /// <summary>
     /// 添加人
