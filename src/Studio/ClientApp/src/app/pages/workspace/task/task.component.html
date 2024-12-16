@@ -14,7 +14,8 @@
       </div>
       <div class="d-flex flex-grow-1"></div>
       <div class="d-flex gap-1">
-        <button mat-flat-button color="primary" (click)="openSaveTemplateDialog()" matTooltip="模板配置保存到teamplates/sync.json">
+        <button mat-flat-button color="primary" (click)="openSaveTemplateDialog()"
+          matTooltip="模板配置保存到teamplates/sync.json">
           <mat-icon>save</mat-icon>
           保存
         </button>
@@ -238,6 +239,6 @@
   </mat-dialog-content>
   <mat-dialog-actions class="justify-content-end">
     <button mat-button mat-dialog-close>取消</button>
-    <button mat-button color="primary" (click)="execute()">执行</button>
+    <sync-button [isSync]="isProcessing" text="执行" (click)="execute()"></sync-button>
   </mat-dialog-actions>
 </ng-template>

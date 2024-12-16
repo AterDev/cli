@@ -1,9 +1,11 @@
 @if(!isSync){
 <button mat-button color="primary">
-  生成
+  {{text}}
 </button>
 }@else {
 <button mat-button color="primary" [disabled]="isSync">
-  <mat-spinner *ngIf="isSync" [diameter]="24"></mat-spinner>
+  @if(isSync){
+  <mat-spinner [diameter]="24"></mat-spinner>
+  }
 </button>
 }

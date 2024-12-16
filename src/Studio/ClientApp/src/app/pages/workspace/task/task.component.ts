@@ -24,7 +24,6 @@ import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-r
   selector: 'app-index',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss'],
-
   standalone: false
 })
 export class TaskComponent implements OnInit {
