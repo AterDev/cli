@@ -131,6 +131,7 @@ export class StepComponent {
   openHelpDialog(): void {
     this.dialog.open(this.helpTmpl, {
       minWidth: '400px',
+      maxHeight: '98vh'
     })
   }
 

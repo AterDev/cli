@@ -1,7 +1,8 @@
 .help table {
   /* 表格边框加间距 */
   border-collapse: collapse;
-  margin: 0 10px;
+  margin: 0;
+
   & th {
     text-align: left;
     font-weight: bold;

@@ -10,7 +10,7 @@ public class GenActionRunDto
     public Guid Id { get; set; }
 
     /// <summary>
-    /// 源文件路径 
+    /// 源文件路径
     /// </summary>
     public string? SourceFilePath { get; set; }
 

@@ -414,6 +414,22 @@ export class TaskComponent implements OnInit {
       });
   }
 
+  openSaveTemplateDialog(): void {
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+      data: {
+        title: '保存模板',
+        content: '保存将覆盖当前模板，是否确定保存?'
+      }
+    });
+
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.saveTemplate();
+      }
+    });
+  }
   saveTemplate(): void {
     this.service.saveSyncData()
       .subscribe({

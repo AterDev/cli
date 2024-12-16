@@ -69,6 +69,11 @@ public class RazorGenContext
             instance.Namespace = model.Namespace;
             instance.PropertyInfos = model.PropertyInfos;
             instance.NewLine = Environment.NewLine;
+            instance.AddPropertyInfos = model.AddPropertyInfos;
+            instance.UpdatePropertyInfos = model.UpdatePropertyInfos;
+            instance.DetailPropertyInfos = model.DetailPropertyInfos;
+            instance.ItemPropertyInfos = model.ItemPropertyInfos;
+            instance.FilterPropertyInfos = model.FilterPropertyInfos;
         });
         return result;
     }
@@ -94,6 +99,11 @@ public class CustomTemplate : RazorEngineTemplateBase
     public string NewLine { get; set; } = Environment.NewLine;
 
     public List<PropertyInfo> PropertyInfos { get; set; } = [];
+    public List<PropertyInfo> AddPropertyInfos { get; set; } = [];
+    public List<PropertyInfo> UpdatePropertyInfos { get; set; } = [];
+    public List<PropertyInfo> DetailPropertyInfos { get; set; } = [];
+    public List<PropertyInfo> ItemPropertyInfos { get; set; } = [];
+    public List<PropertyInfo> FilterPropertyInfos { get; set; } = [];
 }
 
 public class ActionRunModel
@@ -112,4 +122,9 @@ public class ActionRunModel
     /// </summary>
     public string? Description { get; set; }
     public List<PropertyInfo> PropertyInfos { get; set; } = [];
+    public List<PropertyInfo> AddPropertyInfos { get; set; } = [];
+    public List<PropertyInfo> UpdatePropertyInfos { get; set; } = [];
+    public List<PropertyInfo> DetailPropertyInfos { get; set; } = [];
+    public List<PropertyInfo> ItemPropertyInfos { get; set; } = [];
+    public List<PropertyInfo> FilterPropertyInfos { get; set; } = [];
 }

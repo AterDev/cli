@@ -219,6 +219,28 @@ public class GenActionManager(
                         Key = "ModelNameHyphen",
                         Value = entityInfo.Name.ToHyphen()
                     });
+                    // 解析dto
+                    var dtoPath = _projectContext.GetDtoPath(entityInfo.Name, entityInfo.ModuleName);
+                    if (Directory.Exists(dtoPath))
+                    {
+                        var matchFiles = new string[] { "AddDto.cs", "UpdateDto.cs", "DetailDto.cs", "ItemDto.cs", "FilterDto.cs" };
+
+                        var dtoFiles = Directory.GetFiles(dtoPath, "*Dto.cs", SearchOption.AllDirectories)
+                            .Where(q => matchFiles.Any(m => Path.GetFileName(q).EndsWith(m)))
+                            .ToList();
+
+                        var dtoInfos = _codeAnalysis.GetEntityInfos(dtoFiles);
+
+                        actionRunModel.AddPropertyInfos = dtoInfos.FirstOrDefault(q => q.Name.EndsWith("AddDto"))?.PropertyInfos ?? [];
+
+                        actionRunModel.UpdatePropertyInfos = dtoInfos.FirstOrDefault(q => q.Name.EndsWith("UpdateDto"))?.PropertyInfos ?? [];
+
+                        actionRunModel.DetailPropertyInfos = dtoInfos.FirstOrDefault(q => q.Name.EndsWith("DetailDto"))?.PropertyInfos ?? [];
+
+                        actionRunModel.ItemPropertyInfos = dtoInfos.FirstOrDefault(q => q.Name.EndsWith("ItemDto"))?.PropertyInfos ?? [];
+
+                        actionRunModel.FilterPropertyInfos = dtoInfos.FirstOrDefault(q => q.Name.EndsWith("FilterDto"))?.PropertyInfos ?? [];
+                    }
                 }
             }
         }

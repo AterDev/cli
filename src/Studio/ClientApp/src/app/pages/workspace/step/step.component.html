@@ -107,7 +107,7 @@
 
 <ng-template #helpDialog>
   <h2 mat-dialog-title>模板变量说明</h2>
-  <mat-dialog-content class="help">
+  <mat-dialog-content class="help d-flex gap-2">
     <div class="d-flex flex-column">
       <h3>内置结构</h3>
       <table class="default">
@@ -132,12 +132,35 @@
           <td>&#64;NewLine</td>
         </tr>
         <tr>
-          <td>属性列表</td>
+          <td>实体属性</td>
           <td>&#64;PropertyInfos</td>
         </tr>
         <tr>
           <td>变量列表</td>
           <td>&#64;Variables</td>
+        </tr>
+      </table>
+      <h3>当数据类型为实体时</h3>
+      <table>
+        <tr>
+          <td>添加DTO</td>
+          <td>&#64;AddPropertyInfos</td>
+        </tr>
+        <tr>
+          <td>更新DTO</td>
+          <td>&#64;UpdatePropertyInfos</td>
+        </tr>
+        <tr>
+          <td>列表DTO</td>
+          <td>&#64;ItemPropertyInfos</td>
+        </tr>
+        <tr>
+          <td>详情DTO</td>
+          <td>&#64;DetailPropertyInfos</td>
+        </tr>
+        <tr>
+          <td>筛选DTO</td>
+          <td>&#64;FilterPropertyInfos</td>
         </tr>
       </table>
       <h3>&#64;Variables变量</h3>
@@ -155,6 +178,9 @@
           <td>ModelNameHyphen</td>
         </tr>
       </table>
+    </div>
+
+    <div class="d-flex flex-column">
       <h3>&#64;PropertyInfos变量</h3>
       <table class="default">
         <tr>
