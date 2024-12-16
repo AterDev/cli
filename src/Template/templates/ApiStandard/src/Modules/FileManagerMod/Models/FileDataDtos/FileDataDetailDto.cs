@@ -5,7 +5,7 @@ namespace FileManagerMod.Models.FileDataDtos;
 /// 文件数据概要
 /// </summary>
 /// <see cref="Entity.FileManagerMod.FileData"/>
-public class FileDataShortDto
+public class FileDataDetailDto
 {
     public Folder? Folder { get; set; }
     /// <summary>

@@ -5,7 +5,7 @@ namespace SystemMod.Models.SystemPermissionDtos;
 /// 权限概要
 /// </summary>
 /// <see cref="SystemPermission"/>
-public class SystemPermissionShortDto
+public class SystemPermissionDetailDto
 {
     public Guid Id { get; set; }
     /// <summary>

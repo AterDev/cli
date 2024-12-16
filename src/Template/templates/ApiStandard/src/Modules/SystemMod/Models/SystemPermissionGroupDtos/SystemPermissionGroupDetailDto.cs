@@ -1,7 +1,7 @@
 namespace SystemMod.Models.SystemPermissionGroupDtos;
 
 /// <see cref="Entity.SystemMod.SystemPermissionGroup"/>
-public class SystemPermissionGroupShortDto
+public class SystemPermissionGroupDetailDto
 {
     /// <summary>
     /// 权限名称标识

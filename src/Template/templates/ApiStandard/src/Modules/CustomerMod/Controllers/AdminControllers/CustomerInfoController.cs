@@ -60,7 +60,7 @@ public class CustomerInfoController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerInfo?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<CustomerInfoDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
         var res = await _manager.GetDetailAsync(id);
         return (res == null) ? NotFound() : res;

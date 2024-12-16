@@ -49,9 +49,9 @@ public class OrderController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Order?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<OrderDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        Order? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<OrderDetailDto>(d => d.Id == id);
         return (res == null) ? NotFound() : res;
     }
 

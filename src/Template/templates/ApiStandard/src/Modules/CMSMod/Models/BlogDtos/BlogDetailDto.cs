@@ -6,7 +6,7 @@ namespace CMSMod.Models.BlogDtos;
 /// 博客概要
 /// </summary>
 /// <inheritdoc cref="Blog"/>
-public class BlogShortDto
+public class BlogDetailDto
 {
     /// <summary>
     /// 标题

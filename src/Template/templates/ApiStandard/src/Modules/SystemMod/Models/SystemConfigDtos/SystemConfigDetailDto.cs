@@ -3,7 +3,7 @@ namespace SystemMod.Models.SystemConfigDtos;
 /// 系统配置概要
 /// </summary>
 /// <see cref="Entity.SystemMod.SystemConfig"/>
-public class SystemConfigShortDto
+public class SystemConfigDetailDto
 {
     [MaxLength(100)]
     public string Key { get; set; } = default!;

@@ -49,9 +49,9 @@ public class FileDataController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<FileData?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<FileDataDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        FileData? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<FileDataDetailDto>(d => d.Id == id);
         return (res == null) ? NotFound() : res;
     }
 

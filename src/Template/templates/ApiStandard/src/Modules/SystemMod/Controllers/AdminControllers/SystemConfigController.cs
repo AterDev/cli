@@ -68,9 +68,9 @@ public class SystemConfigController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<SystemConfig?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<SystemConfigDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        SystemConfig? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<SystemConfigDetailDto>(c => c.Id == id);
         return res == null ? NotFound() : res;
     }
 

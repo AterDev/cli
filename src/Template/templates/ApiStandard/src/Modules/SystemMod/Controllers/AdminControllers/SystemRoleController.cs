@@ -95,9 +95,9 @@ public class SystemRoleController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<SystemRole?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<SystemRoleDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        SystemRole? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<SystemRoleDetailDto>(d => d.Id == id);
         return res == null ? NotFound() : res;
     }
 

@@ -45,9 +45,9 @@ public class ProductController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<ProductDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        Product? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<ProductDetailDto>(d => d.Id == id);
         return (res == null) ? NotFound() : res;
     }
 }

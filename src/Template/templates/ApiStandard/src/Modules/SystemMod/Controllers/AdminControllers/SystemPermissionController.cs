@@ -74,9 +74,9 @@ public class SystemPermissionController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<SystemPermission?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<SystemPermissionDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        SystemPermission? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<SystemPermissionDetailDto>(d => d.Id == id);
         return res == null ? NotFound() : res;
     }
 

@@ -3,7 +3,7 @@ namespace SystemMod.Models.SystemRoleDtos;
 /// 角色概要
 /// </summary>
 /// <inheritdoc cref="Entity.SystemMod.SystemRole"/>
-public class SystemRoleShortDto
+public class SystemRoleDetailDto
 {
     /// <summary>
     /// 角色显示名称

@@ -56,12 +56,11 @@ public class CustomerInfoManager(
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<CustomerInfo?> GetDetailAsync(Guid id)
+    public async Task<CustomerInfoDetailDto?> GetDetailAsync(Guid id)
     {
         return await Queryable
             .Where(q => q.Id == id)
-            .Include(q => q.Tags)
-            .Include(q => q.CustomerRegister)
+            .ProjectTo<CustomerInfoDetailDto>()
             .FirstOrDefaultAsync();
     }
 

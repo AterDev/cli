@@ -3,7 +3,7 @@ namespace CustomerMod.Models.CustomerInfoDtos;
 /// 客户信息概要
 /// </summary>
 /// <see cref="Entity.CustomerMod.CustomerInfo"/>
-public class CustomerInfoShortDto
+public class CustomerInfoDetailDto
 {
     /// <summary>
     /// 真实姓名

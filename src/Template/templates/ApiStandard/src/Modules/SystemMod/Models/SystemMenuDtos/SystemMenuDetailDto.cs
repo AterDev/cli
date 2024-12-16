@@ -5,7 +5,7 @@ namespace SystemMod.Models.SystemMenuDtos;
 /// 系统菜单概要
 /// </summary>
 /// <inheritdoc cref="SystemMenu"/>
-public class SystemMenuShortDto
+public class SystemMenuDetailDto
 {
     /// <summary>
     /// 菜单名称

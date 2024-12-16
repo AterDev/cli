@@ -5,7 +5,7 @@ namespace SystemMod.Models.SystemLogsDtos;
 /// 系统日志概要
 /// </summary>
 /// <see cref="SystemLogs"/>
-public class SystemLogsShortDto
+public class SystemLogsDetailDto
 {
     /// <summary>
     /// 操作人名称

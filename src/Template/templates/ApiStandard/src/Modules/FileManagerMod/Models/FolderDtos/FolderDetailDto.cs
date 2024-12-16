@@ -5,7 +5,7 @@ namespace FileManagerMod.Models.FolderDtos;
 /// 文件夹概要
 /// </summary>
 /// <see cref="Entity.FileManagerMod.Folder"/>
-public class FolderShortDto
+public class FolderDetailDto
 {
     /// <summary>
     /// 名称

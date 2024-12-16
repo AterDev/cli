@@ -5,7 +5,7 @@ namespace OrderMod.Models.OrderDtos;
 /// 订单概要
 /// </summary>
 /// <see cref="Entity.OrderMod.Order"/>
-public class OrderShortDto
+public class OrderDetailDto
 {
     /// <summary>
     /// 订单编号 

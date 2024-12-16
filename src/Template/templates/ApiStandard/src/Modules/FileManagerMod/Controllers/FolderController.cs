@@ -61,9 +61,9 @@ public class FolderController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Folder?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<FolderDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        Folder? res = await _manager.FindAsync(id);
+        var res = await _manager.FindAsync<FolderDetailDto>(d => d.Id == id);
         return (res == null) ? NotFound() : res;
     }
 

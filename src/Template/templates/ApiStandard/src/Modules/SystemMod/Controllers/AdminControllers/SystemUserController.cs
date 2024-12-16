@@ -206,11 +206,11 @@ public class SystemUserController(
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<SystemUser?>> GetDetailAsync([FromRoute] Guid id)
+    public async Task<ActionResult<SystemUserDetailDto?>> GetDetailAsync([FromRoute] Guid id)
     {
-        SystemUser? res = _user.IsRole(AterConst.SuperAdmin)
-            ? await _manager.FindAsync(id)
-            : await _manager.FindAsync(_user.UserId);
+        var res = _user.IsRole(AterConst.SuperAdmin)
+            ? await _manager.FindAsync<SystemUserDetailDto>(u => u.Id == id)
+            : await _manager.FindAsync<SystemUserDetailDto>(u => u.Id == _user.UserId);
         return res == null ? NotFound() : res;
     }
 

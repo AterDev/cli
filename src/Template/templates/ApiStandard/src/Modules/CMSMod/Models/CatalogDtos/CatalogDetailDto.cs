@@ -5,7 +5,7 @@ namespace CMSMod.Models.CatalogDtos;
 /// 目录概要
 /// </summary>
 /// <inheritdoc cref="Catalog"/>
-public class CatalogShortDto
+public class CatalogDetailDto
 {
     /// <summary>
     /// 目录名称
