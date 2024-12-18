@@ -121,4 +121,17 @@ public class IOHelper
     {
         await File.WriteAllTextAsync(filePath, content, new UTF8Encoding(false));
     }
+
+    /// <summary>
+    /// 删除目录
+    /// </summary>
+    /// <param name="path"></param>
+    public static void DeleteDirectory(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            Console.WriteLine($"✂️ Delete {path}");
+            Directory.Delete(path, true);
+        }
+    }
 }

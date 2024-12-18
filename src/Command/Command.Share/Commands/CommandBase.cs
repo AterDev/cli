@@ -16,11 +16,11 @@ public class CommandBase
             try
             {
                 await File.WriteAllTextAsync(filePath, content, new UTF8Encoding(false));
-                Console.WriteLine(@$"  ℹ️ generate file {fileName}.");
+                Console.WriteLine(@$" 🗒️ Generate file {fileName}.");
             }
             catch (IOException ex)
             {
-                Console.WriteLine($"写入文件失败：{ex.Message}");
+                Console.WriteLine($"💀 写入文件失败：{ex.Message}");
             }
 
         }
