@@ -1,4 +1,5 @@
 ﻿using CodeGenerator.Models;
+using Share.Infrastructure.Helper;
 namespace Command.Share.Commands;
 /// <summary>
 /// 客户端请求生成
@@ -31,8 +32,7 @@ public class ApiClientCommand : CommandBase
         OutputPath = Path.Combine(output, DocName.ToPascalCase() + "API");
         LanguageType = languageType;
 
-        Instructions.Add($"  🔹 generate ts interfaces.");
-        Instructions.Add($"  🔹 generate request services.");
+        Instructions.Add($"  🔹 Generate CSharp Rest Request Service.");
     }
     public async Task RunAsync()
     {
@@ -51,6 +51,7 @@ public class ApiClientCommand : CommandBase
             .Replace("»", "");
 
         ApiDocument = new OpenApiStringReader().Read(openApiContent, out _);
+
 
         Console.WriteLine(Instructions[0]);
         await GenerateCommonFilesAsync();
@@ -77,26 +78,25 @@ public class ApiClientCommand : CommandBase
         // 获取请求服务并生成文件
         string nspName = new DirectoryInfo(OutputPath).Name;
         List<GenFileInfo> services = gen.GetServices(nspName);
+
+        string dir = Path.Combine(OutputPath, "Services");
+        IOHelper.DeleteDirectory(dir);
+
         foreach (GenFileInfo service in services)
         {
-            string dir = Path.Combine(OutputPath, "Services");
             await GenerateFileAsync(dir, service.Name, service.Content, true);
         }
         var serviceNames = services.Select(s => s.Name.TrimEnd(".cs".ToCharArray())).ToList();
         string extensionContent = CSHttpClientGenerate.GetExtensionContent(nspName, serviceNames);
-
         await GenerateFileAsync(OutputPath, "Extension.cs", extensionContent, true);
 
+        dir = Path.Combine(OutputPath, "Models");
+        IOHelper.DeleteDirectory(dir);
         List<GenFileInfo> models = gen.GetModelFiles(nspName);
         foreach (GenFileInfo model in models)
         {
-            string dir = Path.Combine(OutputPath, "Models");
             await GenerateFileAsync(dir, model.Name, model.Content, true);
         }
-
-        //var className = string.IsNullOrWhiteSpace(DocName) ? "RestApi" : DocName.ToPascalCase();
-        //string clientContent = CSHttpClientGenerate.GetClient(services, nspName, className);
-        //await GenerateFileAsync(OutputPath, DocName.ToPascalCase() + "API.cs", clientContent, true);
 
         string csProjectContent = CSHttpClientGenerate.GetCsprojContent();
         await GenerateFileAsync(OutputPath, $"{DocName.ToPascalCase()}API.csproj", csProjectContent);

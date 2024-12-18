@@ -381,11 +381,11 @@ public class CSProperty
         {
             defaultValue = " = default!;";
         }
-        if (IsList && !IsNullable)
+        if (IsList && defaultValue.IsEmpty())
         {
             defaultValue = " = [];";
         }
 
         return $"{Comments}    public {type} {Name?.ToPascalCase()} {{ get; set; }}{defaultValue}" + Environment.NewLine;
+        }
     }
-}
