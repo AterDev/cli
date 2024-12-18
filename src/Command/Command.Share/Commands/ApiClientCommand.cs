@@ -54,8 +54,8 @@ public class ApiClientCommand : CommandBase
 
 
         Console.WriteLine(Instructions[0]);
-        await GenerateCommonFilesAsync();
         await GenerateRequestServicesAsync();
+        await GenerateCommonFilesAsync();
         Console.WriteLine("😀 Api Client generate completed!" + Environment.NewLine);
     }
 
