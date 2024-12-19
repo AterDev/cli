@@ -351,4 +351,6 @@ MigrationBackup/
 .ionide/
 /src/AterStudio/ClientApp/.angular/cache/
 /src/CommandLine/*.zip
+/src/Studio/AterStudio/swagger.json
 /.idea/
+
