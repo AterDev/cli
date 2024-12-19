@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 using Ater.Web.Extension;
-
+using Share.Models;
 using SystemMod.Models;
 using SystemMod.Models.SystemUserDtos;
 
@@ -142,13 +142,13 @@ public class SystemUserManager(
             JwtService jwt = new(jwtOption.Sign, jwtOption.ValidAudiences, jwtOption.ValidIssuer)
             {
                 TokenExpires = expiredSeconds,
-                Claims =
-                [
-                    new Claim(ClaimTypes.Name,user.UserName),
-                    new Claim(ClaimTypes.Role, AterConst.AdminUser)
-                ]
             };
-
+            // 添加管理员用户标识
+            if (!roles.Contains(AterConst.AdminUser))
+            {
+                roles.Add(AterConst.AdminUser);
+            }
+            jwt.Claims = [new(ClaimTypes.Name, user.UserName),];
             var token = jwt.GetToken(user.Id.ToString(), [.. roles]);
 
             return new AuthResult
@@ -227,22 +227,11 @@ public class SystemUserManager(
     public async Task<PageList<SystemUserItemDto>> ToPageAsync(SystemUserFilterDto filter)
     {
         Queryable = Queryable
-            .WhereNotNull(filter.UserName, q => q.UserName == filter.UserName)
-            .WhereNotNull(filter.RealName, q => q.RealName == filter.RealName)
-            .WhereNotNull(filter.Email, q => q.Email == filter.Email)
-            .WhereNotNull(filter.PhoneNumber, q => q.PhoneNumber == filter.PhoneNumber);
+            .WhereNotNull(filter.UserName, q => q.UserName == filter.UserName || q.PhoneNumber == filter.UserName || q.Email == filter.UserName);
 
         if (filter.RoleId != null)
         {
             var role = await QueryContext.SystemRoles.FindAsync(filter.RoleId);
-            if (role != null)
-            {
-                Queryable = Queryable.Where(q => q.SystemRoles.Contains(role));
-            }
-        }
-        if (filter.RoleName.NotEmpty())
-        {
-            var role = await QueryContext.SystemRoles.FirstOrDefaultAsync(r => r.NameValue.Equals(filter.RoleName));
             if (role != null)
             {
                 Queryable = Queryable.Where(q => q.SystemRoles.Contains(role));
@@ -326,6 +315,7 @@ public class SystemUserManager(
             .Include(q => q.SystemRoles)
             .FirstOrDefaultAsync();
     }
+
 
     public async Task<SystemUser?> FindByUserNameAsync(string userName)
     {

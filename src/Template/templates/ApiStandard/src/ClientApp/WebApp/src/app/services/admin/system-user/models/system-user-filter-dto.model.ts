@@ -19,6 +19,9 @@ export interface SystemUserFilterDto {
    * 角色id
    */
   roleId?: string | null;
+  /**
+   * 角色名
+   */
   roleName?: string | null;
 
 }

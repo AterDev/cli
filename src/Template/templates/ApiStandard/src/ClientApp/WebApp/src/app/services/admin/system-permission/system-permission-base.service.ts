@@ -5,7 +5,7 @@ import { SystemPermissionFilterDto } from './models/system-permission-filter-dto
 import { SystemPermissionAddDto } from './models/system-permission-add-dto.model';
 import { SystemPermissionUpdateDto } from './models/system-permission-update-dto.model';
 import { SystemPermissionItemDtoPageList } from './models/system-permission-item-dto-page-list.model';
-import { SystemPermission } from './models/system-permission.model';
+import { SystemPermissionDetailDto } from './models/system-permission-detail-dto.model';
 
 /**
  * 权限
@@ -25,9 +25,9 @@ export class SystemPermissionBaseService extends BaseService {
    * 新增 ✅
    * @param data SystemPermissionAddDto
    */
-  add(data: SystemPermissionAddDto): Observable<SystemPermission> {
+  add(data: SystemPermissionAddDto): Observable<string> {
     const _url = `/api/admin/SystemPermission`;
-    return this.request<SystemPermission>('post', _url, data);
+    return this.request<string>('post', _url, data);
   }
 
   /**
@@ -35,27 +35,27 @@ export class SystemPermissionBaseService extends BaseService {
    * @param id 
    * @param data SystemPermissionUpdateDto
    */
-  update(id: string, data: SystemPermissionUpdateDto): Observable<SystemPermission> {
+  update(id: string, data: SystemPermissionUpdateDto): Observable<boolean> {
     const _url = `/api/admin/SystemPermission/${id}`;
-    return this.request<SystemPermission>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**
    * 详情 ✅
    * @param id 
    */
-  getDetail(id: string): Observable<SystemPermission> {
+  getDetail(id: string): Observable<SystemPermissionDetailDto> {
     const _url = `/api/admin/SystemPermission/${id}`;
-    return this.request<SystemPermission>('get', _url);
+    return this.request<SystemPermissionDetailDto>('get', _url);
   }
 
   /**
    * ⚠删除 ✅
    * @param id 
    */
-  delete(id: string): Observable<SystemPermission> {
+  delete(id: string): Observable<boolean> {
     const _url = `/api/admin/SystemPermission/${id}`;
-    return this.request<SystemPermission>('delete', _url);
+    return this.request<boolean>('delete', _url);
   }
 
 }

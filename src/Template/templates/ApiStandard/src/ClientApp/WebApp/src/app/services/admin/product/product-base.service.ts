@@ -25,9 +25,9 @@ export class ProductBaseService extends BaseService {
    * 新增 ✅
    * @param data ProductAddDto
    */
-  add(data: ProductAddDto): Observable<Product> {
+  add(data: ProductAddDto): Observable<string> {
     const _url = `/api/admin/Product`;
-    return this.request<Product>('post', _url, data);
+    return this.request<string>('post', _url, data);
   }
 
   /**
@@ -35,9 +35,9 @@ export class ProductBaseService extends BaseService {
    * @param id 
    * @param data ProductUpdateDto
    */
-  update(id: string, data: ProductUpdateDto): Observable<Product> {
+  update(id: string, data: ProductUpdateDto): Observable<boolean> {
     const _url = `/api/admin/Product/${id}`;
-    return this.request<Product>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**
@@ -53,9 +53,9 @@ export class ProductBaseService extends BaseService {
    * 删除 ✅
    * @param id 
    */
-  delete(id: string): Observable<Product> {
+  delete(id: string): Observable<boolean> {
     const _url = `/api/admin/Product/${id}`;
-    return this.request<Product>('delete', _url);
+    return this.request<boolean>('delete', _url);
   }
 
 }

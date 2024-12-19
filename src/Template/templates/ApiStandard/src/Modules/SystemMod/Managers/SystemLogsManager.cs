@@ -11,24 +11,6 @@ public class SystemLogsManager(
 {
     private readonly IUserContext _userContext = userContext;
 
-    /// <summary>
-    /// 创建待添加实体
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    public async Task<Guid?> AddAsync(SystemLogsAddDto dto)
-    {
-        SystemLogs entity = dto.MapTo<SystemLogsAddDto, SystemLogs>();
-        entity.SystemUserId = _userContext.UserId;
-        return await AddAsync(entity) ? entity.Id : null;
-    }
-
-    public async Task<bool> UpdateAsync(SystemLogs entity, SystemLogsUpdateDto dto)
-    {
-        entity.Merge(dto);
-        return await UpdateAsync(entity);
-    }
-
     public async Task<PageList<SystemLogsItemDto>> ToPageAsync(SystemLogsFilterDto filter)
     {
         Queryable = Queryable

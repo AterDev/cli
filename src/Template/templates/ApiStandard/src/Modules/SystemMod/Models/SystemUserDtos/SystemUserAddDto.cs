@@ -19,6 +19,11 @@ public class SystemUserAddDto
     public required string Password { get; set; }
 
     /// <summary>
+    /// 角色id
+    /// </summary>
+    public List<Guid>? RoleIds { get; set; }
+
+    /// <summary>
     /// 真实姓名
     /// </summary>
     [MaxLength(30)]
@@ -45,8 +50,4 @@ public class SystemUserAddDto
     /// </summary>
     public GenderType Sex { get; set; } = GenderType.Male;
 
-    /// <summary>
-    /// 角色id
-    /// </summary>
-    public List<Guid>? RoleIds { get; set; }
 }

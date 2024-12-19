@@ -5,7 +5,6 @@ import { SystemMenuFilterDto } from './models/system-menu-filter-dto.model';
 import { SystemMenuAddDto } from './models/system-menu-add-dto.model';
 import { SystemMenuUpdateDto } from './models/system-menu-update-dto.model';
 import { SystemMenuPageList } from './models/system-menu-page-list.model';
-import { SystemMenu } from './models/system-menu.model';
 
 /**
  * 系统菜单
@@ -25,9 +24,9 @@ export class SystemMenuBaseService extends BaseService {
    * 新增 ✅
    * @param data SystemMenuAddDto
    */
-  add(data: SystemMenuAddDto): Observable<SystemMenu> {
+  add(data: SystemMenuAddDto): Observable<string> {
     const _url = `/api/admin/SystemMenu`;
-    return this.request<SystemMenu>('post', _url, data);
+    return this.request<string>('post', _url, data);
   }
 
   /**
@@ -35,18 +34,18 @@ export class SystemMenuBaseService extends BaseService {
    * @param id 
    * @param data SystemMenuUpdateDto
    */
-  update(id: string, data: SystemMenuUpdateDto): Observable<SystemMenu> {
+  update(id: string, data: SystemMenuUpdateDto): Observable<boolean> {
     const _url = `/api/admin/SystemMenu/${id}`;
-    return this.request<SystemMenu>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**
    * ⚠删除 ✅
    * @param id 
    */
-  delete(id: string): Observable<SystemMenu> {
+  delete(id: string): Observable<boolean> {
     const _url = `/api/admin/SystemMenu/${id}`;
-    return this.request<SystemMenu>('delete', _url);
+    return this.request<boolean>('delete', _url);
   }
 
 }

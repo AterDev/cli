@@ -15,7 +15,7 @@ export interface SystemLogs {
   /**
    * 操作对象名称
    */
-  targetName: string;
+  targetName?: string | null;
   /**
    * 操作路由
    */

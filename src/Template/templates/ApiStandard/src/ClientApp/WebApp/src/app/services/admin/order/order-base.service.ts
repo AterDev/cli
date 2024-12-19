@@ -25,9 +25,9 @@ export class OrderBaseService extends BaseService {
    * @param id 
    * @param data OrderUpdateDto
    */
-  update(id: string, data: OrderUpdateDto): Observable<Order> {
+  update(id: string, data: OrderUpdateDto): Observable<boolean> {
     const _url = `/api/admin/Order/${id}`;
-    return this.request<Order>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**

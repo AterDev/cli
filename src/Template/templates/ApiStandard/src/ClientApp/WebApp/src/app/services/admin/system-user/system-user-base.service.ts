@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '../base.service';
 import { Observable } from 'rxjs';
-import { LoginDto } from './models/login-dto.model';
+import { SystemLoginDto } from './models/system-login-dto.model';
 import { SystemUserFilterDto } from './models/system-user-filter-dto.model';
 import { SystemUserAddDto } from './models/system-user-add-dto.model';
 import { SystemUserUpdateDto } from './models/system-user-update-dto.model';
 import { AuthResult } from './models/auth-result.model';
 import { SystemUserItemDtoPageList } from './models/system-user-item-dto-page-list.model';
-import { SystemUser } from './models/system-user.model';
+import { SystemUserDetailDto } from './models/system-user-detail-dto.model';
 
 /**
  * 系统用户
@@ -33,9 +33,9 @@ export class SystemUserBaseService extends BaseService {
 
   /**
    * 登录获取Token ✅
-   * @param data LoginDto
+   * @param data SystemLoginDto
    */
-  login(data: LoginDto): Observable<AuthResult> {
+  login(data: SystemLoginDto): Observable<AuthResult> {
     const _url = `/api/admin/SystemUser/login`;
     return this.request<AuthResult>('put', _url, data);
   }
@@ -62,9 +62,9 @@ export class SystemUserBaseService extends BaseService {
    * 新增 ✅
    * @param data SystemUserAddDto
    */
-  add(data: SystemUserAddDto): Observable<SystemUser> {
+  add(data: SystemUserAddDto): Observable<string> {
     const _url = `/api/admin/SystemUser`;
-    return this.request<SystemUser>('post', _url, data);
+    return this.request<string>('post', _url, data);
   }
 
   /**
@@ -72,27 +72,27 @@ export class SystemUserBaseService extends BaseService {
    * @param id 
    * @param data SystemUserUpdateDto
    */
-  update(id: string, data: SystemUserUpdateDto): Observable<SystemUser> {
+  update(id: string, data: SystemUserUpdateDto): Observable<boolean> {
     const _url = `/api/admin/SystemUser/${id}`;
-    return this.request<SystemUser>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**
    * 详情 ✅
    * @param id 
    */
-  getDetail(id: string): Observable<SystemUser> {
+  getDetail(id: string): Observable<SystemUserDetailDto> {
     const _url = `/api/admin/SystemUser/${id}`;
-    return this.request<SystemUser>('get', _url);
+    return this.request<SystemUserDetailDto>('get', _url);
   }
 
   /**
    * ⚠删除 ✅
    * @param id 
    */
-  delete(id: string): Observable<SystemUser> {
+  delete(id: string): Observable<boolean> {
     const _url = `/api/admin/SystemUser/${id}`;
-    return this.request<SystemUser>('delete', _url);
+    return this.request<boolean>('delete', _url);
   }
 
   /**

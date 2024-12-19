@@ -1,6 +1,4 @@
 import { CustomerInfo } from '../../customer-info/models/customer-info.model';
-import { SystemUser } from '../../system-user/models/system-user.model';
-import { CustomerType } from '../../enum/models/customer-type.model';
 import { Product } from '../../product/models/product.model';
 import { OrderStatus } from '../../enum/models/order-status.model';
 /**
@@ -12,59 +10,10 @@ export interface Order {
   updatedTime: Date;
   isDeleted: boolean;
   /**
-   * 是否续费
-   */
-  isRenewal: boolean;
-  /**
    * 客户信息
    */
   customerInfo?: CustomerInfo | null;
   customerInfoId: string;
-  /**
-   * 系统用户
-   */
-  consultant?: SystemUser | null;
-  systemUserId: string;
-  /**
-   * 课时数
-   */
-  lessonCount: number;
-  /**
-   * 老师名称
-   */
-  teacherName?: string | null;
-  /**
-   * 上课时间描述
-   */
-  teachTimeDescription?: string | null;
-  /**
-   * 付款方式
-   */
-  payMethod?: string | null;
-  /**
-   * 付款渠道
-   */
-  payChannel?: string | null;
-  /**
-   * 下单来源
-   */
-  orderSource?: string | null;
-  /**
-   * 下单时间
-   */
-  orderTime: Date;
-  /**
-   * 有效期:天
-   */
-  validPeriod: number;
-  /**
-   * 备注图片
-   */
-  remarkImage?: string | null;
-  /**
-   * 客户类型
-   */
-  customerType?: CustomerType | null;
   /**
    * 订单编号
    */
@@ -74,7 +23,7 @@ export interface Order {
    */
   payNumber?: string | null;
   /**
-   * 商品
+   * 产品
    */
   product?: Product | null;
   productId: string;
@@ -82,10 +31,6 @@ export interface Order {
    * 产品名称
    */
   productName: string;
-  /**
-   * 产品详细信息
-   */
-  productDetail?: string | null;
   /**
    * 原价格
    */
@@ -98,10 +43,6 @@ export interface Order {
    * 优惠码
    */
   discountCode?: string | null;
-  /**
-   * 备注
-   */
-  remark?: string | null;
   /**
    * 订单状态
    */

@@ -6,7 +6,7 @@ import { SystemConfigAddDto } from './models/system-config-add-dto.model';
 import { SystemConfigUpdateDto } from './models/system-config-update-dto.model';
 import { SystemConfigItemDtoPageList } from './models/system-config-item-dto-page-list.model';
 import { EnumDictionary } from './models/enum-dictionary.model';
-import { SystemConfig } from './models/system-config.model';
+import { SystemConfigDetailDto } from './models/system-config-detail-dto.model';
 
 /**
  * 系统配置
@@ -34,9 +34,9 @@ export class SystemConfigBaseService extends BaseService {
    * 新增 ✅
    * @param data SystemConfigAddDto
    */
-  add(data: SystemConfigAddDto): Observable<SystemConfig> {
+  add(data: SystemConfigAddDto): Observable<string> {
     const _url = `/api/admin/SystemConfig`;
-    return this.request<SystemConfig>('post', _url, data);
+    return this.request<string>('post', _url, data);
   }
 
   /**
@@ -44,27 +44,27 @@ export class SystemConfigBaseService extends BaseService {
    * @param id 
    * @param data SystemConfigUpdateDto
    */
-  update(id: string, data: SystemConfigUpdateDto): Observable<SystemConfig> {
+  update(id: string, data: SystemConfigUpdateDto): Observable<boolean> {
     const _url = `/api/admin/SystemConfig/${id}`;
-    return this.request<SystemConfig>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**
    * 详情 ✅
    * @param id 
    */
-  getDetail(id: string): Observable<SystemConfig> {
+  getDetail(id: string): Observable<SystemConfigDetailDto> {
     const _url = `/api/admin/SystemConfig/${id}`;
-    return this.request<SystemConfig>('get', _url);
+    return this.request<SystemConfigDetailDto>('get', _url);
   }
 
   /**
    * ⚠删除 ✅
    * @param id 
    */
-  delete(id: string): Observable<SystemConfig> {
+  delete(id: string): Observable<boolean> {
     const _url = `/api/admin/SystemConfig/${id}`;
-    return this.request<SystemConfig>('delete', _url);
+    return this.request<boolean>('delete', _url);
   }
 
 }

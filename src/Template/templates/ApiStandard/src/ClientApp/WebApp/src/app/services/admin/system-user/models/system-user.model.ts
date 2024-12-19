@@ -1,9 +1,7 @@
-import { Order } from '../../order/models/order.model';
-import { CustomerInfo } from '../../customer-info/models/customer-info.model';
 import { SystemRole } from '../../system-role/models/system-role.model';
 import { SystemLogs } from '../../system-logs/models/system-logs.model';
 import { SystemOrganization } from '../../models/system-organization.model';
-import { GenderType } from '../../enum/models/gender-type.model';
+import { Sex } from '../../enum/models/sex.model';
 /**
  * 系统用户
  */
@@ -12,15 +10,6 @@ export interface SystemUser {
   createdTime: Date;
   updatedTime: Date;
   isDeleted: boolean;
-  orders?: Order[];
-  /**
-   * 创建的客户
-   */
-  createdCustomers?: CustomerInfo[];
-  /**
-   * 管理的客户
-   */
-  customers?: CustomerInfo[];
   /**
    * 用户名
    */
@@ -56,6 +45,9 @@ export interface SystemUser {
   systemRoles?: SystemRole[];
   systemLogs?: SystemLogs[];
   systemOrganizations?: SystemOrganization[];
-  gender?: GenderType | null;
+  /**
+   * 性别
+   */
+  sex?: Sex | null;
 
 }

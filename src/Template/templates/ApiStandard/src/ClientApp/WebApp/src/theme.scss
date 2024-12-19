@@ -1,58 +1,85 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@import './vars.scss';
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
-html {
-  @include mat.all-component-themes($dark-theme);
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+        primary: mat.$violet-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: (use-system-variables: false),
+    ));
 
-  .text-primary {
-    @include mat.icon-color($dark-theme, $color-variant: primary);
-    @include mat.chips-color($dark-theme, $color-variant: primary);
-    @include mat.button-color($dark-theme, $color-variant: primary);
-  }
+$light-theme: mat.define-theme((color: (theme-type: light,
+        primary: mat.$violet-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: (use-system-variables: false),
+    ));
 
-  .text-accent {
-    @include mat.icon-color($dark-theme, $color-variant: tertiary);
-    @include mat.button-color($dark-theme, $color-variant: tertiary);
-  }
+$dark-primary-color: mat.get-theme-color($dark-theme, primary, 60);
+$light-primary-color: mat.get-theme-color($light-theme, primary, 40);
 
-  .text-danger {
-    @include mat.icon-color($dark-theme, $color-variant: error);
-  }
+$dark-secondary-color: mat.get-theme-color($dark-theme, secondary, 60);
+$light-secondary-color: mat.get-theme-color($light-theme, secondary, 60);
 
-  .active {
-    background-color: mat.get-theme-color($dark-theme, primary, 60) !important;
-  }
+$dark-accent-color: mat.get-theme-color($dark-theme, tertiary, 60);
+$light-accent-color: mat.get-theme-color($light-theme, tertiary, 40);
 
-  a {
-    color: mat.get-theme-color($dark-theme, primary, 30);
-  }
+$dark-error-color: mat.get-theme-color($dark-theme, error);
+$light-error-color: mat.get-theme-color($light-theme, error);
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$light-color: #f5f5f5;
+$dark-color: #212121;
+
+:root .primary {
+  @include mat.icon-overrides((color: $dark-primary-color,
+    ));
 
   @media (prefers-color-scheme: light) {
-    @include mat.all-component-colors($light-theme);
+    @include mat.icon-overrides((color: $light-primary-color,
+      ));
+  }
+}
 
-    .text-primary {
-      @include mat.icon-color($light-theme, $color-variant: primary);
-      @include mat.chips-color($light-theme, $color-variant: primary);
-      @include mat.button-color($light-theme, $color-variant: primary);
-    }
+:root .accent {
+  @include mat.icon-overrides((color: $dark-accent-color,
+    ));
 
-    .text-accent {
-      @include mat.icon-color($light-theme, $color-variant: tertiary);
-    }
+  @media (prefers-color-scheme: light) {
+    @include mat.icon-overrides((color: $light-accent-color,
+      ));
+  }
+}
 
-    .text-danger {
-      @include mat.icon-color($light-theme, $color-variant: error);
-    }
+:root .error {
+  @include mat.icon-overrides((color: $dark-error-color,
+    ));
 
-    .active {
-      background-color: mat.get-theme-color($light-theme, primary, 60) !important;
-    }
+  @media (prefers-color-scheme: light) {
+    @include mat.icon-overrides((color: $light-error-color,
+      ));
+  }
+}
+:root .secondary {
+  @include mat.icon-overrides((color: $dark-secondary-color,
+    ));
 
-    a {
-      color: mat.get-theme-color($light-theme, primary, 90);
-    }
+  @media (prefers-color-scheme: light) {
+    @include mat.icon-overrides((color: $light-secondary-color,
+      ));
   }
 }

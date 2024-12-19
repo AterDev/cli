@@ -7,11 +7,12 @@ import { SystemRoleUpdateDto } from './models/system-role-update-dto.model';
 import { SystemRoleSetMenusDto } from './models/system-role-set-menus-dto.model';
 import { SystemRoleSetPermissionGroupsDto } from './models/system-role-set-permission-groups-dto.model';
 import { SystemRoleItemDtoPageList } from './models/system-role-item-dto-page-list.model';
+import { SystemRoleDetailDto } from './models/system-role-detail-dto.model';
 import { SystemRole } from './models/system-role.model';
 
 /**
  * 系统角色
-SystemMod.Manager.SystemRoleManager
+SystemMod.Managers.SystemRoleManager
  */
 @Injectable({ providedIn: 'root' })
 export class SystemRoleBaseService extends BaseService {
@@ -28,9 +29,9 @@ export class SystemRoleBaseService extends BaseService {
    * 新增 ✅
    * @param data SystemRoleAddDto
    */
-  add(data: SystemRoleAddDto): Observable<SystemRole> {
+  add(data: SystemRoleAddDto): Observable<string> {
     const _url = `/api/admin/SystemRole`;
-    return this.request<SystemRole>('post', _url, data);
+    return this.request<string>('post', _url, data);
   }
 
   /**
@@ -38,27 +39,27 @@ export class SystemRoleBaseService extends BaseService {
    * @param id 
    * @param data SystemRoleUpdateDto
    */
-  update(id: string, data: SystemRoleUpdateDto): Observable<SystemRole> {
+  update(id: string, data: SystemRoleUpdateDto): Observable<boolean> {
     const _url = `/api/admin/SystemRole/${id}`;
-    return this.request<SystemRole>('patch', _url, data);
+    return this.request<boolean>('patch', _url, data);
   }
 
   /**
    * 详情 ✅
    * @param id 
    */
-  getDetail(id: string): Observable<SystemRole> {
+  getDetail(id: string): Observable<SystemRoleDetailDto> {
     const _url = `/api/admin/SystemRole/${id}`;
-    return this.request<SystemRole>('get', _url);
+    return this.request<SystemRoleDetailDto>('get', _url);
   }
 
   /**
    * ⚠删除 ✅
    * @param id 
    */
-  delete(id: string): Observable<SystemRole> {
+  delete(id: string): Observable<boolean> {
     const _url = `/api/admin/SystemRole/${id}`;
-    return this.request<SystemRole>('delete', _url);
+    return this.request<boolean>('delete', _url);
   }
 
   /**

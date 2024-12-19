@@ -11,7 +11,7 @@ public class SystemUserUpdateDto
     /// 用户名
     /// </summary>
     [MaxLength(30)]
-    public required string UserName { get; set; }
+    public string? UserName { get; set; }
     /// <summary>
     /// 密码
     /// </summary>

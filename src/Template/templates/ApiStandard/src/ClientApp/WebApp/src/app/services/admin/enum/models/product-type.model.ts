@@ -2,10 +2,9 @@
  * 产品类型
  */
 export enum ProductType {
-  Goods = 0,
-  Service = 1,
-  Member = 2,
-  AdvancedMember = 3,
-  Trial = 4,
+  /** 团队套餐 */
+  GroupPackage = 0,
+  /** 个人套餐 */
+  IndividualPackage = 1,
 
 }

@@ -1,6 +1,7 @@
 import { ProductType } from '../../enum/models/product-type.model';
+import { ProductStatus } from '../../enum/models/product-status.model';
 /**
- * 产品添加时请求结构
+ * 产品添加时DTO
  */
 export interface ProductAddDto {
   /**
@@ -20,20 +21,24 @@ export interface ProductAddDto {
    */
   sort: number;
   /**
+   * 产品类型
+   */
+  productType?: ProductType | null;
+  /**
+   * 产品状态
+   */
+  status?: ProductStatus | null;
+  /**
    * 原价
    */
   originPrice: number;
   /**
-   * 积分兑换
+   * 用量
    */
-  costScore: number;
+  dosage?: number | null;
   /**
-   * 有效期：天
+   * 账号数量
    */
-  days: number;
-  /**
-   * 产品类型
-   */
-  productType?: ProductType | null;
+  accountNumber: number;
 
 }

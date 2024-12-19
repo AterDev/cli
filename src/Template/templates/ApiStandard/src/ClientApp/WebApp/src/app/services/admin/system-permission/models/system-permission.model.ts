@@ -28,5 +28,6 @@ export interface SystemPermission {
    * 系统权限组
    */
   group?: SystemPermissionGroup | null;
+  groupId: string;
 
 }

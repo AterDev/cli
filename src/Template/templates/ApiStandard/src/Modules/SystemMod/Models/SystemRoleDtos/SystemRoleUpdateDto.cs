@@ -19,10 +19,5 @@ public class SystemRoleUpdateDto
     /// 是否系统内置,系统内置不可删除
     /// </summary>
     public bool? IsSystem { get; set; }
-    /// <summary>
-    /// 图标
-    /// </summary>
-    [MaxLength(30)]
-    public string? Icon { get; set; }
 
 }

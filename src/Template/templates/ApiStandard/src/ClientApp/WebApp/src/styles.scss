@@ -1,26 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+@use './theme.scss' as theme;
+@use '@angular/material' as mat;
+
 @import './assets/bootstrap-grid.min.css';
 
 html,
 body {
   height: 100%;
-  font-family: sans-serif, "微软雅黑", Tahoma, Geneva, Verdana;
-}
-
-body {
   margin: 0;
+  font-family: Ginto, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
 }
 
-img {
-  object-fit: cover;
+html {
+  @include mat.all-component-themes(theme.$dark-theme);
+
+
+  @media (prefers-color-scheme: light) {
+    @include mat.all-component-colors(theme.$light-theme);
+  }
 }
 
-.loading {
-  margin: 0 auto;
+.gap-1 {
+  gap: 4px;
 }
 
-.avatar {
-  border-radius: 50%;
+.gap-2 {
+  gap: 8px;
+}
+
+.gap-3 {
+  gap: 16px;
 }
 
 .w-100 {
@@ -31,6 +39,15 @@ img {
   cursor: pointer;
 }
 
+.v-middle {
+  vertical-align: middle;
+}
+
+.paginator {
+  margin: 2px auto;
+  background-color: var(--mat-paginator-container-background-color);
+}
+
 mat-nav-list .mat-icon {
   margin-right: 4px;
   vertical-align: middle;
@@ -38,26 +55,5 @@ mat-nav-list .mat-icon {
 
 mat-panel-title .mat-icon {
   margin-right: 4px;
-  vertical-align: middle;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.icon {
-  width: 38px;
-  height: 38px;
-  font-size: 20px;
-  line-height: 38px;
-  border-radius: 10px;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #2359be;
-  color: white;
-}
-
-
-.v-middle {
   vertical-align: middle;
 }
