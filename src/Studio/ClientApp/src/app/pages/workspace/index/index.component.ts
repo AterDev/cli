@@ -257,27 +257,6 @@ export class IndexComponent implements OnInit {
                 commandType: CommandType.Clear,
                 force: this.force
               };
-              this.isSync = true;
-              this.service.batchGenerate(data)
-                .subscribe({
-                  next: (res) => {
-                    if (res) {
-                      this.snb.open('清理成功');
-                      this.getEntity();
-                    } else {
-                      this.snb.open('清理失败');
-                    }
-                  },
-                  error: (error) => {
-                    this.snb.open(error.detail);
-                    console.log(error.detail);
-
-                    this.isSync = false;
-                  },
-                  complete: () => {
-                    this.isSync = false;
-                  }
-                });
             } else {
               this.snb.open('未选择任何实体');
             }
@@ -445,40 +424,7 @@ export class IndexComponent implements OnInit {
           || type == CommandType.API)) {
         data.projectPath = this.selectedWebProjectIds;
       }
-      this.isSync = true;
-      this.service.batchGenerate(data)
-        .subscribe({
-          next: (res) => {
-            if (res) {
-              this.snb.open('生成成功');
-              this.dialogRef.close();
 
-              // 更新数据状态
-              if (type == CommandType.Dto) {
-                selected.forEach(e => e.hasDto = true);
-              }
-              if (type == CommandType.Manager) {
-                selected.forEach(e => e.hasDto = true);
-                selected.forEach(e => e.hasManager = true);
-              }
-              if (type == CommandType.API) {
-                selected.forEach(e => e.hasDto = true);
-                selected.forEach(e => e.hasManager = true);
-                selected.forEach(e => e.hasAPI = true);
-              }
-            } else {
-              this.snb.open('生成失败');
-            }
-          },
-          error: (error) => {
-            this.snb.open(error.detail);
-            console.log(error.detail);
-            this.isSync = false;
-          },
-          complete: () => {
-            this.isSync = false;
-          }
-        });
     } else {
       this.snb.open('未选择任何实体');
     }

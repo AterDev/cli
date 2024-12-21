@@ -4,7 +4,6 @@ using CodeGenerator;
 using CodeGenerator.Generate;
 using CodeGenerator.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 
 namespace Share.Services;
@@ -134,10 +133,22 @@ public class CodeGenService(ILogger<CodeGenService> logger)
     /// <param name="tplContent"></param>
     /// <param name="isCover"></param>
     /// <returns></returns>
-    public List<GenFileInfo> GenerateController(EntityInfo entityInfo, string outputPath, string tplContent, bool isCover = false)
+    public GenFileInfo GenerateController(EntityInfo entityInfo, string outputPath, string tplContent, bool isCover = false)
     {
         var apiGen = new RestApiGenerate(entityInfo);
-        // GlobalUsing
+        var content = apiGen.GetRestApiContent(tplContent);
+        var controllerFile = new GenFileInfo($"{entityInfo.Name}{ConstVal.Controller}.cs", content)
+        {
+            IsCover = isCover,
+            FullName = Path.Combine(outputPath, $"{entityInfo.Name}{ConstVal.Controller}.cs"),
+            ModuleName = entityInfo.ModuleName
+        };
+        return controllerFile;
+    }
+
+    public GenFileInfo GenerateApiGlobalUsing(EntityInfo entityInfo, string outputPath, bool isCover = false)
+    {
+        var apiGen = new RestApiGenerate(entityInfo);
 
         var globalFilePath = Path.Combine(outputPath, ConstVal.GlobalUsingsFile);
         var globalLines = File.Exists(globalFilePath)
@@ -160,15 +171,9 @@ public class CodeGenService(ILogger<CodeGenService> logger)
             FullName = Path.Combine(outputPath, ConstVal.GlobalUsingsFile),
             ModuleName = entityInfo.ModuleName
         };
-        var content = apiGen.GetRestApiContent(tplContent);
-        var controllerFile = new GenFileInfo($"{entityInfo.Name}{ConstVal.Controller}.cs", content)
-        {
-            IsCover = isCover,
-            FullName = Path.Combine(outputPath, ConstVal.ControllersDir, $"{entityInfo.Name}{ConstVal.Controller}.cs"),
-            ModuleName = entityInfo.ModuleName
-        };
-        return [globalFile, controllerFile];
+        return globalFile;
     }
+
 
     /// <summary>
     /// 生成Web请求

@@ -156,7 +156,7 @@ public class TplContent
     }
     public static string ControllerTpl(bool isAdmin = true)
     {
-        var baseClass = isAdmin ? "ClientControllerBase" : "RestControllerBase";
+        var baseClass = isAdmin ? "RestControllerBase" : "ClientControllerBase";
         return $$"""
             using @(Model.ShareNamespace).Models.@(Model.EntityName)Dtos;
             namespace @(Model.Namespace).Controllers;

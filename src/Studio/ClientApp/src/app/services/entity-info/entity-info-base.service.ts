@@ -3,7 +3,6 @@ import { BaseService } from '../base.service';
 import { Observable } from 'rxjs';
 import { UpdateDtoDto } from './models/update-dto-dto.model';
 import { GenerateDto } from './models/generate-dto.model';
-import { BatchGenerateDto } from './models/batch-generate-dto.model';
 import { EntityFile } from './models/entity-file.model';
 
 /**
@@ -64,15 +63,6 @@ export class EntityInfoBaseService extends BaseService {
    */
   generate(data: GenerateDto): Observable<boolean> {
     const _url = `/api/admin/EntityInfo/generate`;
-    return this.request<boolean>('post', _url, data);
-  }
-
-  /**
-   * 批量生成
-   * @param data BatchGenerateDto
-   */
-  batchGenerate(data: BatchGenerateDto): Observable<boolean> {
-    const _url = `/api/admin/EntityInfo/batch-generate`;
     return this.request<boolean>('post', _url, data);
   }
 

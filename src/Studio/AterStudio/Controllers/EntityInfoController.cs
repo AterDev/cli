@@ -87,20 +87,4 @@ public class EntityInfoController(
         await _manager.GenerateAsync(dto);
         return true;
     }
-
-    /// <summary>
-    /// 批量生成
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    [HttpPost("batch-generate")]
-    public async Task<ActionResult<bool>> BatchGenerateAsync(BatchGenerateDto dto)
-    {
-        if (_project.Project == null)
-        {
-            return NotFound("项目不存在");
-        }
-        await _manager.BatchGenerateAsync(dto);
-        return true;
-    }
 }

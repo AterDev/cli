@@ -303,6 +303,7 @@ public partial class EntityInfoManager(
                 var managerFiles = _codeGenService.GenerateManager(entityInfo, applicationPath, tplContent, dto.Force);
                 files.AddRange(managerFiles);
 
+                _codeGenService.GenerateApiGlobalUsing(entityInfo, apiPath, true);
                 var controllerType = _projectContext.Project?.Config.ControllerType;
 
                 switch (controllerType)
@@ -311,7 +312,7 @@ public partial class EntityInfoManager(
                     {
                         tplContent = TplContent.ControllerTpl(false);
                         var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
-                        files.AddRange(controllerFiles);
+                        files.Add(controllerFiles);
                         break;
                     }
                     case ControllerType.Admin:
@@ -319,19 +320,19 @@ public partial class EntityInfoManager(
                         tplContent = TplContent.ControllerTpl();
                         apiPath = Path.Combine(apiPath, "AdminControllers");
                         var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
-                        files.AddRange(controllerFiles);
+                        files.Add(controllerFiles);
                         break;
                     }
                     case ControllerType.Both:
                     {
                         tplContent = TplContent.ControllerTpl(false);
                         var controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
-                        files.AddRange(controllerFiles);
+                        files.Add(controllerFiles);
 
                         tplContent = TplContent.ControllerTpl();
                         apiPath = Path.Combine(apiPath, "AdminControllers");
                         controllerFiles = _codeGenService.GenerateController(entityInfo, apiPath, tplContent, dto.Force);
-                        files.AddRange(controllerFiles);
+                        files.Add(controllerFiles);
                         break;
                     }
                     default:
@@ -430,70 +431,5 @@ public partial class EntityInfoManager(
         sw.Stop();
         _logger.LogInformation($"GetDiffProperties elapsed:{sw.ElapsedMilliseconds}ms");
         return res;
-    }
-
-    /// <summary>
-    /// 批量生成
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    public async Task BatchGenerateAsync(BatchGenerateDto dto)
-    {
-        var entityInfos = _codeAnalysis.GetEntityInfos(dto.EntityPaths) ?? [];
-        if (entityInfos.Count < 1)
-        {
-            return;
-        }
-
-        var entityInfo = entityInfos.FirstOrDefault();
-        string sharePath = _projectContext.GetSharePath(entityInfo!.ModuleName);
-        string applicationPath = _projectContext.ApplicationPath!;
-        string apiPath = _projectContext.ApiPath!;
-        string entityPath = _projectContext.EntityPath!;
-
-        var files = new List<GenFileInfo>();
-        switch (dto.CommandType)
-        {
-            case CommandType.Dto:
-                foreach (var item in entityInfos)
-                {
-                    files.AddRange(_codeGenService.GenerateDtos(item, sharePath, dto.Force));
-                }
-                break;
-            case CommandType.Manager:
-                foreach (var item in entityInfos)
-                {
-
-                    files.AddRange(_codeGenService.GenerateManager(item, applicationPath, "", dto.Force));
-                }
-
-                break;
-            case CommandType.API:
-                foreach (var item in entityInfos)
-                {
-
-                    files.AddRange(_codeGenService.GenerateController(item, apiPath, "", dto.Force));
-                }
-                break;
-            case CommandType.Protobuf:
-                foreach (string item in dto.EntityPaths)
-                {
-                    dto.ProjectPath?.ForEach(p =>
-                    {
-                    });
-                }
-                break;
-            case CommandType.Clear:
-                foreach (string item in dto.EntityPaths)
-                {
-                    string entityName = Path.GetFileNameWithoutExtension(item);
-
-                }
-                break;
-            default:
-                break;
-        }
-        _codeGenService.GenerateFiles(files);
-        await Task.CompletedTask;
     }
 }

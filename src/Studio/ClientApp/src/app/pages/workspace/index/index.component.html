@@ -34,9 +34,9 @@
       <mat-icon class="text-primary">refresh</mat-icon>
     </button>
 
-    <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" matTooltip="批量操作">
+    <!-- <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" matTooltip="批量操作">
       <mat-icon class="text-primary">library_add_check</mat-icon>
-    </button>
+    </button> -->
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="openGenerateDialog(CommandType.Dto,null)" matTooltip="生成dto,不会覆盖原内容"
         matTooltipPosition="right">生成Dto</button>

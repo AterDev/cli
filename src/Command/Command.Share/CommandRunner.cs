@@ -1,4 +1,4 @@
-using CodeGenerator;
+﻿using CodeGenerator;
 using CodeGenerator.Helper;
 using CodeGenerator.Models;
 using Entity;
@@ -151,7 +151,9 @@ public class CommandRunner(CodeGenService codeGen, CodeAnalysisService codeAnaly
 
             tplContent = TplContent.ControllerTpl();
             var controllerFiles = _codeGen.GenerateController(entityInfo, apiPath, tplContent, force);
-            files.AddRange(controllerFiles);
+            var globalFiles = _codeGen.GenerateApiGlobalUsing(entityInfo, apiPath, true);
+            files.Add(controllerFiles);
+            files.Add(globalFiles);
             _codeGen.GenerateFiles(files);
         }
         catch (Exception ex)
