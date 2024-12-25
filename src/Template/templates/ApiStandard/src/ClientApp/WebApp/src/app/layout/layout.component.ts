@@ -32,7 +32,12 @@ export class LayoutComponent {
     });
   }
 
-
+  ngOnInit(): void {
+    this.isLogin = this.auth.isLogin;
+    this.isAdmin = this.auth.isAdmin;
+    this.username = this.auth.userName;
+  }
+  
   login(): void {
     this.router.navigateByUrl('/login')
   }
