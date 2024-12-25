@@ -1,9 +1,8 @@
-using Definition.Entity;
-namespace Definition.Share.Models.EntityInfoDtos;
+namespace Share.Models.EntityInfoDtos;
 /// <summary>
 /// 实体添加时请求结构
 /// </summary>
-/// <see cref="Definition.Entity.EntityInfo"/>
+/// <see cref="EntityInfo"/>
 public class EntityInfoAddDto
 {
     /// <summary>
@@ -38,5 +37,5 @@ public class EntityInfoAddDto
     public bool? IsEnum { get; set; }
     public bool IsList { get; set; }
     public required Guid ProjectId { get; set; } = default!;
-    
+
 }

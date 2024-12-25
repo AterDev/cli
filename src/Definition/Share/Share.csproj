@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <SatelliteResourceLanguages>None</SatelliteResourceLanguages>
+        <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="Managers\**" />
+        <EmbeddedResource Remove="Managers\**" />
+        <None Remove="Managers\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Models\ToolsDtos\" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\CodeGenerator\CodeGenerator.csproj" />
+    </ItemGroup>
+</Project>

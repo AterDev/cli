@@ -1,55 +1,55 @@
-﻿using Definition.Infrastructure.Helper;
-
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Definition.EntityFramework.DBProvider;
+namespace EntityFramework.DBProvider;
 
-public class ContextBase : DbContext
+public class ContextBase(DbContextOptions options) : DbContext(options)
 {
-    public const string DbName = "ater.dry.db";
+    public DbSet<Project> Projects { get; set; } = null!;
+    public DbSet<EntityInfo> EntityInfos { get; set; } = null!;
+    public DbSet<ApiDocInfo> ApiDocInfos { get; set; } = null!;
+    public DbSet<GenAction> GenActions { get; set; } = null!;
+    public DbSet<GenStep> GenSteps { get; set; } = null!;
+    public DbSet<ConfigData> Configs { get; set; } = null!;
+    public DbSet<GenActionGenStep> GenActionGenSteps { get; set; } = null!;
+    public DbSet<GenActionTpl> GenActionTpls { get; set; } = null!;
 
 
-    public DbSet<Project> Projects { get; set; }
-
-    public DbSet<EntityInfo> EntityInfos { get; set; }
-
-    public DbSet<ApiDocInfo> ApiDocInfos { get; set; }
-
-    public DbSet<TemplateFile> TemplateFiles { get; set; }
-
-    public DbSet<ConfigData> Configs { get; set; }
-
-
-    public ContextBase(DbContextOptions options) : base(options)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-    }
-    public ContextBase()
-    {
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
+        builder.Entity<Project>(e =>
         {
-            var path = Path.Combine(AssemblyHelper.GetStudioPath(), DbName);
-            optionsBuilder.UseSqlite($"DataSource={path}");
-        }
-        base.OnConfiguring(optionsBuilder);
-    }
+            e.OwnsOne(p => p.Config).ToJson();
+            e.HasMany(p => p.GenActions)
+                .WithOne(a => a.Project)
+                .OnDelete(DeleteBehavior.Cascade);
+            e.HasMany(p => p.GenSteps)
+                .WithOne(a => a.Project)
+                .OnDelete(DeleteBehavior.Cascade);
+            e.HasMany(p => p.EntityInfos)
+                .WithOne(a => a.Project)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+        builder.Entity<GenAction>(e =>
+        {
+            e.OwnsMany(a => a.Variables).ToJson();
 
-        OnSQLiteModelCreating(modelBuilder);
-        OnModelExtendCreating(modelBuilder);
-        base.OnModelCreating(modelBuilder);
+            e.HasMany(e => e.GenSteps)
+                .WithMany(e => e.GenActions)
+                .UsingEntity<GenActionGenStep>();
+        });
+
+        OnSQLiteModelCreating(builder);
+        OnModelExtendCreating(builder);
+        base.OnModelCreating(builder);
     }
 
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
-        var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
+        List<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry> entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
         foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entityEntry in entries)
         {
             Microsoft.EntityFrameworkCore.Metadata.IProperty? property = entityEntry.Metadata.FindProperty("CreatedTime");
@@ -99,11 +99,11 @@ public class ContextBase : DbContext
     {
         if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
         {
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            foreach (Microsoft.EntityFrameworkCore.Metadata.IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
             {
-                var properties = entityType.ClrType.GetProperties()
+                IEnumerable<System.Reflection.PropertyInfo> properties = entityType.ClrType.GetProperties()
                     .Where(p => p.PropertyType == typeof(DateTimeOffset) || p.PropertyType == typeof(DateTimeOffset?));
-                foreach (var property in properties)
+                foreach (System.Reflection.PropertyInfo? property in properties)
                 {
                     modelBuilder
                         .Entity(entityType.Name)

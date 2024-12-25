@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DocumentationFile></DocumentationFile>
+        <NoWarn>1701;1702;1591;1587</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Services\**" />
+        <EmbeddedResource Remove="Services\**" />
+        <None Remove="Services\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Entity\Entity.csproj" />
+    </ItemGroup>
+</Project>

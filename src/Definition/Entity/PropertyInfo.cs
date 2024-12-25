@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Definition.Entity;
+namespace Entity;
 
 /// <summary>
 /// 属性
@@ -95,7 +94,7 @@ public class PropertyInfo : EntityBase
     {
         string? attributeText = AttributeText;
         // 默认值
-        var defaultValue = DefaultValue;
+        string defaultValue = DefaultValue;
 
         if (!string.IsNullOrEmpty(attributeText))
         {

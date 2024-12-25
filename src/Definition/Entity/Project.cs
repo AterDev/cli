@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Definition.Entity;
+﻿namespace Entity;
 /// <summary>
 /// 项目
 /// </summary>
@@ -33,18 +31,67 @@ public class Project : EntityBase
     public SolutionType? SolutionType { get; set; }
 
     /// <summary>
-    /// Front Path
+    /// project config
     /// </summary>
-    [MaxLength(200)]
-    public string? FrontPath { get; set; }
+    public ProjectConfig Config { get; set; } = new ProjectConfig();
 
     public List<EntityInfo> EntityInfos { get; set; } = [];
     public List<ApiDocInfo> ApiDocInfos { get; set; } = [];
-    public List<TemplateFile> TemplateFiles { get; set; } = [];
+
+    public ICollection<GenAction> GenActions { get; set; } = [];
+
+    public ICollection<GenStep> GenSteps { get; set; } = [];
 }
 
+/// <summary>
+///  项目配置
+/// </summary>
+public class ProjectConfig
+{
+    public string IdType { get; set; } = ConstVal.Guid;
+    public string CreatedTimeName { get; set; } = ConstVal.CreatedTime;
+    public string UpdatedTimeName { get; set; } = ConstVal.UpdatedTime;
+    public string Version { get; set; } = ConstVal.Version;
+    public string SharePath { get; set; } = PathConst.SharePath;
+    public string EntityPath { get; set; } = PathConst.EntityPath;
+    public string EntityFrameworkPath { get; set; } = PathConst.EntityFrameworkPath;
+    public string ApplicationPath { get; set; } = PathConst.ApplicationPath;
+    public string ApiPath { get; set; } = PathConst.APIPath;
+    public string MicroservicePath { get; set; } = PathConst.MicroservicePath;
+    public string SolutionPath { get; set; } = "";
+    public bool IsLight { get; private set; } = false;
+    public ControllerType ControllerType { get; set; } = ControllerType.Client;
+
+    /// <summary>
+    /// 是否拆分
+    /// </summary>
+    public bool? IsSplitController { get; set; } = false;
+}
+
+public enum ControllerType
+{
+    /// <summary>
+    /// 用户端
+    /// </summary>
+    [Description("用户端")]
+    Client,
+    /// <summary>
+    /// 管理端
+    /// </summary>
+    [Description("管理端")]
+    Admin,
+    /// <summary>
+    /// 用户和管理端
+    /// </summary>
+    [Description("用户端和管理端")]
+    Both
+}
 public enum SolutionType
 {
+    [Description("DotNet")]
     DotNet,
-    Node
+    [Description("Node")]
+    Node,
+    [Description("Empty")]
+    Else
 }

@@ -1,9 +1,8 @@
-using Definition.Entity;
-namespace Definition.Share.Models.EntityInfoDtos;
+namespace Share.Models.EntityInfoDtos;
 /// <summary>
 /// 实体更新时请求结构
 /// </summary>
-/// <see cref="Definition.Entity.EntityInfo"/>
+/// <see cref="EntityInfo"/>
 public class EntityInfoUpdateDto
 {
     /// <summary>
@@ -39,5 +38,5 @@ public class EntityInfoUpdateDto
     public bool? IsList { get; set; }
     public Guid? ProjectId { get; set; }
     public List<Guid>? PropertyInfoIds { get; set; }
-    
+
 }

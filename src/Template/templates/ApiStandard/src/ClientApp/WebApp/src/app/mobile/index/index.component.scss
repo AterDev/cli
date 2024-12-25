@@ -1,0 +1,24 @@
+@import 'src/vars.scss';
+
+
+.icon {
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  vertical-align: middle;
+  line-height: 48px;
+  color: inherit;
+  background-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  mat-grid-tile {
+    border: 1px solid $dark-bg-color;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  mat-grid-tile {
+    border: 1px solid $light-bg-color;
+  }
+}

@@ -1,0 +1,136 @@
+<div class="p-2">
+  @if(isLoading){
+  }@else {
+  @if(!verifyCode){
+  <h4>该页面已过期，请联系管理员获取最新地址</h4>
+  }@else {
+
+  <div class="d-flex justify-content-center ">
+    <h4>外教1对1课程试听登记表</h4>
+  </div>
+
+  <form class="d-flex flex-column" [formGroup]="formGroup">
+    <div class="d-flex flex-column gap-1">
+      <mat-form-field>
+        <mat-label>1.您的姓名</mat-label>
+        <input matInput placeholder="姓名,不超过20字" formControlName="name" required minlength="" maxlength="20">
+        <mat-error *ngIf="name?.invalid">
+          {{getValidatorMessage('name')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>2.您的性别</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option *ngFor="let item of GenderType | toKeyValue" [value]="item.value">
+            {{item.value | enumText:'GenderType'}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="gender?.invalid">
+          {{getValidatorMessage('gender')}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>3.年龄段</mat-label>
+        <mat-select formControlName="ageRange">
+          <mat-option *ngFor="let item of AgeRange | toKeyValue" [value]="item.value">
+            {{item.value | enumText:'AgeRange'}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="ageRange?.invalid">
+          {{getValidatorMessage('ageRange')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>4.您的职业(若还在上学，填写学生)</mat-label>
+        <input matInput placeholder="职业,不超过50字" formControlName="occupation" required minlength="" maxlength="50">
+        <mat-error *ngIf="occupation?.invalid">
+          {{getValidatorMessage('occupation')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>5.当前英语水平</mat-label>
+        <mat-select formControlName="englishLevel">
+          <mat-option *ngFor="let item of EnglishLevel | toKeyValue" [value]="item.value">
+            {{item.value | enumText:'EnglishLevel'}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="englishLevel?.invalid">
+          {{getValidatorMessage('englishLevel')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>6.希望通过1对1外教学习，达成什么目标？</mat-label>
+        <input matInput placeholder="学习目标,不超过100字" formControlName="learningGoal" required minlength="" maxlength="100">
+        <mat-error *ngIf="learningGoal?.invalid">
+          {{getValidatorMessage('learningGoal')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>7.您希望老师帮助您重点提升哪个部分？</mat-label>
+        <mat-select formControlName="improveAreas" required multiple="true">
+          <mat-option *ngFor="let item of improveMaps" [value]="item">
+            {{item}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="improveAreas?.invalid">
+          {{getValidatorMessage('improveAreas')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>8.您期望使用的上课教材，倾向于以下哪一类？</mat-label>
+        <mat-select formControlName="preferredMaterial" required>
+          <mat-option *ngFor="let item of materialMaps" [value]="item">
+            {{item}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="preferredMaterial?.invalid">
+          {{getValidatorMessage('preferredMaterial')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>9.对老师有什么偏好和要求？</mat-label>
+        <input matInput placeholder="老师偏好,不超过200字" formControlName="teacherPreference" required minlength=""
+          maxlength="200">
+        <mat-error *ngIf="teacherPreference?.invalid">
+          {{getValidatorMessage('teacherPreference')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>10.您哪些时间可安排试听上课？</mat-label>
+        <textarea matInput placeholder="试听时间,不超过300字" formControlName="availableTimes" minlength="" maxlength="300"
+          cols="3" required></textarea>
+        <mat-error *ngIf="availableTimes?.invalid">
+          {{getValidatorMessage('availableTimes')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>11.若正式上课，描述期望的上课频次和时间</mat-label>
+        <textarea matInput placeholder="上课时间段" formControlName="classSchedule" minlength="" maxlength="300" rows="3"
+          required></textarea>
+        <mat-error *ngIf="classSchedule?.invalid">
+          {{getValidatorMessage('classSchedule')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>12.您的联系电话</mat-label>
+        <input matInput placeholder="联系电话,不超过20字" formControlName="phoneNumber" required minlength="" maxlength="20">
+        <mat-error *ngIf="phoneNumber?.invalid">
+          {{getValidatorMessage('phoneNumber')}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>13.您的微信号/昵称</mat-label>
+        <input matInput placeholder="微信号/昵称,不超过100字" formControlName="weixin" required minlength="" maxlength="100">
+        <mat-error *ngIf="weixin?.invalid">
+          {{getValidatorMessage('weixin')}}
+        </mat-error>
+      </mat-form-field>
+      <div class="d-flex mb-2">
+        <button class="w-100" mat-flat-button color="primary" (click)="add()">提交</button>
+      </div>
+    </div>
+  </form>
+  }
+  }
+</div>

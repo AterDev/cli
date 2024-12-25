@@ -1,0 +1,36 @@
+<div class="page">
+  <mat-toolbar color="primary">
+    @if(isMobile){
+    <a mat-button [routerLink]="['/mobile']" routerLinkActive="active">首页</a>
+    }@else {
+    <a mat-button [routerLink]="['/admin']" routerLinkActive="active">首页</a>
+    }
+    <span style="display:flex;flex:1 1 auto"></span>
+    <span *ngIf="isLogin">
+      <button [matMenuTriggerFor]="appMenu" mat-button style="flex-direction: row-reverse;">
+        {{username}}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #appMenu="matMenu">
+        <span mat-menu-item>
+          你好,{{username}}
+        </span>
+        <button mat-menu-item routerLink="/account" disabled>
+          <mat-icon>assignment_ind</mat-icon>
+          <span>账号设置</span>
+        </button>
+        <button *ngIf="isAdmin" mat-menu-item (click)="goToAdmin()">
+          <mat-icon>settings</mat-icon>
+          <span>后台管理</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>登出</span>
+        </button>
+      </mat-menu>
+    </span>
+    <span *ngIf="!isLogin">
+      <button mat-button (click)="login()">登录</button>
+    </span>
+  </mat-toolbar>
+</div>

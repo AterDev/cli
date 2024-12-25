@@ -1,10 +1,37 @@
-﻿namespace Definition.Entity;
+﻿using Ater.Web.Core.Utils;
+
+namespace Entity;
 /// <summary>
-/// 实体
+/// 模型信息
 /// </summary>
 [Index(nameof(Name))]
 public class EntityInfo : EntityBase
 {
+    public static string[] IgnoreTypes = ["JsonDocument?", "byte[]"];
+    public static string[] IgnoreProperties = [
+        ConstVal.Id,
+        ConstVal.CreatedTime,
+        ConstVal.UpdatedTime,
+        ConstVal.IsDeleted,
+        "PageSize", "PageIndex"
+        ];
+
+    /// <summary>
+    /// file content md5 hash
+    /// </summary>
+    [MaxLength(32)]
+    public required string Md5Hash { get; set; }
+
+    /// <summary>
+    /// module name
+    /// </summary>
+    public string? ModuleName { get; set; }
+
+    /// <summary>
+    /// file path
+    /// </summary>
+    [MaxLength(200)]
+    public required string FilePath { get; set; }
     /// <summary>
     /// 类名
     /// </summary>
@@ -14,7 +41,7 @@ public class EntityInfo : EntityBase
     /// 命名空间
     /// </summary>
     [MaxLength(100)]
-    public string? NamespaceName { get; set; }
+    public required string NamespaceName { get; set; }
     /// <summary>
     /// 程序集名称
     /// </summary>
@@ -38,13 +65,39 @@ public class EntityInfo : EntityBase
     public bool? IsEnum { get; set; } = false;
     public bool IsList { get; set; }
 
-    public Project? Project { get; set; }
+    public Project Project { get; set; } = null!;
     public Guid ProjectId { get; set; } = default!;
 
     /// <summary>
     /// 属性
     /// </summary>
     public List<PropertyInfo> PropertyInfos { get; set; } = [];
+
+    public string GetDtoNamespace()
+    {
+        return GetShareNamespace();
+    }
+
+    public string GetShareNamespace()
+    {
+        return ModuleName.IsEmpty()
+            ? ConstVal.ShareName
+            : ModuleName;
+    }
+
+    public string GetManagerNamespace()
+    {
+        return ModuleName.IsEmpty()
+            ? ConstVal.ApplicationName
+            : ModuleName;
+    }
+
+    public string GetAPINamespace()
+    {
+        return ModuleName.IsEmpty()
+            ? ConstVal.APIName
+            : ModuleName;
+    }
 
     /// <summary>
     /// 获取导航属性
@@ -58,11 +111,23 @@ public class EntityInfo : EntityBase
             .ToList();
     }
 
-
-    void test()
+    /// <summary>
+    /// 获取筛选属性
+    /// </summary>
+    /// <returns></returns>
+    public List<PropertyInfo> GetFilterProperties()
     {
-        new EntityInfo() { Name = "", };
-
+        return PropertyInfos
+            .Where(p => p.IsRequired && !p.IsNavigation
+                    || !p.IsList
+                        && !p.IsNavigation
+                        && !p.IsComplexType
+                        && !IgnoreProperties.Contains(p.Name)
+                        && !IgnoreTypes.Contains(p.Type)
+                    || p.IsEnum
+                    )
+                .Where(p => p.MaxLength is not (not null and >= 100))
+            .ToList() ?? [];
     }
 }
 public enum EntityKeyType

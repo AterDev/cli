@@ -1,9 +1,8 @@
-using Definition.Entity;
-namespace Definition.Share.Models.ApiDocInfoDtos;
+namespace Share.Models.ApiDocInfoDtos;
 /// <summary>
 /// 接口文档查询筛选
 /// </summary>
-/// <see cref="Definition.Entity.ApiDocInfo"/>
+/// <see cref="ApiDocInfo"/>
 public class ApiDocInfoFilterDto : FilterBase
 {
     /// <summary>

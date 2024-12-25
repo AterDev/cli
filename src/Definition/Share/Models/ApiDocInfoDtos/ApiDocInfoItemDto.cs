@@ -1,9 +1,8 @@
-using Definition.Entity;
-namespace Definition.Share.Models.ApiDocInfoDtos;
+namespace Share.Models.ApiDocInfoDtos;
 /// <summary>
 /// 接口文档列表元素
 /// </summary>
-/// <see cref="Definition.Entity.ApiDocInfo"/>
+/// <see cref="ApiDocInfo"/>
 public class ApiDocInfoItemDto
 {
     /// <summary>
@@ -29,5 +28,5 @@ public class ApiDocInfoItemDto
     public string? LocalPath { get; set; }
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTimeOffset CreatedTime { get; set; }
-    
+
 }
