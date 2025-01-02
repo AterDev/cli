@@ -7,11 +7,17 @@
         <mat-form-field subscriptSizing="dynamic">
           <mat-label>用户名</mat-label>
           <input matInput placeholder="" [(ngModel)]='filter.userName'>
+          @if (filter.userName) {
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.userName = null">
+            <mat-icon>close</mat-icon>
+          </button>
+          }
         </mat-form-field>
       
         <mat-form-field subscriptSizing="dynamic">
           <mat-label>角色id</mat-label>
-          <mat-select formControlName="roleId" placeholder="">
+          <mat-select [(ngModel)]="filter.roleId" placeholder="">
+            <mat-option [value]="null">无</mat-option>
           <!--
             <mat-option *ngFor="let item of roleIdData" [value]="item.Id">
               {{ item.name }}
@@ -80,7 +86,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>操作</th>
         <td mat-cell *matCellDef="let element;table:table">
-          <button mat-icon-button class="secondary" [routerLink]="['../detail',element.id]" matTooltip="查看">
+          <button mat-icon-button class="secondary" (click)="openDetailDialog(element)" matTooltip="查看">
             <mat-icon>preview</mat-icon>
           </button>
           <button mat-icon-button class="primary" (click)="openEditDialog(element)" matTooltip="编辑">

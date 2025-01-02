@@ -4,86 +4,67 @@
 </mat-toolbar>
 <form class="d-flex p-2" *ngIf="!isLoading" [formGroup]="formGroup">
   <div class="d-flex flex-column w-100">
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>用户名</mat-label>
-          <input matInput formControlName="userName" placeholder=""/>
-          @if (userName.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="userName.setValue(null)">
-            <mat-icon>close</mat-icon>
-          </button>
-          }
-          <mat-error *ngIf="formGroup.get('userName')?.invalid">
-            {{getValidatorMessage('userName')}}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>密码</mat-label>
-          <input matInput formControlName="password" placeholder=""/>
-          @if (password.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="password.setValue(null)">
-            <mat-icon>close</mat-icon>
-          </button>
-          }
-          <mat-error *ngIf="formGroup.get('password')?.invalid">
-            {{getValidatorMessage('password')}}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>真实姓名</mat-label>
-          <input matInput formControlName="realName" placeholder=""/>
-          @if (realName.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="realName.setValue(null)">
-            <mat-icon>close</mat-icon>
-          </button>
-          }
-          <mat-error *ngIf="formGroup.get('realName')?.invalid">
-            {{getValidatorMessage('realName')}}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>邮箱</mat-label>
-          <input matInput formControlName="email" placeholder=""/>
-          @if (email.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="email.setValue(null)">
-            <mat-icon>close</mat-icon>
-          </button>
-          }
-          <mat-error *ngIf="formGroup.get('email')?.invalid">
-            {{getValidatorMessage('email')}}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>手机号</mat-label>
-          <input matInput formControlName="phoneNumber" placeholder=""/>
-          @if (phoneNumber.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="phoneNumber.setValue(null)">
-            <mat-icon>close</mat-icon>
-          </button>
-          }
-          <mat-error *ngIf="formGroup.get('phoneNumber')?.invalid">
-            {{getValidatorMessage('phoneNumber')}}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>头像 url</mat-label>
-          <input matInput formControlName="avatar" placeholder=""/>
-          @if (avatar.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="avatar.setValue(null)">
-            <mat-icon>close</mat-icon>
-          </button>
-          }
-          <mat-error *ngIf="formGroup.get('avatar')?.invalid">
-            {{getValidatorMessage('avatar')}}
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>性别</mat-label>
-          <mat-select formControlName="sex" placeholder="请选择">
-            <mat-option *ngFor="let item of GenderType | toKeyValue" [value]="item.value">
-              {{item.key}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>用户名</mat-label>
+      <input matInput formControlName="userName" placeholder="" />
+      @if (userName.value) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="userName.setValue(null)">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+      <mat-error *ngIf="formGroup.get('userName')?.invalid">
+        {{getValidatorMessage('userName')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>密码</mat-label>
+      <input matInput formControlName="password" placeholder="" />
+      @if (password.value) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="password.setValue(null)">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+      <mat-error *ngIf="formGroup.get('password')?.invalid">
+        {{getValidatorMessage('password')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <!-- 多选下拉 -->
+      <mat-label>角色</mat-label>
+      <mat-select [formControl]="roleIds" multiple>
+        <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formGroup.get('roleIds')?.invalid">
+        {{getValidatorMessage('roleIds')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>真实姓名</mat-label>
+      <input matInput formControlName="realName" placeholder="" />
+      @if (realName.value) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="realName.setValue(null)">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+      <mat-error *ngIf="formGroup.get('realName')?.invalid">
+        {{getValidatorMessage('realName')}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>邮箱</mat-label>
+      <input matInput formControlName="email" placeholder="" />
+      @if (email.value) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="email.setValue(null)">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+      <mat-error *ngIf="formGroup.get('email')?.invalid">
+        {{getValidatorMessage('email')}}
+      </mat-error>
+    </mat-form-field>
+
     <div class="d-flex mt-1 justify-content-end">
       <button class="d-flex flex-column" mat-flat-button color="primary" (click)="add()">添加</button>
     </div>

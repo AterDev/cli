@@ -7,11 +7,21 @@
         <mat-form-field subscriptSizing="dynamic">
           <mat-label>角色显示名称</mat-label>
           <input matInput placeholder="" [(ngModel)]='filter.name'>
+          @if (filter.name) {
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.name = null">
+            <mat-icon>close</mat-icon>
+          </button>
+          }
         </mat-form-field>
       
         <mat-form-field subscriptSizing="dynamic">
           <mat-label>角色名，系统标识</mat-label>
           <input matInput placeholder="" [(ngModel)]='filter.nameValue'>
+          @if (filter.nameValue) {
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.nameValue = null">
+            <mat-icon>close</mat-icon>
+          </button>
+          }
         </mat-form-field>
       
         <div class="d-flex">
@@ -62,7 +72,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>操作</th>
         <td mat-cell *matCellDef="let element;table:table">
-          <button mat-icon-button class="secondary" [routerLink]="['../detail',element.id]" matTooltip="查看">
+          <button mat-icon-button class="secondary" (click)="openDetailDialog(element)" matTooltip="查看">
             <mat-icon>preview</mat-icon>
           </button>
           <button mat-icon-button class="primary" (click)="openEditDialog(element)" matTooltip="编辑">
