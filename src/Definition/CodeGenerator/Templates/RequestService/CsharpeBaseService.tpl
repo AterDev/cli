@@ -15,6 +15,7 @@ public class BaseService
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
         };
+        _memoryCache = memoryCache;
     }
 
     /// <summary>
