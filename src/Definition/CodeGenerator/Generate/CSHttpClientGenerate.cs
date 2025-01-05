@@ -71,6 +71,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 <Nullable>enable</Nullable>
               </PropertyGroup>
               <ItemGroup>
+                <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
                 <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
                 <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.0" />
                 <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
@@ -170,7 +171,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
         /// <summary>
         /// {{serviceFile.Description}}
         /// </summary>
-        public class {{serviceFile.Name}}RestService(IHttpClientFactory httpClientFactory) : BaseService(httpClientFactory)
+        public class {{serviceFile.Name}}RestService(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache) : BaseService(httpClientFactory, memoryCache)
         {
         {{functionstr}}
         }
@@ -350,11 +351,16 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 }
                 else
                 {
-                    type = "int";
-                    refType = "int";
+                    type = schema.Format switch
+                    {
+                        "int32" => "int",
+                        "int64" => "long",
+                        _ => "int"
+
+                    };
+                    refType = type;
                 }
                 break;
-
 
             case JsonSchemaType.String:
                 type = schema.Format switch

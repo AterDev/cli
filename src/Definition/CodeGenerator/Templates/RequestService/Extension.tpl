@@ -6,11 +6,12 @@ public static class Extension
 {
     public static IServiceCollection Add#@Namespace#(this IServiceCollection services, Action<HttpClient> option)
     {
+        services.AddMemoryCache();
         services.AddSingleton<InterceptHttpHandler>();
         services.AddHttpClient("#@Namespace#", option)
             .AddHttpMessageHandler<InterceptHttpHandler>()
-            .SetHandlerLifetime(TimeSpan.FromMinutes(5))
-            .AddPolicyHandler(GetRetryPolicy());
+            .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            
 #@AddServices#
         return services;
     }

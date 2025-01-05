@@ -1,12 +1,13 @@
-﻿
+﻿using Microsoft.Extensions.Caching.Memory;
 namespace #@Namespace#.Services;
 public class BaseService
 {
     protected HttpClient Http { get; init; }
+    private readonly IMemoryCache _memoryCache;
     public JsonSerializerOptions JsonSerializerOptions { get; set; }
     public ErrorResult? ErrorMsg { get; set; }
 
-    public BaseService(IHttpClientFactory httpClient)
+    public BaseService(IHttpClientFactory httpClient, IMemoryCache memoryCache)
     {
         Http = httpClient.CreateClient("#@Namespace#");
         JsonSerializerOptions = new JsonSerializerOptions()
@@ -21,17 +22,20 @@ public class BaseService
     /// </summary>
     /// <param name="name"></param>
     /// <param name="value"></param>
-    public void SetHttpHeader(string name, string value)
+    public void SetHttpHeader(Dictionary<string, string> headers)
     {
-        Http.DefaultRequestHeaders.Add(name, value);
+        _memoryCache.Set("Headers", headers);
     }
 
     /// <summary>
     /// add bearer token to header
-    /// </summary>    /// <param name="token"></param>
+    /// <param name="token"></param>
+    /// </summary>    
     public void AddBearerToken(string token)
     {
-        SetHttpHeader("Authorization", $"Bearer {token}");
+        SetHttpHeader(new Dictionary<string, string> { 
+            { "Authorization", $"Bearer {token}" }
+        });
     }
 
     /// <summary>
@@ -158,6 +162,14 @@ public class BaseService
 
     protected async Task<TResult?> SendJsonAsync<TResult>(HttpMethod method, string route, Dictionary<string, string?>? dic = null)
     {
+        var headers = _memoryCache.Get<Dictionary<string, string>>("Headers");
+        if (headers != null)
+        {
+            foreach (var item in headers)
+            {
+                Http.DefaultRequestHeaders.Add(item.Key, item.Value);
+            }
+        }
         route = Http.BaseAddress + (route.StartsWith('/') ? route[1..] : route);
         if (dic != null)
         {

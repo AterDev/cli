@@ -88,7 +88,7 @@ public class ApiClientCommand : CommandBase
         }
         var serviceNames = services.Select(s => s.Name.TrimEnd(".cs".ToCharArray())).ToList();
         string extensionContent = CSHttpClientGenerate.GetExtensionContent(nspName, serviceNames);
-        await GenerateFileAsync(OutputPath, "Extension.cs", extensionContent, true);
+        await GenerateFileAsync(OutputPath, "Extension.cs", extensionContent, false);
 
         dir = Path.Combine(OutputPath, "Models");
         IOHelper.DeleteDirectory(dir);
@@ -99,7 +99,7 @@ public class ApiClientCommand : CommandBase
         }
 
         string csProjectContent = CSHttpClientGenerate.GetCsprojContent();
-        await GenerateFileAsync(OutputPath, $"{DocName.ToPascalCase()}API.csproj", csProjectContent);
+        await GenerateFileAsync(OutputPath, $"{DocName.ToPascalCase()}API.csproj", csProjectContent, true);
     }
 }
 

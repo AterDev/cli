@@ -1,6 +1,5 @@
 ﻿using CodeGenerator;
 using Humanizer;
-using Share.Infrastructure.Helper;
 
 namespace Application.Services;
 /// <summary>
