@@ -136,6 +136,14 @@ public class BaseService
 
     protected async Task<TResult?> SendJsonAsync<TResult>(HttpMethod method, string route, object? data)
     {
+        var headers = _memoryCache.Get<Dictionary<string, string>>("Headers");
+        if (headers != null)
+        {
+            foreach (var item in headers)
+            {
+                Http.DefaultRequestHeaders.TryAddWithoutValidation(item.Key, item.Value);
+            }
+        }
         route = Http.BaseAddress + (route.StartsWith('/') ? route[1..] : route);
         HttpResponseMessage? res = null;
         if (method == HttpMethod.Post)
