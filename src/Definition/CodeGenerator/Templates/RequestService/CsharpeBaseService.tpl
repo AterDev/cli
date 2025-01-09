@@ -107,7 +107,21 @@ public class BaseService
         }
         else
         {
-            ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            try
+            {
+                ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            }
+            catch (Exception ex)
+            {
+                var content = await res!.Content.ReadAsStringAsync();
+                ErrorMsg = new ErrorResult
+                {
+                    Title = ex.Message,
+                    Detail = content,
+                };
+                return default;
+            }
+
             return default;
         }
     }
@@ -122,7 +136,21 @@ public class BaseService
         }
         else
         {
-            ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            try
+            {
+                ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            }
+            catch (Exception ex)
+            {
+                var content = await res!.Content.ReadAsStringAsync();
+                ErrorMsg = new ErrorResult
+                {
+                    Title = ex.Message,
+                    Detail = content,
+                };
+                return default;
+            }
+
             return default;
         }
     }
@@ -164,7 +192,21 @@ public class BaseService
         }
         else
         {
-            ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            try
+            {
+                ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            }
+            catch (Exception ex)
+            {
+                var content = await res!.Content.ReadAsStringAsync();
+                ErrorMsg = new ErrorResult
+                {
+                    Title = ex.Message,
+                    Detail = content,
+                };
+                return default;
+            }
+
             return default;
         }
     }
@@ -201,7 +243,21 @@ public class BaseService
         }
         else
         {
-            ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            try
+            {
+                ErrorMsg = await res!.Content.ReadFromJsonAsync<ErrorResult>();
+            }
+            catch (Exception ex)
+            {
+                var content = await res!.Content.ReadAsStringAsync();
+                ErrorMsg = new ErrorResult
+                {
+                    Title = ex.Message,
+                    Detail = content,
+                };
+                return default;
+            }
+
             return default;
         }
     }
