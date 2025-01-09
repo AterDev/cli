@@ -3,11 +3,10 @@ namespace #@Namespace#.Services;
 public class BaseService
 {
     protected HttpClient Http { get; init; }
-    private readonly IMemoryCache _memoryCache;
     public JsonSerializerOptions JsonSerializerOptions { get; set; }
     public ErrorResult? ErrorMsg { get; set; }
 
-    public BaseService(IHttpClientFactory httpClient, IMemoryCache memoryCache)
+    public BaseService(IHttpClientFactory httpClient)
     {
         Http = httpClient.CreateClient("#@Namespace#");
         JsonSerializerOptions = new JsonSerializerOptions()
@@ -15,7 +14,6 @@ public class BaseService
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
         };
-        _memoryCache = memoryCache;
     }
 
     /// <summary>

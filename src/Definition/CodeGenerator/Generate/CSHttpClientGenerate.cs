@@ -71,7 +71,6 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
                 <Nullable>enable</Nullable>
               </PropertyGroup>
               <ItemGroup>
-                <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
                 <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
                 <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.0" />
                 <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
@@ -171,7 +170,7 @@ public class CSHttpClientGenerate(OpenApiDocument openApi) : GenerateBase
         /// <summary>
         /// {{serviceFile.Description}}
         /// </summary>
-        public class {{serviceFile.Name}}RestService(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache) : BaseService(httpClientFactory, memoryCache)
+        public class {{serviceFile.Name}}RestService(IHttpClientFactory httpClientFactory) : BaseService(httpClientFactory)
         {
         {{functionstr}}
         }
