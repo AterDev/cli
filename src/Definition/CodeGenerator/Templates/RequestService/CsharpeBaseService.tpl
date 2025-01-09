@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-namespace #@Namespace#.Services;
+﻿namespace #@Namespace#.Services;
 public class BaseService
 {
     protected HttpClient Http { get; init; }
