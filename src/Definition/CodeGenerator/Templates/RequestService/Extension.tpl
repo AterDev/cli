@@ -6,11 +6,20 @@ public static class Extension
 {
     public static IServiceCollection Add#@Namespace#(this IServiceCollection services, Action<HttpClient> option)
     {
-        services.AddMemoryCache();
         services.AddSingleton<InterceptHttpHandler>();
         services.AddHttpClient("#@Namespace#", option)
             .AddHttpMessageHandler<InterceptHttpHandler>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            
+#@AddServices#
+        return services;
+    }
+
+    public static IServiceCollection Add#@Namespace#<T>(this IServiceCollection services, Action<HttpClient> option) where T : DelegatingHandler
+    {
+        services.AddTransient<T>();
+        services.AddHttpClient("ClientAPI", option)
+            .AddHttpMessageHandler<T>();
             
 #@AddServices#
         return services;
