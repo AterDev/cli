@@ -19,6 +19,7 @@ import { AddComponent } from '../add/add.component';
 import { EditComponent } from '../edit/edit.component';
 import { EnumTextPipe } from 'src/app/pipe/admin/enum-text.pipe';
 import { ToKeyValuePipe } from 'src/app/share/pipe/to-key-value.pipe';
+import { MenusComponent } from '../menus/menus.component';
 
 @Component({
   selector: 'app-index',
@@ -104,6 +105,13 @@ export class IndexComponent implements OnInit {
           this.isLoading = false;
         }
       });
+  }
+
+  openMenuDialog(item: SystemRoleItemDto): void {
+    this.dialogRef = this.dialog.open(MenusComponent, {
+      minWidth: '400px',
+      data: { id: item.id }
+    });
   }
 
   jumpTo(pageNumber: string): void {
