@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheType } from 'src/app/services/enum/models/cache-type.model';
@@ -8,13 +8,25 @@ import { ProjectType } from 'src/app/services/enum/models/project-type.model';
 import { CreateSolutionDto } from 'src/app/services/solution/models/create-solution-dto.model';
 import { ModuleInfo } from 'src/app/services/solution/models/module-info.model';
 import { SolutionService } from 'src/app/services/solution/solution.service';
+import { NgIf, NgFor } from '@angular/common';
+import { MatFormField, MatLabel, MatError, MatHint } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatSelectionList, MatListOption } from '@angular/material/list';
+import { MatButton } from '@angular/material/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { ToKeyValuePipe } from '../../../share/pipe/to-key-value.pipe';
 
 
 @Component({
     selector: 'app-create',
     templateUrl: './create.component.html',
     styleUrls: ['./create.component.css'],
-    standalone: false
+    imports: [NgIf, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatSlideToggle, MatIcon, MatTooltip, MatSelect, NgFor, MatOption, MatHint, MatSelectionList, MatListOption, MatButton, MatProgressSpinner, ToKeyValuePipe]
 })
 export class CreateComponent {
   addForm!: FormGroup;

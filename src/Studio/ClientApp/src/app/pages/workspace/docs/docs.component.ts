@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ApiDocInfoItemDto } from 'src/app/services/api-doc-info/models/api-doc-info-item-dto.model';
@@ -27,12 +27,30 @@ import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.mode
 import { GenActionItemDto } from 'src/app/services/gen-action/models/gen-action-item-dto.model';
 import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-run-dto.model';
 import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-item-dto.model';
+import { NgIf, NgFor } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatInput } from '@angular/material/input';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatChipSet, MatChip } from '@angular/material/chips';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { TypedCellDefDirective } from '../../../components/typed-cell-def.directive';
+import { EditorComponent } from 'ngx-monaco-editor-v2';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
     selector: 'app-docs',
     templateUrl: './docs.component.html',
     styleUrls: ['./docs.component.css'],
-    standalone: false
+    imports: [NgIf, MatProgressSpinner, MatToolbar, MatFormField, MatSelect, FormsModule, NgFor, MatOption, MatIconButton, MatTooltip, MatIcon, MatTabGroup, MatTab, MatInput, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatNavList, MatListItem, MatChipSet, MatChip, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, TypedCellDefDirective, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatLabel, MatButton, EditorComponent, MatDialogTitle, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatDialogActions, MatDialogClose]
 })
 export class DocsComponent implements OnInit {
   OperationType = OperationType;

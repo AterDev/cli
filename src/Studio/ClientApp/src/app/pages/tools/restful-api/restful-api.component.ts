@@ -2,12 +2,18 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToolsService } from 'src/app/services/tools/tools.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButton } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { EditorComponent } from 'ngx-monaco-editor-v2';
 
 @Component({
     selector: 'app-restful-api',
     templateUrl: './restful-api.component.html',
     styleUrl: './restful-api.component.css',
-    standalone: false
+    imports: [MatButton, FormsModule, MatFormField, MatLabel, MatInput, MatSlideToggle, EditorComponent]
 })
 export class RestfulAPIComponent {
   editorOptions = { theme: 'vs-dark', language: 'csharp', minimap: { enabled: false } };

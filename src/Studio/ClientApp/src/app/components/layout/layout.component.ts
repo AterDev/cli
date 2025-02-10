@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { LoginService } from 'src/app/auth/login.service';
 import { Project } from 'src/app/services/project/models/project.model';
 import { ProjectStateService } from 'src/app/share/project-state.service';
@@ -8,14 +8,28 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { AdvanceService } from 'src/app/services/advance/advance.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, fromEvent } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatDialog, MatDialogRef, MatDialogContent } from '@angular/material/dialog';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { StringComponent } from 'src/app/pages/tools/string/string.component';
+import { MatDrawerContainer, MatDrawer, MatDrawerContent } from '@angular/material/sidenav';
+import { ChatBotComponent } from '../chatbot/chatbot.component';
+import { NgIf } from '@angular/common';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { QuickNavComponent } from '../quick-nav/quick-nav.component';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
-  standalone: false
+  imports: [MatDrawerContainer, MatDrawer, ChatBotComponent, NgIf, MatDrawerContent, MatToolbar, MatButton, RouterLinkActive, RouterLink, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatIconButton, MatTooltip, RouterOutlet, QuickNavComponent, CdkScrollable, MatDialogContent, MatFormField, MatLabel, MatInput, FormsModule, MatAutocompleteTrigger, MatAutocomplete, MatOption]
 })
 export class LayoutComponent implements OnInit {
   isLogin = false;

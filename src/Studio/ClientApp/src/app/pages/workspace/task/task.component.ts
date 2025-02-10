@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { FormArray, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, forkJoin, lastValueFrom, map, startWith } from 'rxjs';
 import { GenActionService } from 'src/app/services/gen-action/gen-action.service';
 import { GenActionFilterDto } from 'src/app/services/gen-action/models/gen-action-filter-dto.model';
@@ -15,16 +15,33 @@ import { GenActionAddDto } from 'src/app/services/gen-action/models/gen-action-a
 import { GenActionUpdateDto } from 'src/app/services/gen-action/models/gen-action-update-dto.model';
 import { GenStepItemDto } from 'src/app/services/gen-step/models/gen-step-item-dto.model';
 import { GenStepService } from 'src/app/services/gen-step/gen-step.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
 import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
 import { ModelFileItemDto } from 'src/app/services/gen-action/models/model-file-item-dto.model';
 import { GenActionRunDto } from 'src/app/services/gen-action/models/gen-action-run-dto.model';
+import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf, NgFor } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TypedCellDefDirective } from '../../../components/typed-cell-def.directive';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+import { SyncButtonComponent } from '../../../components/sync-button/sync-button.component';
+import { ToKeyValuePipe } from '../../../share/pipe/to-key-value.pipe';
+import { EnumTextPipe } from '../../../pipe/enum-text.pipe';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './task.component.html',
-  styleUrls: ['./task.component.scss'],
-  standalone: false
+    selector: 'app-index',
+    templateUrl: './task.component.html',
+    styleUrls: ['./task.component.scss'],
+    imports: [MatToolbar, MatToolbarRow, MatFormField, MatLabel, MatInput, FormsModule, MatButton, MatTooltip, MatIcon, NgIf, MatProgressSpinner, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, TypedCellDefDirective, MatCellDef, MatCell, MatIconButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatDivider, MatPaginator, MatDialogTitle, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatSelect, MatOption, NgFor, MatDialogActions, MatDialogClose, CdkDropList, CdkDrag, MatAutocompleteTrigger, MatSuffix, MatAutocomplete, SyncButtonComponent, ToKeyValuePipe, EnumTextPipe]
 })
 export class TaskComponent implements OnInit {
   GenSourceType = GenSourceType;

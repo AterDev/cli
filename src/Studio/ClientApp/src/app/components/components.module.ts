@@ -92,14 +92,14 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components, TypedCellDefDirective],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ...MaterialModules,
     MarkdownModule.forRoot(),
-    QuickNavComponent
+    QuickNavComponent,
+    ...components, TypedCellDefDirective
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },

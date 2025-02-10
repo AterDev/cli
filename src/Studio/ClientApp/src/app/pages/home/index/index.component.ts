@@ -1,8 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { SolutionType } from 'src/app/services/enum/models/solution-type.model';
 import { Project } from 'src/app/services/project/models/project.model';
@@ -15,12 +15,25 @@ import 'prismjs/components/prism-csharp.min.js';
 import { AdvanceService } from 'src/app/services/advance/advance.service';
 import { ControllerType } from 'src/app/services/enum/models/controller-type.model';
 import { ProjectConfig } from 'src/app/services/project/models/project-config.model';
+import { NgIf, NgFor } from '@angular/common';
+import { MatButton, MatMiniFabAnchor, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MarkdownComponent } from 'ngx-markdown';
+import { EnumTextPipe } from '../../../pipe/enum-text.pipe';
+import { ToKeyValuePipe } from '../../../share/pipe/to-key-value.pipe';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css'],
-  standalone: false
+  imports: [NgIf, MatButton, MatTooltip, MatMiniFabAnchor, RouterLink, MatIcon, NgFor, MatCard, MatCardHeader, MatCardTitle, MatIconButton, MatCardSubtitle, MatCardContent, MatCardActions, MatDialogTitle, CdkScrollable, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDialogActions, MatDialogClose, MatHint, MatRadioGroup, MatRadioButton, MatProgressBar, MarkdownComponent, EnumTextPipe, ToKeyValuePipe]
 })
 export class IndexComponent implements OnInit {
   @ViewChild("addDialog", { static: true }) dialogTmpRef!: TemplateRef<{}>;

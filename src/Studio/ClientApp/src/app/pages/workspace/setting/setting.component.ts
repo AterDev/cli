@@ -6,8 +6,7 @@ import { ProjectStateService } from 'src/app/share/project-state.service';
 @Component({
     selector: 'app-setting',
     templateUrl: './setting.component.html',
-    styleUrls: ['./setting.component.css'],
-    standalone: false
+    styleUrls: ['./setting.component.css']
 })
 export class SettingComponent implements OnInit {
   isLoading = true;

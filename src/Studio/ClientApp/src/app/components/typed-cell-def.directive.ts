@@ -4,8 +4,7 @@ import {Observable} from "rxjs";
 import {CdkTable} from "@angular/cdk/table";
 @Directive({
     selector: "[matCellDef]",
-    providers: [{ provide: MatCellDef, useExisting: TypedCellDefDirective }],
-    standalone: false
+    providers: [{ provide: MatCellDef, useExisting: TypedCellDefDirective }]
 })
 export class TypedCellDefDirective<T> extends MatCellDef {
   @Input() matCellDefTable?: MatTable<T>;

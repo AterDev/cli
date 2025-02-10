@@ -1,17 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, NgIf, NgFor } from '@angular/common';
 import { ProjectStateService } from 'src/app/share/project-state.service';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabGroup, MatTab } from '@angular/material/tabs';
 import { EntityInfoService } from 'src/app/services/entity-info/entity-info.service';
 import { EntityFile } from 'src/app/services/entity-info/models/entity-file.model';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { EditorComponent } from 'ngx-monaco-editor-v2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-dto',
     templateUrl: './dto.component.html',
     styleUrls: ['./dto.component.css'],
-    standalone: false
+    imports: [MatToolbar, MatIconButton, MatTooltip, MatIcon, NgIf, MatTabGroup, NgFor, MatTab, EditorComponent, FormsModule]
 })
 export class DtoComponent implements OnInit {
   name: string | null = null;

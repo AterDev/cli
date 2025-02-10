@@ -1,20 +1,28 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MatDialog, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'src/app/services/project/models/project.model';
 import { ProjectStateService } from 'src/app/share/project-state.service';
 import { SolutionService } from 'src/app/services/solution/solution.service';
 import { SubProjectInfo } from 'src/app/services/solution/models/sub-project-info.model';
+import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
+import { MatButton } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TypedCellDefDirective } from '../../../components/typed-cell-def.directive';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-feature',
     templateUrl: './feature.component.html',
     styleUrls: ['./feature.component.css'],
-    standalone: false
+    imports: [MatToolbar, MatToolbarRow, MatButton, NgIf, MatProgressSpinner, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, TypedCellDefDirective, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatDialogTitle, CdkScrollable, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatDialogActions, MatDialogClose]
 })
 export class FeatureComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

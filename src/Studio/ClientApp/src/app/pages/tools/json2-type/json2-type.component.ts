@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToolsService } from 'src/app/services/tools/tools.service';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { EditorComponent } from 'ngx-monaco-editor-v2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-json2-type',
     templateUrl: './json2-type.component.html',
     styleUrls: ['./json2-type.component.css'],
-    standalone: false
+    imports: [MatButton, MatTooltip, EditorComponent, FormsModule]
 })
 export class Json2TypeComponent {
   editorOptions = { theme: 'vs-dark', language: 'csharp', minimap: { enabled: false } };

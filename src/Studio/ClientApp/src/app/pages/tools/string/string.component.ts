@@ -8,12 +8,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EnumTextPipe } from 'src/app/pipe/enum-text.pipe';
 import { StringConvertType } from 'src/app/services/enum/models/string-convert-type.model';
 import { ToolsService } from 'src/app/services/tools/tools.service';
-import { ToKeyValuePipeModule } from 'src/app/share/pipe/to-key-value.pipe';
+
+import { ToKeyValuePipe } from '../../../share/pipe/to-key-value.pipe';
 
 @Component({
   selector: 'app-string',
-  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, FormsModule, MatInputModule,
-    ToKeyValuePipeModule, EnumTextPipe],
+  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, FormsModule, MatInputModule, ToKeyValuePipe, EnumTextPipe],
   templateUrl: './string.component.html',
   standalone: true,
   styleUrl: './string.component.css'

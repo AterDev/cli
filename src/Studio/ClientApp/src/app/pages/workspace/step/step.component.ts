@@ -1,12 +1,19 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom, forkJoin, Observable } from 'rxjs';
+import { baseMatModules } from 'src/app/app.config';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
+import { EnumTextPipe } from 'src/app/pipe/enum-text.pipe';
 import { GenStepType } from 'src/app/services/enum/models/gen-step-type.model';
 import { GenStepService } from 'src/app/services/gen-step/gen-step.service';
 import { GenStepAddDto } from 'src/app/services/gen-step/models/gen-step-add-dto.model';
@@ -14,12 +21,14 @@ import { GenStepFilterDto } from 'src/app/services/gen-step/models/gen-step-filt
 import { GenStepItemDtoPageList } from 'src/app/services/gen-step/models/gen-step-item-dto-page-list.model';
 import { GenStepItemDto } from 'src/app/services/gen-step/models/gen-step-item-dto.model';
 import { GenStepUpdateDto } from 'src/app/services/gen-step/models/gen-step-update-dto.model';
+import { ToKeyValuePipe } from 'src/app/share/pipe/to-key-value.pipe';
 
 @Component({
   selector: 'app-step',
   templateUrl: './step.component.html',
   styleUrl: './step.component.css',
-  standalone: false
+  imports: [baseMatModules, MatTableModule, MatPaginatorModule, MatDividerModule, MatFormFieldModule, MatDialogModule, ReactiveFormsModule, EnumTextPipe, ToKeyValuePipe, FormsModule, MatButtonModule, MatInputModule, MatSelectModule]
+
 })
 export class StepComponent {
   GenStepType = GenStepType;
