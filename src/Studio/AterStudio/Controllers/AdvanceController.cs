@@ -47,10 +47,10 @@ public class AdvanceController(AdvanceManager manager, AIService aiService,
         _aiService.SetApiKey("deepSeekApiKey");
         try
         {
-            IAsyncEnumerable<DeepSeek.Core.Models.Choice>? choices = await _aiService.GetAnswerAsync(prompt, cancellationToken);
+            var  choices = _aiService.GetAnswerAsync(prompt, cancellationToken);
             if (choices != null)
             {
-                await foreach (DeepSeek.Core.Models.Choice choice in choices)
+                await foreach (var choice in choices)
                 {
                     await Response.WriteAsync(choice.Delta!.Content);
                 }

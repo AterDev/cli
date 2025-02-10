@@ -81,8 +81,8 @@ public partial class EntityInfoManager(
             }
         }
 
-        if (File.Exists(dtoPath)) { hasDto = true; }
-        if (File.Exists(managerPath)) { hasManager = true; }
+        hasDto = File.Exists(dtoPath);
+        hasManager = File.Exists(managerPath);
         return (hasDto, hasManager, hasAPI);
     }
 
