@@ -1,23 +1,26 @@
 ﻿import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SystemRoleService } from 'src/app/services/admin/system-role/system-role.service';
+import { SystemRole } from 'src/app/services/admin/system-role/models/system-role.model';
 import { SystemRoleAddDto } from
-'src/app/services/admin/system-role/models/system-role-add-dto.model';
+  'src/app/services/admin/system-role/models/system-role-add-dto.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonFormModules } from 'src/app/app.config';
+import { ToKeyValuePipe } from 'src/app/share/pipe/to-key-value.pipe';
+
 
 
 @Component({
   selector: 'app-add',
-  imports: [...CommonFormModules],
+  imports: [...CommonFormModules, ToKeyValuePipe],
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
 export class AddComponent implements OnInit {
-  
+
   formGroup!: FormGroup;
   data = {} as SystemRoleAddDto;
   isLoading = true;
@@ -34,9 +37,9 @@ export class AddComponent implements OnInit {
 
   }
 
-  get name() { return this.formGroup.get('name') as FormControl }; 
-  get nameValue() { return this.formGroup.get('nameValue') as FormControl }; 
-  get isSystem() { return this.formGroup.get('isSystem') as FormControl }; 
+  get name() { return this.formGroup.get('name') as FormControl };
+  get nameValue() { return this.formGroup.get('nameValue') as FormControl };
+  get isSystem() { return this.formGroup.get('isSystem') as FormControl };
 
   ngOnInit(): void {
     this.initForm();
@@ -47,22 +50,22 @@ export class AddComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
       nameValue: new FormControl(null, [Validators.required, Validators.maxLength(60)]),
-      isSystem: new FormControl(null, []),
+      isSystem: new FormControl(false, []),
 
     });
   }
   getValidatorMessage(type: string): string {
     switch (type) {
       case 'name':
-        return this.name?.hasError('required') ? '角色显示名称必填' : 
-          this.name?.hasError('maxlength') ? '角色显示名称长度不超过30位': '';
+        return this.name?.hasError('required') ? '角色显示名称必填' :
+          this.name?.hasError('maxlength') ? '角色显示名称长度不超过30位' : '';
       case 'nameValue':
-        return this.nameValue?.hasError('required') ? '角色名，系统标识必填' : 
-          this.nameValue?.hasError('maxlength') ? '角色名，系统标识长度不超过60位': '';
+        return this.nameValue?.hasError('required') ? '角色名，系统标识必填' :
+          this.nameValue?.hasError('maxlength') ? '角色名，系统标识长度不超过60位' : '';
       case 'isSystem':
-        return this.isSystem?.hasError('required') ? '是否系统内置,系统内置不可删除必填' : 
-          this.isSystem?.hasError('maxlength') ? '是否系统内置,系统内置不可删除长度不超过位': '';
-      
+        return this.isSystem?.hasError('required') ? '是否系统内置,系统内置不可删除必填' :
+          this.isSystem?.hasError('maxlength') ? '是否系统内置,系统内置不可删除长度不超过位' : '';
+
       default:
         return '';
     }
@@ -73,22 +76,22 @@ export class AddComponent implements OnInit {
       this.isProcessing = true;
       const data = this.formGroup.value as SystemRoleAddDto;
       this.service.add(data)
-      .subscribe({
-        next: (res) => {
-          if (res) {
-            this.snb.open('添加成功');
-            this.dialogRef.close(res);
-            //this.router.navigate(['../index'], { relativeTo: this.route });
+        .subscribe({
+          next: (res) => {
+            if (res) {
+              this.snb.open('添加成功');
+              this.dialogRef.close(res);
+              //this.router.navigate(['../index'], { relativeTo: this.route });
+            }
+          },
+          error: (error) => {
+            this.snb.open(error.detail);
+            this.isProcessing = false;
+          },
+          complete: () => {
+            this.isProcessing = false;
           }
-        },
-        error: (error) => {
-          this.snb.open(error.detail);
-          this.isProcessing = false;
-        },
-        complete: () => {
-          this.isProcessing = false;
-        }
-      });
+        });
     } else {
       this.snb.open('表单验证不通过，请检查填写的内容!');
     }

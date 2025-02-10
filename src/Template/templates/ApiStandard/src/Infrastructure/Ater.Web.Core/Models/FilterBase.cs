@@ -15,7 +15,7 @@ public class FilterBase
             _pageIndex = value;
             if (value < 1)
             {
-                _pageSize = 1;
+                _pageIndex = 1;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/share/components/confirm-dialog/confirm-dialog.component';
 import { SystemRoleService } from 'src/app/services/admin/system-role/system-role.service';
@@ -7,14 +7,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, forkJoin } from 'rxjs';
 import { Location } from '@angular/common';
 import { CommonListModules } from 'src/app/app.config';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-detail',
-  imports: [...CommonListModules],
+  imports: [...CommonListModules, MatCardModule],
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class DetailComponent implements OnInit {
   isLoading = true;
   data = {} as SystemRoleDetailDto;
   isProcessing = false;
@@ -25,11 +27,14 @@ export class IndexComponent implements OnInit {
     private route: ActivatedRoute,
     public location: Location,
     private router: Router,
+    @Inject(MAT_DIALOG_DATA) public dlgData: { id: '' }
+
   ) {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.id = id;
     } else {
+      this.id = dlgData.id;
     }
   }
 

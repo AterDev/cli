@@ -1,4 +1,7 @@
-﻿namespace Share.Infrastructure.Helper;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore;
+
+namespace Share.Infrastructure.Helper;
 /// <summary>
 /// 文件IO帮助类
 /// </summary>
@@ -134,4 +137,49 @@ public class IOHelper
             Directory.Delete(path, true);
         }
     }
+}
+
+
+[Index(nameof(UserName), IsUnique = true)]
+public class User
+{
+    [Key]
+    public Guid Id { get; set; }
+
+    [MaxLength(20)]
+    public required string UserName { get; set; }
+
+    /// <summary>
+    /// 拥有的博客
+    /// </summary>
+    public List<Blog> Blogs { get; set; } = [];
+}
+
+/// <summary>
+/// 博客
+/// </summary>
+[Index(nameof(Title), IsUnique = true)]
+public class Blog
+{
+    [Key]
+    public Guid Id { get; set; }
+
+    /// <summary>
+    /// 标题
+    /// </summary>
+    [MaxLength(100)]
+    public required string Title { get; set; }
+    [MaxLength(10_000)]
+    public string? Content { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? UpdatedTime { get; set; }
+
+    /// <summary>
+    /// 所属用户
+    /// </summary>
+    public required User User { get; set; }
 }

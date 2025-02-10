@@ -10,10 +10,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonFormModules } from 'src/app/app.config';
+import { ToKeyValuePipe } from 'src/app/share/pipe/to-key-value.pipe';
+
 
 @Component({
   selector: 'app-edit',
-  imports: [...CommonFormModules],
+  imports: [...CommonFormModules, ToKeyValuePipe],
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })

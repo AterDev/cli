@@ -69,7 +69,6 @@ public class ApiClientCommand : CommandBase
         await GenerateFileAsync(dir, "BaseService.cs", baseContent, true);
 
         await GenerateFileAsync(OutputPath, "GlobalUsings.cs", globalUsingContent, false);
-
     }
 
     public async Task GenerateRequestServicesAsync()

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, TemplateRef, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/share/components/confirm-dialog/confirm-dialog.component';
 import { SystemUserService } from 'src/app/services/admin/system-user/system-user.service';
@@ -7,14 +7,22 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, forkJoin } from 'rxjs';
 import { Location } from '@angular/common';
 import { CommonListModules } from 'src/app/app.config';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GenderType } from 'src/app/services/admin/enum/models/gender-type.model';
+import { EnumTextPipe } from 'src/app/pipe/admin/enum-text.pipe';
+import { ToKeyValuePipe } from 'src/app/share/pipe/to-key-value.pipe';
 
 @Component({
   selector: 'app-detail',
-  imports: [...CommonListModules],
+  imports: [...CommonListModules, MatCardModule, EnumTextPipe],
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class DetailComponent implements OnInit {
+  GenderType = GenderType;
+
+  readonly dlgData = inject(MAT_DIALOG_DATA);
   isLoading = true;
   data = {} as SystemUserDetailDto;
   isProcessing = false;
@@ -30,6 +38,7 @@ export class IndexComponent implements OnInit {
     if (id) {
       this.id = id;
     } else {
+      this.id = this.dlgData.id;
     }
   }
 
@@ -58,3 +67,4 @@ export class IndexComponent implements OnInit {
   edit(): void {
   }
 }
+

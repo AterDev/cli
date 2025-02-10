@@ -1,7 +1,4 @@
 ﻿<mat-toolbar>
-  <button color="basic" mat-icon-button matTooltip="返回" (click)="back()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
 </mat-toolbar>
 <div *ngIf="!isLoading" class="d-flex p-2">
   <mat-card class="w-100">
@@ -17,37 +14,37 @@
           
           <tr>
           <th>角色显示名称</th>
-          <td class='text-primary'>{ data.name }</td>
+          <td class='text-primary'>{{ data.name }}</td>
           </tr>
 
           <tr>
           <th>角色名，系统标识</th>
-          <td class='text-primary'>{ data.nameValue }</td>
+          <td class='text-primary'>{{ data.nameValue }}</td>
           </tr>
 
           <tr>
           <th>是否系统内置,系统内置不可删除</th>
-          <td class='text-primary'>{ data.isSystem }</td>
+          <td class='text-primary'>{{ data.isSystem }}</td>
           </tr>
 
           <tr>
           <th>图标</th>
-          <td class='text-primary'>{ data.icon }</td>
+          <td class='text-primary'>{{ data.icon }}</td>
           </tr>
 
           <tr>
           <th>Id</th>
-          <td class='text-primary'>{ data.id }</td>
+          <td class='text-primary'>{{ data.id }}</td>
           </tr>
 
           <tr>
           <th>CreatedTime</th>
-          <td class='text-primary'>{ data.createdTime }</td>
+          <td class='text-primary'>{{ data.createdTime }}</td>
           </tr>
 
           <tr>
           <th>UpdatedTime</th>
-          <td class='text-primary'>{ data.updatedTime }</td>
+          <td class='text-primary'>{{ data.updatedTime }}</td>
           </tr>
 
         </tbody>
