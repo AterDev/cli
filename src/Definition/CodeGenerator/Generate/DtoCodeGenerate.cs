@@ -70,7 +70,7 @@ public class DtoCodeGenerate
                 .ToList() ?? []
         };
 
-        return dto.ToDtoContent(Namespace, EntityInfo.Name);
+        return dto;
     }
 
     /// <summary>
