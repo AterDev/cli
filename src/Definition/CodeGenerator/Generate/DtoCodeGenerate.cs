@@ -53,14 +53,14 @@ public class DtoCodeGenerate
     /// the detail dto
     /// </summary>
     /// <returns></returns>
-    public string GetDetailDto()
+    public DtoInfo GetDetailDto()
     {
         DtoInfo dto = new()
         {
             EntityFullName = $"{EntityInfo.NamespaceName}.{EntityInfo.Name}",
             Name = EntityInfo.Name + ConstVal.DetailDto,
             EntityNamespace = EntityInfo.NamespaceName,
-            Comment = FormatComment(EntityInfo.Comment, "详情"),
+            Comment = FormatComment(EntityInfo.Comment, " Detail"),
             Tag = EntityInfo.Name,
             Properties = EntityInfo.PropertyInfos?
                 .Where(p => p.Name is not ConstVal.IsDeleted)
@@ -77,14 +77,14 @@ public class DtoCodeGenerate
     /// the list item dto
     /// </summary>
     /// <returns></returns>
-    public string GetItemDto()
+    public DtoInfo GetItemDto()
     {
         DtoInfo dto = new()
         {
             EntityFullName = $"{EntityInfo.NamespaceName}.{EntityInfo.Name}",
             Name = EntityInfo.Name + ConstVal.ItemDto,
             EntityNamespace = EntityInfo.NamespaceName,
-            Comment = FormatComment(EntityInfo.Comment, "列表元素"),
+            Comment = FormatComment(EntityInfo.Comment, " ListItem"),
             Tag = EntityInfo.Name,
             Properties = EntityInfo.PropertyInfos?
                 .Where(p => p.Name is not ConstVal.IsDeleted and not ConstVal.UpdatedTime)
@@ -98,14 +98,14 @@ public class DtoCodeGenerate
                 && (!p.Name.EndsWith("Id") || p.Name.Equals("Id"))
                 && !p.IsNavigation).ToList() ?? [];
 
-        return dto.ToDtoContent(Namespace, EntityInfo.Name);
+        return dto;
     }
 
     /// <summary>
     /// the filter dto
     /// </summary>
     /// <returns></returns>
-    public string GetFilterDto()
+    public DtoInfo GetFilterDto()
     {
         List<PropertyInfo>? referenceProps = EntityInfo.PropertyInfos?
             .Where(p => p.IsNavigation && !p.IsList)
@@ -122,7 +122,7 @@ public class DtoCodeGenerate
             EntityFullName = $"{EntityInfo.NamespaceName}.{EntityInfo.Name}",
             Name = EntityInfo.Name + ConstVal.FilterDto,
             EntityNamespace = EntityInfo.NamespaceName,
-            Comment = FormatComment(EntityInfo.Comment, "筛选条件"),
+            Comment = FormatComment(EntityInfo.Comment, " Filter"),
             Tag = EntityInfo.Name,
             BaseType = ConstVal.FilterBase,
             Properties = EntityInfo.GetFilterProperties()
@@ -143,10 +143,10 @@ public class DtoCodeGenerate
                 dto.Properties.Add(item);
             }
         });
-        return dto.ToDtoContent(Namespace, EntityInfo.Name);
+        return dto;
     }
 
-    public string GetAddDto()
+    public DtoInfo GetAddDto()
     {
         // 导航属性处理
         List<PropertyInfo>? referenceProps = EntityInfo.PropertyInfos?
@@ -169,7 +169,7 @@ public class DtoCodeGenerate
             EntityFullName = $"{EntityInfo.NamespaceName}.{EntityInfo.Name}",
             Name = EntityInfo.Name + ConstVal.AddDto,
             EntityNamespace = EntityInfo.NamespaceName,
-            Comment = FormatComment(EntityInfo.Comment, "添加时DTO"),
+            Comment = FormatComment(EntityInfo.Comment, " AddDto"),
             Tag = EntityInfo.Name,
             Properties = EntityInfo.PropertyInfos?.Where(p => !p.IsNavigation
                 && p.HasSet
@@ -189,7 +189,7 @@ public class DtoCodeGenerate
             }
         });
 
-        return dto.ToDtoContent(Namespace, EntityInfo.Name, true);
+        return dto;
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public class DtoCodeGenerate
     /// 导航属性 Name+Id,过滤列表属性
     /// </summary>
     /// <returns></returns>
-    public string GetUpdateDto()
+    public DtoInfo GetUpdateDto()
     {
         // 导航属性处理
         List<PropertyInfo>? referenceProps = EntityInfo.PropertyInfos?
@@ -218,7 +218,7 @@ public class DtoCodeGenerate
             EntityFullName = $"{EntityInfo.NamespaceName}.{EntityInfo.Name}",
             Name = EntityInfo.Name + ConstVal.UpdateDto,
             EntityNamespace = EntityInfo.NamespaceName,
-            Comment = FormatComment(EntityInfo.Comment, "更新时DTO"),
+            Comment = FormatComment(EntityInfo.Comment, " UpdateDTO"),
             Tag = EntityInfo.Name,
             // 处理非 required的都设置为 nullable
             Properties = EntityInfo.PropertyInfos?.Where(p => !p.IsNavigation
@@ -244,7 +244,7 @@ public class DtoCodeGenerate
         {
             item.IsNullable = true;
         }
-        return dto.ToDtoContent(Namespace, EntityInfo.Name);
+        return dto;
     }
 
     public List<string> GetGlobalUsings()

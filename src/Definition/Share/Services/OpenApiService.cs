@@ -26,9 +26,13 @@ public class OpenApiService
     /// </summary>
     public List<ApiDocTag> OpenApiTags { get; set; }
 
+    public string Version { get; init; }
+
     public OpenApiService(OpenApiDocument openApi)
     {
         OpenApi = openApi;
+        // openapi version
+
         OpenApiTags = openApi.Tags
             .Select(s => new ApiDocTag
             {

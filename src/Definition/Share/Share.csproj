@@ -21,5 +21,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CodeGenerator\CodeGenerator.csproj" />
+        <ProjectReference Include="..\EntityFramework\EntityFramework.csproj" />
     </ItemGroup>
 </Project>

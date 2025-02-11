@@ -5,7 +5,7 @@
 /// </summary>
 public class DtoInfo
 {
-    public string? Name { get; set; }
+    public string Name { get; set; }
     public string? BaseType { get; set; }
     public List<PropertyInfo> Properties { get; set; } = [];
     public string? Tag { get; set; }
@@ -50,5 +50,26 @@ public class DtoInfo
 
             """;
         return tpl;
+    }
+
+    public EntityInfo ToEntityInfo(EntityInfo entityInfo)
+    {
+        var res = new EntityInfo()
+        {
+            Name = Name,
+            NamespaceName = EntityNamespace ?? "",
+            Md5Hash = HashCrypto.Md5Hash(EntityNamespace + Name),
+            FilePath = "dto",
+            ModuleName = entityInfo.ModuleName,
+            ProjectId = entityInfo.ProjectId,
+            Comment = Comment,
+            PropertyInfos = Properties
+        };
+        res.PropertyInfos.ForEach(p =>
+        {
+            p.Id = Guid.NewGuid();
+            p.EntityInfoId = res.Id;
+        });
+        return res;
     }
 }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using CodeGenerator;
 using CodeGenerator.Generate;
 using CodeGenerator.Models;
+using EntityFramework.DBProvider;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Readers;
 
@@ -21,7 +22,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
     /// <param name="outputPath">输出项目目录</param>
     /// <param name="isCover">是否覆盖</param>
     /// <returns></returns>
-    public List<GenFileInfo> GenerateDtos(EntityInfo entityInfo, string outputPath, bool isCover = false)
+    public async Task<List<GenFileInfo>> GenerateDtosAsync(EntityInfo entityInfo, string outputPath, bool isCover = false)
     {
         _logger.LogInformation("🚀 Generating Dtos...");
         // 生成Dto
@@ -36,39 +37,35 @@ public class CodeGenService(ILogger<CodeGenService> logger)
             FullName = Path.Combine(outputPath, ConstVal.GlobalUsingsFile),
             ModuleName = entityInfo.ModuleName
         };
+
+        var addDtoFile = await GenerateDtoAsync(entityInfo, DtoType.Add);
+        addDtoFile.IsCover = isCover;
+        addDtoFile.FullName = Path.Combine(outputPath, addDtoFile.FullName);
+
+        var updateDtoFile = await GenerateDtoAsync(entityInfo, DtoType.Update);
+        updateDtoFile.IsCover = isCover;
+        updateDtoFile.FullName = Path.Combine(outputPath, updateDtoFile.FullName);
+
+        var filterDtoFile = await GenerateDtoAsync(entityInfo, DtoType.Filter);
+        filterDtoFile.IsCover = isCover;
+        filterDtoFile.FullName = Path.Combine(outputPath, filterDtoFile.FullName);
+
+        var itemDtoFile = await GenerateDtoAsync(entityInfo, DtoType.Item);
+        itemDtoFile.IsCover = isCover;
+        itemDtoFile.FullName = Path.Combine(outputPath, itemDtoFile.FullName);
+
+        var detailDtoFile = await GenerateDtoAsync(entityInfo, DtoType.Detail);
+        detailDtoFile.IsCover = isCover;
+        detailDtoFile.FullName = Path.Combine(outputPath, detailDtoFile.FullName);
+
         return
         [
             globalFile,
-            new GenFileInfo($"{entityInfo.Name}{ConstVal.AddDto}.cs", dtoGen.GetAddDto())
-            {
-                IsCover = isCover,
-                FullName = Path.Combine(outputPath, ConstVal.ModelsDir, dirName, $"{entityInfo.Name}{ConstVal.AddDto}.cs"),
-                ModuleName = entityInfo.ModuleName
-            },
-            new GenFileInfo( $"{entityInfo.Name}{ConstVal.UpdateDto}.cs", dtoGen.GetUpdateDto())
-            {
-                IsCover = isCover,
-                FullName = Path.Combine(outputPath, ConstVal.ModelsDir, dirName, $"{entityInfo.Name}{ConstVal.UpdateDto}.cs"),
-                ModuleName = entityInfo.ModuleName
-            },
-            new GenFileInfo( $"{entityInfo.Name}{ConstVal.FilterDto}.cs", dtoGen.GetFilterDto())
-            {
-                IsCover = isCover,
-                FullName = Path.Combine(outputPath, ConstVal.ModelsDir, dirName, $"{entityInfo.Name}{ConstVal.FilterDto}.cs"),
-                ModuleName = entityInfo.ModuleName
-            },
-            new GenFileInfo($"{entityInfo.Name}{ConstVal.ItemDto}.cs", dtoGen.GetItemDto())
-            {
-                IsCover = isCover,
-                FullName = Path.Combine(outputPath, ConstVal.ModelsDir, dirName, $"{entityInfo.Name}{ConstVal.ItemDto}.cs"),
-                ModuleName = entityInfo.ModuleName
-            },
-            new GenFileInfo($"{entityInfo.Name}{ConstVal.DetailDto}.cs", dtoGen.GetDetailDto())
-            {
-                IsCover = isCover,
-                FullName = Path.Combine(outputPath, ConstVal.ModelsDir, dirName, $"{entityInfo.Name}{ConstVal.DetailDto}.cs"),
-                ModuleName = entityInfo.ModuleName
-            }
+            addDtoFile,
+            updateDtoFile,
+            filterDtoFile,
+            itemDtoFile,
+            detailDtoFile
         ];
     }
 
@@ -306,6 +303,60 @@ public class CodeGenService(ILogger<CodeGenService> logger)
                 _logger.LogInformation("🆕📄 :{path}", file.FullName);
             }
         }
+    }
+
+    public async Task<GenFileInfo> GenerateDtoAsync(EntityInfo entityInfo, DtoType dtoType)
+    {
+        // 生成Dto
+        var dtoGen = new DtoCodeGenerate(entityInfo);
+        var dirName = entityInfo.Name + "Dtos";
+
+        var dto = dtoType switch
+        {
+            DtoType.Add => dtoGen.GetAddDto(),
+            DtoType.Update => dtoGen.GetUpdateDto(),
+            DtoType.Filter => dtoGen.GetFilterDto(),
+            DtoType.Item => dtoGen.GetItemDto(),
+            DtoType.Detail => dtoGen.GetDetailDto(),
+            _ => throw new ArgumentOutOfRangeException(nameof(dtoType), dtoType, null)
+        };
+
+        //var md5Hash = HashCrypto.Md5Hash(dto.EntityNamespace + dto.Name);
+        //var oldDto = await context.EntityInfos.Where(e => e.Md5Hash == md5Hash)
+        //    .Include(e => e.PropertyInfos)
+        //    .SingleOrDefaultAsync();
+
+        //if (oldDto != null)
+        //{
+        //    var diff = PropertyInfo.GetDiffProperties(oldDto.PropertyInfos, dto.Properties);
+        //    if (diff.delete.Count > 0)
+        //    {
+        //        dto.Properties = dto.Properties.Except(diff.delete).ToList();
+        //    }
+        //    if (diff.add.Count > 0)
+        //    {
+        //        dto.Properties.AddRange(diff.add);
+        //    }
+        //    context.PropertyInfos.RemoveRange(oldDto.PropertyInfos);
+        //    dto.Properties.ForEach(p =>
+        //    {
+        //        p.EntityInfoId = oldDto.Id;
+        //    });
+        //    context.AddRange(dto.Properties);
+        //}
+        //else
+        //{
+        //    var newDto = dto.ToEntityInfo(entityInfo);
+        //    context.EntityInfos.Add(newDto);
+        //}
+        //await context.SaveChangesAsync();
+        var content = dto.ToDtoContent(entityInfo.GetDtoNamespace(), entityInfo.Name);
+
+        return new GenFileInfo($"{dto.Name}.cs", content)
+        {
+            FullName = Path.Combine(ConstVal.ModelsDir, dirName, $"{dto.Name}.cs"),
+            ModuleName = entityInfo.ModuleName
+        };
     }
 }
 

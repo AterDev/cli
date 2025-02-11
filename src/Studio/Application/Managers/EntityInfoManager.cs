@@ -283,13 +283,13 @@ public partial class EntityInfoManager(
         switch (dto.CommandType)
         {
             case CommandType.Dto:
-                files = _codeGenService.GenerateDtos(entityInfo, sharePath, dto.Force);
-                files = await MergeDtoModelsAsync(entityInfo, files);
+                files = await _codeGenService.GenerateDtosAsync(entityInfo, sharePath, dto.Force);
+                //files = await MergeDtoModelsAsync(entityInfo, files);
                 break;
             case CommandType.Manager:
             {
-                files = _codeGenService.GenerateDtos(entityInfo, sharePath, dto.Force);
-                files = await MergeDtoModelsAsync(entityInfo, files);
+                files = await _codeGenService.GenerateDtosAsync(entityInfo, sharePath, dto.Force);
+                //files = await MergeDtoModelsAsync(entityInfo, files);
                 var tplContent = TplContent.ManagerTpl();
                 var managerFiles = _codeGenService.GenerateManager(entityInfo, applicationPath, tplContent, dto.Force);
                 files.AddRange(managerFiles);
@@ -297,8 +297,8 @@ public partial class EntityInfoManager(
             }
             case CommandType.API:
             {
-                files = _codeGenService.GenerateDtos(entityInfo, sharePath, dto.Force);
-                files = await MergeDtoModelsAsync(entityInfo, files);
+                files = await _codeGenService.GenerateDtosAsync(entityInfo, sharePath, dto.Force);
+                //files = await MergeDtoModelsAsync(entityInfo, files);
                 var tplContent = TplContent.ManagerTpl();
                 var managerFiles = _codeGenService.GenerateManager(entityInfo, applicationPath, tplContent, dto.Force);
                 files.AddRange(managerFiles);
@@ -390,7 +390,7 @@ public partial class EntityInfoManager(
 
         string sharePath = _projectContext.GetSharePath(entityInfo.ModuleName);
         // 对比当前实体生成的Dto与现有代码中的Dto的差异
-        var originGenFiles = _codeGenService.GenerateDtos(existEntity, sharePath, true);
+        var originGenFiles = await _codeGenService.GenerateDtosAsync(existEntity, sharePath, true);
         originGenFiles = originGenFiles.Where(f => f.Name.EndsWith("Dto.cs")).ToList();
 
         var compilationHelper = new CompilationHelper(sharePath);

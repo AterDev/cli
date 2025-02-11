@@ -127,4 +127,31 @@ public class PropertyInfo : EntityBase
         return $@"{CommentXml}{attributeText}{content}{SuffixContent}
 ";
     }
+
+    public static (List<PropertyInfo> add, List<PropertyInfo> delete) GetDiffProperties(List<PropertyInfo> origin, List<PropertyInfo> compare)
+    {
+        List<PropertyInfo> add = [];
+        List<PropertyInfo> delete = [];
+        foreach (PropertyInfo item in compare)
+        {
+            if (!origin.Any(p => p.Name.Equals(item.Name)
+                && p.IsList == item.IsList
+                && p.IsEnum == item.IsEnum
+                && p.Type == item.Type))
+            {
+                add.Add(item);
+            }
+        }
+        foreach (PropertyInfo item in origin)
+        {
+            if (!compare.Any(p => p.Name.Equals(item.Name)
+                && p.IsList == item.IsList
+                && p.IsEnum == item.IsEnum
+                && p.Type == item.Type))
+            {
+                delete.Add(item);
+            }
+        }
+        return (add, delete);
+    }
 }
