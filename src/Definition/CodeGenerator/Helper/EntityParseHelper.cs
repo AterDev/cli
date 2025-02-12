@@ -136,7 +136,6 @@ public class EntityParseHelper
             {
                 Name = Name!,
                 FilePath = filePath,
-                Md5Hash = HashCrypto.Md5Hash(content),
                 AssemblyName = AssemblyName,
                 NamespaceName = NamespaceName ?? "",
                 Comment = Comment,

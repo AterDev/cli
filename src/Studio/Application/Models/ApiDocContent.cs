@@ -1,4 +1,6 @@
-﻿namespace Application.Models;
+﻿using Share.Models.ApiDocInfoDtos;
+
+namespace Application.Models;
 
 /// <summary>
 /// 接口返回模型
@@ -12,7 +14,7 @@ public class ApiDocContent
     /// <summary>
     /// 所有请求及返回类型信息
     /// </summary>
-    public List<ModelInfo> ModelInfos { get; set; } = [];
+    public List<TypeMeta> TypeMeta { get; set; } = [];
     /// <summary>
     /// tag信息
     /// </summary>

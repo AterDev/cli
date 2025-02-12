@@ -1,4 +1,6 @@
-﻿namespace Application.Managers;
+﻿using CodeGenerator.Models;
+
+namespace Application.Managers;
 
 public class AdvanceManager(CommandDbContext dbContext, IProjectContext projectContext)
 {

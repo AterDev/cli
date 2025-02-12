@@ -19,7 +19,6 @@ public class GenActionManager(
     private readonly CodeGenService _codeGen = codeGenService;
     private readonly CodeAnalysisService _codeAnalysis = codeAnalysis;
 
-
     /// <summary>
     /// 添加实体
     /// </summary>

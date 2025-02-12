@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using CodeGenerator.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 

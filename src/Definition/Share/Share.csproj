@@ -13,6 +13,7 @@
         <None Remove="Managers\**" />
     </ItemGroup>
     <ItemGroup>
+        <Folder Include="Models\ModelInfos\" />
         <Folder Include="Models\ToolsDtos\" />
     </ItemGroup>
     <ItemGroup>

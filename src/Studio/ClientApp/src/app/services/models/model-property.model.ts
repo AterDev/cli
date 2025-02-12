@@ -1,4 +1,9 @@
-export interface PropertyInfo {
+import { ModelInfo } from '../models/model-info.model';
+export interface ModelProperty {
+  id: string;
+  createdTime: Date;
+  updatedTime: Date;
+  isDeleted: boolean;
   type: string;
   name: string;
   displayName?: string | null;
@@ -21,5 +26,7 @@ export interface PropertyInfo {
   isDecimal: boolean;
   suffixContent?: string | null;
   defaultValue: string;
+  entityInfo?: ModelInfo | null;
+  modelInfoId: string;
 
 }

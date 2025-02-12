@@ -1,11 +1,12 @@
-﻿using Ater.Web.Core.Utils;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Entity;
-/// <summary>
-/// 模型信息
-/// </summary>
-[Index(nameof(Name))]
-public class EntityInfo : EntityBase
+namespace CodeGenerator.Models;
+public  class EntityInfo
 {
     public static string[] IgnoreTypes = ["JsonDocument?", "byte[]"];
     public static string[] IgnoreProperties = [
@@ -15,12 +16,6 @@ public class EntityInfo : EntityBase
         ConstVal.IsDeleted,
         "PageSize", "PageIndex"
         ];
-
-    /// <summary>
-    /// file content md5 hash
-    /// </summary>
-    [MaxLength(32)]
-    public required string Md5Hash { get; set; }
 
     /// <summary>
     /// module name
@@ -64,9 +59,6 @@ public class EntityInfo : EntityBase
     /// </summary>
     public bool? IsEnum { get; set; } = false;
     public bool IsList { get; set; }
-
-    public Project Project { get; set; } = null!;
-    public Guid ProjectId { get; set; } = default!;
 
     /// <summary>
     /// 属性
@@ -129,10 +121,4 @@ public class EntityInfo : EntityBase
                 .Where(p => p.MaxLength is not (not null and >= 100))
             .ToList() ?? [];
     }
-}
-public enum EntityKeyType
-{
-    Guid,
-    Int,
-    String
 }

@@ -35,7 +35,7 @@ public class Project : EntityBase
     /// </summary>
     public ProjectConfig Config { get; set; } = new ProjectConfig();
 
-    public List<EntityInfo> EntityInfos { get; set; } = [];
+    public List<ModelInfo> ModelInfos { get; set; } = [];
     public List<ApiDocInfo> ApiDocInfos { get; set; } = [];
 
     public ICollection<GenAction> GenActions { get; set; } = [];

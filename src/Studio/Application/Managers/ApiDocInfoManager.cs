@@ -95,7 +95,7 @@ public class ApiDocInfoManager(
         var helper = new OpenApiService(apiDocument);
         return new ApiDocContent
         {
-            ModelInfos = helper.ModelInfos,
+            TypeMeta = helper.ModelInfos,
             OpenApiTags = helper.OpenApiTags,
             RestApiGroups = helper.RestApiGroups
         };
@@ -127,6 +127,7 @@ public class ApiDocInfoManager(
             .Replace("»", "");
 
         var apiDocument = new OpenApiStringReader().Read(openApiContent, out _);
+
         var helper = new OpenApiService(apiDocument);
         var groups = helper.RestApiGroups;
 
@@ -208,12 +209,6 @@ public class ApiDocInfoManager(
         // query = query.Where(q => q.User.Id == _userContext.UserId);
         return await query.FirstOrDefaultAsync();
     }
-
-    public NgComponentInfo? GenFormComponent(ModelInfo modelInfo, string serviceName)
-    {
-        return default;
-    }
-
 
     /// <summary>
     /// 生成前端请求服务

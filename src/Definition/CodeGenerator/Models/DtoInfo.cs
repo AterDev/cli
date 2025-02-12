@@ -5,7 +5,7 @@
 /// </summary>
 public class DtoInfo
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? BaseType { get; set; }
     public List<PropertyInfo> Properties { get; set; } = [];
     public string? Tag { get; set; }
@@ -52,9 +52,9 @@ public class DtoInfo
         return tpl;
     }
 
-    public EntityInfo ToEntityInfo(EntityInfo entityInfo)
+    public ModelInfo ToEntityInfo(ModelInfo entityInfo)
     {
-        var res = new EntityInfo()
+        var res = new ModelInfo()
         {
             Name = Name,
             NamespaceName = EntityNamespace ?? "",
@@ -63,12 +63,12 @@ public class DtoInfo
             ModuleName = entityInfo.ModuleName,
             ProjectId = entityInfo.ProjectId,
             Comment = Comment,
-            PropertyInfos = Properties
+            PropertyInfos = Properties.MapTo<List<PropertyInfo>, List<ModelProperty>>()
         };
         res.PropertyInfos.ForEach(p =>
         {
             p.Id = Guid.NewGuid();
-            p.EntityInfoId = res.Id;
+            p.ModelInfoId = res.Id;
         });
         return res;
     }

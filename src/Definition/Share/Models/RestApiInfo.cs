@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Share.Models.ApiDocInfoDtos;
 namespace Share.Models;
 
 /// <summary>
@@ -28,11 +29,11 @@ public class RestApiInfo
     /// <summary>
     /// 请求类型参数
     /// </summary>
-    public ModelInfo? RequestInfo { get; set; }
+    public TypeMeta? RequestInfo { get; set; }
     /// <summary>
     /// 返回类型内容
     /// </summary>
-    public ModelInfo? ResponseInfo { get; set; }
+    public TypeMeta? ResponseInfo { get; set; }
 }
 
 /// <summary>

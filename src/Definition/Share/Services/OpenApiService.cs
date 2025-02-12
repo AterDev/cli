@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
+using TypeMeta = Share.Models.ApiDocInfoDtos.TypeMeta;
 
 
 namespace Share.Services;
@@ -20,19 +21,15 @@ public class OpenApiService
     /// <summary>
     /// 所有请求及返回类型信息
     /// </summary>
-    public List<ModelInfo> ModelInfos { get; set; }
+    public List<TypeMeta> ModelInfos { get; set; }
     /// <summary>
     /// tag信息
     /// </summary>
     public List<ApiDocTag> OpenApiTags { get; set; }
 
-    public string Version { get; init; }
-
     public OpenApiService(OpenApiDocument openApi)
     {
         OpenApi = openApi;
-        // openapi version
-
         OpenApiTags = openApi.Tags
             .Select(s => new ApiDocTag
             {
@@ -78,7 +75,7 @@ public class OpenApiService
 
                     if (model == null)
                     {
-                        apiInfo.RequestInfo = new ModelInfo
+                        apiInfo.RequestInfo = new TypeMeta
                         {
                             Name = RequestType,
                         };
@@ -112,7 +109,7 @@ public class OpenApiService
                     // 返回内容没有对应类型
                     if (model == null)
                     {
-                        apiInfo.ResponseInfo = new ModelInfo
+                        apiInfo.ResponseInfo = new TypeMeta
                         {
                             Name = ResponseType,
                         };
@@ -189,9 +186,9 @@ public class OpenApiService
     /// 解析模型
     /// </summary>
     /// <returns></returns>
-    public List<ModelInfo> ParseModels()
+    public List<TypeMeta> ParseModels()
     {
-        List<ModelInfo> models = [];
+        List<TypeMeta> models = [];
 
         foreach (KeyValuePair<string, OpenApiSchema> schema in OpenApi.Components.Schemas)
         {
@@ -201,7 +198,7 @@ public class OpenApiService
             description = description?.Replace("\n", " ") ?? "";
             List<PropertyInfo> props = ParseProperties(schema.Value);
 
-            var model = new ModelInfo()
+            var model = new TypeMeta()
             {
                 Name = name,
                 PropertyInfos = props,

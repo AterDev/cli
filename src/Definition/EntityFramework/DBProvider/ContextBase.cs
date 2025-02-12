@@ -7,8 +7,8 @@ namespace EntityFramework.DBProvider;
 public class ContextBase(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Project> Projects { get; set; } = null!;
-    public DbSet<EntityInfo> EntityInfos { get; set; } = null!;
-    public DbSet<PropertyInfo> PropertyInfos { get; set; }
+    public DbSet<ModelInfo> ModelInfos { get; set; } = null!;
+    public DbSet<ModelProperty> ModelProperties { get; set; }
     public DbSet<ApiDocInfo> ApiDocInfos { get; set; } = null!;
     public DbSet<GenAction> GenActions { get; set; } = null!;
     public DbSet<GenStep> GenSteps { get; set; } = null!;
@@ -27,7 +27,7 @@ public class ContextBase(DbContextOptions options) : DbContext(options)
             e.HasMany(p => p.GenSteps)
                 .WithOne(a => a.Project)
                 .OnDelete(DeleteBehavior.Cascade);
-            e.HasMany(p => p.EntityInfos)
+            e.HasMany(p => p.ModelInfos)
                 .WithOne(a => a.Project)
                 .OnDelete(DeleteBehavior.Cascade);
         });

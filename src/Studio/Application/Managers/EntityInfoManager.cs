@@ -6,12 +6,12 @@ using Microsoft.CodeAnalysis;
 namespace Application.Managers;
 
 public partial class EntityInfoManager(
-    DataAccessContext<EntityInfo> dataContext,
+    DataAccessContext<Entity.ModelInfo> dataContext,
     ILogger<EntityInfoManager> logger,
     CodeAnalysisService codeAnalysis,
     CodeGenService codeGenService,
     IProjectContext projectContext)
-    : ManagerBase<EntityInfo>(dataContext, logger)
+    : ManagerBase<Entity.ModelInfo>(dataContext, logger)
 {
     private readonly IProjectContext _projectContext = projectContext;
     private readonly CodeAnalysisService _codeAnalysis = codeAnalysis;
@@ -276,9 +276,6 @@ public partial class EntityInfoManager(
         string applicationPath = _projectContext.GetApplicationPath(entityInfo.ModuleName)!;
         string apiPath = _projectContext.GetApiPath(entityInfo.ModuleName);
 
-        entityInfo.ProjectId = _projectContext.ProjectId;
-        entityInfo.Project = _projectContext.Project!;
-
         var files = new List<GenFileInfo>();
         switch (dto.CommandType)
         {
@@ -344,92 +341,5 @@ public partial class EntityInfoManager(
                 break;
         }
         _codeGenService.GenerateFiles(files);
-    }
-
-    /// <summary>
-    /// 合并生成的Dto
-    /// </summary>
-    /// <param name="entityInfo">新实体</param>
-    /// <param name="genFilesInfo">新生成文件</param>
-    /// <returns>处理后的FileInfo</returns>
-    public async Task<List<GenFileInfo>> MergeDtoModelsAsync(EntityInfo entityInfo, List<GenFileInfo> genFilesInfo)
-    {
-        var sw = new Stopwatch();
-        sw.Start();
-        var res = new List<GenFileInfo>();
-        var existEntity = await Command.Where(q => q.FilePath == entityInfo.FilePath)
-            .Include(e => e.PropertyInfos)
-            .SingleOrDefaultAsync();
-
-        if (existEntity == null)
-        {
-            await AddAsync(entityInfo);
-            _logger.LogInformation("➕ Add new entity:{Name}", entityInfo.Name);
-            return genFilesInfo;
-        }
-        else if (existEntity.Md5Hash != entityInfo.Md5Hash)
-        {
-            existEntity.Md5Hash = entityInfo.Md5Hash;
-            existEntity.ModuleName = entityInfo.ModuleName;
-            existEntity.Name = entityInfo.Name;
-            existEntity.NamespaceName = entityInfo.NamespaceName;
-
-            entityInfo.PropertyInfos.ForEach(p =>
-            {
-                p.EntityInfoId = existEntity.Id;
-            });
-            UpdateRelation(existEntity, e => e.PropertyInfos, entityInfo.PropertyInfos);
-            await SaveChangesAsync();
-            _logger.LogInformation("🆙 Update entity:{Name}", entityInfo.Name);
-        }
-        else
-        {
-            _logger.LogInformation("ℹ️ Entity {entity} not changed!", entityInfo.Name);
-            return genFilesInfo;
-        }
-
-        string sharePath = _projectContext.GetSharePath(entityInfo.ModuleName);
-        // 对比当前实体生成的Dto与现有代码中的Dto的差异
-        var originGenFiles = await _codeGenService.GenerateDtosAsync(existEntity, sharePath, true);
-        originGenFiles = originGenFiles.Where(f => f.Name.EndsWith("Dto.cs")).ToList();
-
-        var compilationHelper = new CompilationHelper(sharePath);
-        foreach (var genFile in originGenFiles)
-        {
-            var diffProperties = _codeAnalysis.GetDiffProperties(genFile.FullName, genFile.Content);
-            // log add and deleted
-            _logger.LogDebug(genFile.Content);
-
-            var addedFileMsg = "";
-            diffProperties.Added.ForEach(p => addedFileMsg += $"{p.Type} {p.Name}" + Environment.NewLine);
-            _logger.LogInformation("⌚ [{dto}] Added: {msg}", genFile.Name, addedFileMsg);
-
-            var deletedFileMsg = "";
-            diffProperties.Deleted.ForEach(p => deletedFileMsg += $"{p.Type} {p.Name}" + Environment.NewLine);
-            _logger.LogInformation("⌚ [{dto}] Deleted: {msg}", genFile.Name, deletedFileMsg);
-
-            diffProperties.ModelName = genFile.Name;
-
-            // 将差异属性更新到genFilesInfo
-            var genFileInfo = genFilesInfo.FirstOrDefault(f => f.Name == genFile.Name);
-            if (genFileInfo != null)
-            {
-                compilationHelper.LoadContent(genFile.Content);
-
-                foreach (var prop in diffProperties.Added)
-                {
-                    compilationHelper.AddClassProperty(prop.ToCsharpLine());
-                }
-                foreach (var prop in diffProperties.Deleted)
-                {
-                    compilationHelper.RemoveClassProperty(prop.ToCsharpLine());
-                }
-                genFileInfo.Content = compilationHelper.SyntaxRoot?.ToFullString() ?? "";
-                res.Add(genFileInfo);
-            }
-        }
-        sw.Stop();
-        _logger.LogInformation($"GetDiffProperties elapsed:{sw.ElapsedMilliseconds}ms");
-        return res;
     }
 }

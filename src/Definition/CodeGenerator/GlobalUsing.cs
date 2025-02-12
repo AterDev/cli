@@ -11,4 +11,4 @@ global using Mapster;
 global using Microsoft.CodeAnalysis;
 global using Microsoft.CodeAnalysis.CSharp;
 global using Microsoft.CodeAnalysis.CSharp.Syntax;
-global using PropertyInfo = Entity.PropertyInfo;
+global using PropertyInfo = CodeGenerator.Models.PropertyInfo;

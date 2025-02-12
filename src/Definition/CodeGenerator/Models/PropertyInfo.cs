@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Entity;
-
-/// <summary>
-/// 属性
-/// </summary>
-[Index(nameof(Name))]
-[Index(nameof(Type))]
-[Index(nameof(IsEnum))]
-public class PropertyInfo : EntityBase
+namespace CodeGenerator.Models;
+public class PropertyInfo
 {
     /// <summary>
     /// 类型
@@ -80,10 +79,6 @@ public class PropertyInfo : EntityBase
     /// </summary>
     [MaxLength(100)]
     public string DefaultValue { get; set; } = string.Empty;
-
-    [ForeignKey(nameof(EntityInfoId))]
-    public EntityInfo? EntityInfo { get; set; } = null!;
-    public Guid EntityInfoId { get; set; } = default!;
 
     /// <summary>
     /// 转换成C#属性

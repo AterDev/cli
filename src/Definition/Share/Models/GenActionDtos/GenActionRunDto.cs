@@ -1,4 +1,6 @@
-﻿namespace Share.Models.GenActionDtos;
+﻿using Share.Models.ApiDocInfoDtos;
+
+namespace Share.Models.GenActionDtos;
 /// <summary>
 /// 操作执行模型
 /// </summary>
@@ -24,5 +26,5 @@ public class GenActionRunDto
     /// </summary>
     public List<Variable>? Variables { get; set; }
 
-    public ModelInfo? ModelInfo { get; set; }
+    public TypeMeta? ModelInfo { get; set; }
 }
