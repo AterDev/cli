@@ -4,11 +4,15 @@
 </div>
 <div class="container-fluid p-0" *ngIf="!isLoading">
   <mat-toolbar>
-    <span>{{project.displayName}}</span>
+    <span>{{project.displayName}}
+      <small>
+        ({{project.path}})
+      </small>
+    </span>
     <div class="d-flex flex-grow-1"></div>
-    <button mat-icon-button matTooltip="添加独立服务" color="primary" (click)="openAddService()">
+    <!-- <button mat-icon-button matTooltip="添加独立服务" color="primary" (click)="openAddService()">
       <mat-icon class="text-primary">add_link</mat-icon>
-    </button>
+    </button> -->
   </mat-toolbar>
   <div class="d-flex align-items-center my-2 gap-1">
     <mat-form-field style="min-width: 300px;" subscriptSizing="dynamic" appearance="outline">

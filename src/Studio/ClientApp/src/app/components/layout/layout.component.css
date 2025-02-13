@@ -9,3 +9,8 @@
 .page {
   height: 100vh
 }
+
+.mat-toolbar {
+  box-shadow: 0px 2px 10px 2px rgb(157 157 157);
+  margin-bottom: 1px;
+}

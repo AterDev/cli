@@ -5,13 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ApiDocInfoItemDto } from 'src/app/services/api-doc-info/models/api-doc-info-item-dto.model';
 import { ApiDocInfo } from 'src/app/services/api-doc-info/models/api-doc-info.model';
-import { CreateUIComponentDto } from 'src/app/services/api-doc-info/models/create-uicomponent-dto.model';
-import { NgComponentInfo } from 'src/app/services/api-doc-info/models/ng-component-info.model';
 import { ApiDocTag } from 'src/app/services/models/api-doc-tag.model';
 import { ComponentType } from 'src/app/services/enum/models/component-type.model';
 import { OperationType } from 'src/app/services/enum/models/operation-type.model';
 import { RequestLibType } from 'src/app/services/enum/models/request-lib-type.model';
-import { UIType } from 'src/app/services/enum/models/uitype.model';
 import { Project } from 'src/app/services/project/models/project.model';
 import { PropertyInfo } from 'src/app/services/models/property-info.model';
 import { RestApiGroup } from 'src/app/services/models/rest-api-group.model';
@@ -20,7 +17,6 @@ import { ProjectStateService } from 'src/app/share/project-state.service';
 import { ApiDocInfoService } from 'src/app/services/api-doc-info/api-doc-info.service';
 import { EntityInfoService } from 'src/app/services/entity-info/entity-info.service';
 import { ProjectService } from 'src/app/services/project/project.service';
-import { ProjectConfig } from 'src/app/services/project/models/project-config.model';
 import { ModelInfo } from 'src/app/services/models/model-info.model';
 import { GenActionService } from 'src/app/services/gen-action/gen-action.service';
 import { GenSourceType } from 'src/app/services/enum/models/gen-source-type.model';
@@ -45,12 +41,13 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
 import { TypedCellDefDirective } from '../../../components/typed-cell-def.directive';
 import { EditorComponent } from 'ngx-monaco-editor-v2';
 import { CdkScrollable } from '@angular/cdk/scrolling';
+import { TypeMeta } from 'src/app/services/models/type-meta.model';
 
 @Component({
-    selector: 'app-docs',
-    templateUrl: './docs.component.html',
-    styleUrls: ['./docs.component.css'],
-    imports: [NgIf, MatProgressSpinner, MatToolbar, MatFormField, MatSelect, FormsModule, NgFor, MatOption, MatIconButton, MatTooltip, MatIcon, MatTabGroup, MatTab, MatInput, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatNavList, MatListItem, MatChipSet, MatChip, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, TypedCellDefDirective, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatLabel, MatButton, EditorComponent, MatDialogTitle, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatDialogActions, MatDialogClose]
+  selector: 'app-docs',
+  templateUrl: './docs.component.html',
+  styleUrls: ['./docs.component.css'],
+  imports: [NgIf, MatProgressSpinner, MatToolbar, MatFormField, MatSelect, FormsModule, NgFor, MatOption, MatIconButton, MatTooltip, MatIcon, MatTabGroup, MatTab, MatInput, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatNavList, MatListItem, MatChipSet, MatChip, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, TypedCellDefDirective, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatLabel, MatButton, EditorComponent, MatDialogTitle, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatDialogActions, MatDialogClose]
 })
 export class DocsComponent implements OnInit {
   OperationType = OperationType;
@@ -63,8 +60,8 @@ export class DocsComponent implements OnInit {
   isLoading = true;
   isOccupying = false;
   currentApi: RestApiInfo | null = null;
-  currentModel: ModelInfo | null = null;
-  selectedModel: ModelInfo | null = null;
+  currentModel: TypeMeta | null = null;
+  selectedModel: TypeMeta | null = null;
   searchKey: string | null = null;
   modelSearchKey: string | null = null;
   /**
@@ -99,8 +96,8 @@ export class DocsComponent implements OnInit {
   clientRequestTmpRef!: TemplateRef<{}>;
   restApiGroups = [] as RestApiGroup[];
   filterApiGroups = [] as RestApiGroup[];
-  filterModelInfos = [] as ModelInfo[];
-  modelInfos = [] as ModelInfo[];
+  filterModelInfos = [] as TypeMeta[];
+  modelInfos = [] as TypeMeta[];
   tags = [] as ApiDocTag[];
   tableColumns = ['name', 'type', 'requried', 'description'];
   modelTableColumns = ['name', 'type', 'requried', 'description', 'validator'];
@@ -378,7 +375,7 @@ export class DocsComponent implements OnInit {
               if (res) {
                 this.restApiGroups = res.restApiGroups!;
                 this.filterApiGroups = this.restApiGroups;
-                this.modelInfos = res.modelInfos!;
+                this.modelInfos = res.typeMeta!;
                 this.filterModelInfos = this.modelInfos.filter(m => m.isEnum == false);
                 this.tags = res.openApiTags!;
                 // 更新当前展示的内容
