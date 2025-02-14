@@ -257,6 +257,7 @@ public class CodeGenService(ILogger<CodeGenService> logger)
             s.FullName = Path.Combine(dir, s.Name);
             s.IsCover = true;
         });
+        files.AddRange(services);
         return files;
     }
 
