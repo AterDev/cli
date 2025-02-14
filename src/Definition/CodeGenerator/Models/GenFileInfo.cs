@@ -23,7 +23,7 @@ public class GenFileInfo(string name, string content)
     /// </summary>
     public string FullName { get; set; } = string.Empty;
 
-    public string DirName { get; set; } = string.Empty;
+    public string DirName { get; init; } = string.Empty;
 
     /// <summary>
     /// 模块名称

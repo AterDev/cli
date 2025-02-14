@@ -146,6 +146,7 @@ public class TSModelGenerate : GenerateBase
             Content = tsContent,
             ModelName = schemaKey
         };
+
         return file;
     }
 
