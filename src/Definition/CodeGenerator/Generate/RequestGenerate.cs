@@ -18,7 +18,7 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
     public RequestLibType LibType { get; set; } = RequestLibType.NgHttp;
     public string? Server { get; set; } = openApi.Servers.FirstOrDefault()?.Url;
 
-    public List<GenFileInfo>? TsModelFiles { get; set; }
+    public List<GenFileInfo> TsModelFiles { get; set; } = [];
 
     /// <summary>
     /// 枚举类型
@@ -103,7 +103,7 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
     /// <returns></returns>
     public List<GenFileInfo> GetServices(IList<OpenApiTag> tags)
     {
-        if (TsModelFiles == null)
+        if (TsModelFiles.Count == 0)
         {
             GetTSInterfaces();
         }
@@ -185,12 +185,12 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
         {
             var file = tsGen.GenerateInterfaceFile(item.Key, item.Value);
             files.Add(file);
-            if (file.FullName == "enum")
+            TsModelFiles.Add(file);
+            if (file.DirName == "enum")
             {
                 EnumModels.Add(file.ModelName!);
             }
         }
-        TsModelFiles = files;
         return files;
     }
 
@@ -738,8 +738,8 @@ export class {{serviceFile.Name}}Service extends {{serviceFile.Name}}BaseService
         }
         else
         {
-            string? dirName = TsModelFiles?.Where(f => f.ModelName == t)
-                .Select(f => f.FullName).FirstOrDefault();
+            string? dirName = TsModelFiles.Where(f => f.ModelName == t)
+                .Select(f => f.DirName).FirstOrDefault();
 
             if (dirName != serviceFile.Name.ToHyphen())
             {

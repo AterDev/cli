@@ -141,6 +141,7 @@ public class TSModelGenerate : GenerateBase
         }
         GenFileInfo file = new(fileName, tsContent)
         {
+            DirName = path ?? "",
             FullName = path ?? "",
             Content = tsContent,
             ModelName = schemaKey
