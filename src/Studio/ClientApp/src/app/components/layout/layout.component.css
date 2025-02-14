@@ -7,10 +7,10 @@
 }
 
 .page {
-  height: 100vh
+  height: 100vh;
 }
 
 .mat-toolbar {
-  box-shadow: 0px 2px 10px 2px rgb(157 157 157);
+  box-shadow: 0px -1px 3px 1px #9d9d9d;
   margin-bottom: 1px;
 }

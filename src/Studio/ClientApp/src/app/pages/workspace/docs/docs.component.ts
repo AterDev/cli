@@ -441,7 +441,7 @@ export class DocsComponent implements OnInit {
   selectApi(api: RestApiInfo): void {
     this.currentApi = api;
   }
-  selectModel(model: ModelInfo): void {
+  selectModel(model: TypeMeta): void {
     this.currentModel = model;
   }
 
