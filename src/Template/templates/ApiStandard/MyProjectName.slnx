@@ -15,6 +15,7 @@
     <Project Path="src/Application/Application.csproj" />
     <Project Path="src/AspireHost/AspireHost.csproj" />
     <Project Path="src/Http.API/Http.API.csproj" />
+    <Project Path="src/IdentityServer/IdentityServer.csproj" />
   </Folder>
   <Folder Name="/src/Definition/" Id="6c4d18c5-5566-cc07-9a5e-d0047fa19ca3">
     <Project Path="src/Definition/Entity/Entity.csproj" />
