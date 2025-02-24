@@ -239,9 +239,16 @@ public class TplContent
             """;
     }
 
-    public static string EnumPipeTpl()
+    public static string EnumPipeTpl(bool IsNgModule = false)
     {
-        return """
+
+        string ngModule = IsNgModule ? """
+@NgModule({
+  declarations: [EnumTextPipe], exports: [EnumTextPipe]
+})
+export class EnumTextPipeModule { }
+""" : "";
+        return $$"""
             // 该文件自动生成，会被覆盖更新
             import { Injectable, Pipe, PipeTransform } from '@@angular/core';
 
@@ -260,7 +267,7 @@ public class TplContent
                 return result;
               }
             }
-
+            {{ngModule}}
             """;
     }
 

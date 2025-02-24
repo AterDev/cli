@@ -55,11 +55,12 @@ public class SystemLogTaskHostedService(IServiceProvider serviceProvider, IEntit
             {
                 context.Add(log);
                 await context.SaveChangesAsync(stoppingToken);
-                _logger.LogInformation("✍️ New Log {name} is saved.", log.TargetName);
+                _logger.LogInformation("✍️ New Log:[{object}] {actionUser} {action} {name}",
+log.Description, log.ActionUserName, log.ActionType, log.TargetName);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred executing {name}.", nameof(log.TargetName));
+                _logger.LogError(ex, "Error occurred executing {name},{userId},{route},{actionType},{acitonUserName}.", log.TargetName, log.SystemUserId, log.Route, log.ActionType, log.ActionUserName);
             }
         }
     }

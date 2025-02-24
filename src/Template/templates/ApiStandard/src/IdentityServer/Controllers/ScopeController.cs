@@ -21,12 +21,12 @@ public class ScopeController : ControllerBase
         var scopes = new List<object>();
         await foreach (var scope in _scopeManager.ListAsync())
         {
-            scopes.Add(new
-            {
-                scope.Name,
-                scope.DisplayName,
-                scope.Resources
-            });
+            //scopes.Add(new
+            //{
+            //    scope.Name,
+            //    scope.DisplayName,
+            //    scope.Resources
+            //});
         }
         return Ok(scopes);
     }
@@ -39,7 +39,7 @@ public class ScopeController : ControllerBase
         {
             Name = dto.Name,
             DisplayName = dto.DisplayName,
-            Resources = dto.Resources
+            //Resources = dto.Resources
         };
         await _scopeManager.CreateAsync(descriptor);
         return Ok();
@@ -59,7 +59,7 @@ public class ScopeController : ControllerBase
         {
             Name = dto.Name,
             DisplayName = dto.DisplayName,
-            Resources = dto.Resources
+            //Resources = dto.Resources
         };
 
         await _scopeManager.UpdateAsync(scope, descriptor);

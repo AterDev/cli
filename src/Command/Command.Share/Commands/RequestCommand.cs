@@ -71,8 +71,19 @@ public class RequestCommand : CommandBase
         if (LibType == RequestLibType.NgHttp)
         {
             var schemas = ApiDocument!.Components.Schemas;
-            string pipeContent = RequestGenerate.GetEnumPipeContent(schemas);
+
             dir = Path.Combine(OutputPath, "pipe", DocName);
+            var path = Path.Combine(dir, "enum-text.pipe.ts");
+            bool isNgModule = false;
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string? firstLine = reader.ReadLine();
+                if (!string.IsNullOrWhiteSpace(firstLine) && firstLine.Contains("NgModule"))
+                {
+                    isNgModule = true;
+                }
+            }
+            string pipeContent = RequestGenerate.GetEnumPipeContent(schemas, isNgModule);
             await GenerateFileAsync(dir, "enum-text.pipe.ts", pipeContent, true);
         }
         else if (LibType == RequestLibType.Axios)

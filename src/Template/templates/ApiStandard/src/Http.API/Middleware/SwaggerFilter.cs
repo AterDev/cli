@@ -13,35 +13,32 @@ public class EnumSchemaFilter : ISchemaFilter
     {
         if (context.Type.IsEnum)
         {
-            OpenApiArray enumData = [];
-            var fields = context.Type.GetFields();
-            int i = 0;
-            foreach (var f in fields)
+            var name = new OpenApiArray();
+            var enumData = new OpenApiArray();
+            FieldInfo[] fields = context.Type.GetFields();
+            foreach (FieldInfo f in fields)
             {
                 if (f.Name != "value__")
                 {
-                    var description = string.Empty;
-                    var desAttr = f.CustomAttributes.Where(a => a.AttributeType.Name == "DescriptionAttribute").FirstOrDefault();
-                    desAttr ??= f.CustomAttributes.Where(a => a.AttributeType.Name == "DisplayAttribute").FirstOrDefault();
+                    name.Add(new OpenApiString(f.Name));
+                    CustomAttributeData? desAttr = f.CustomAttributes.Where(a => a.AttributeType.Name == "DescriptionAttribute").FirstOrDefault();
+
                     if (desAttr != null)
                     {
-                        var des = desAttr.ConstructorArguments.FirstOrDefault();
+                        CustomAttributeTypedArgument des = desAttr.ConstructorArguments.FirstOrDefault();
                         if (des.Value != null)
                         {
-                            description = des.Value.ToString();
+                            enumData.Add(new OpenApiObject()
+                            {
+                                ["name"] = new OpenApiString(f.Name),
+                                ["value"] = new OpenApiInteger((int)f.GetRawConstantValue()!),
+                                ["description"] = new OpenApiString(des.Value.ToString())
+                            });
                         }
                     }
-                    var value = f.GetRawConstantValue();
-                    var intValue = value == null ? i : (int)value;
-                    enumData.Add(new OpenApiObject()
-                    {
-                        ["name"] = new OpenApiString(f.Name),
-                        ["value"] = new OpenApiInteger(intValue),
-                        ["description"] = new OpenApiString(description)
-                    });
-                    i++;
                 }
             }
+            model.Extensions.Add("x-enumNames", name);
             model.Extensions.Add("x-enumData", enumData);
         }
         else

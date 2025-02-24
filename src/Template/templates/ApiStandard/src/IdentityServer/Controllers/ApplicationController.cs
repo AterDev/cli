@@ -24,12 +24,12 @@ public class ApplicationController : ControllerBase
         var applications = new List<object>();
         await foreach (var app in _applicationManager.ListAsync())
         {
-            applications.Add(new
-            {
-                app.ClientId,
-                app.DisplayName,
-                RedirectUris = app.RedirectUris?.Select(uri => uri.ToString())
-            });
+            //applications.Add(new
+            //{
+            //    app.ClientId,
+            //    app.DisplayName,
+            //    RedirectUris = app.RedirectUris?.Select(uri => uri.ToString())
+            //});
         }
         return Ok(applications);
     }
@@ -80,7 +80,6 @@ public class ApplicationController : ControllerBase
             ClientSecret = dto.ClientSecret,
             DisplayName = dto.DisplayName,
             RedirectUris = { new Uri(dto.RedirectUri) },
-            Permissions = dto.Permissions
         };
 
         await _applicationManager.UpdateAsync(application, descriptor);

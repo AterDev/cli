@@ -226,7 +226,6 @@ public class OpenApiService
         List<PropertyInfo> props = [];
         List<IOpenApiAny> enums = schema.Enum.ToList();
 
-
         KeyValuePair<string, IOpenApiExtension> extEnum = schema.Extensions.FirstOrDefault(e => e.Key == "x-enumNames");
         KeyValuePair<string, IOpenApiExtension> extEnumData = schema.Extensions.FirstOrDefault(e => e.Key == "x-enumData");
 

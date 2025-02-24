@@ -226,12 +226,24 @@ public class CodeGenService(ILogger<CodeGenService> logger)
         if (type == RequestLibType.NgHttp)
         {
             var schemas = apiDocument!.Components.Schemas;
-            string pipeContent = RequestGenerate.GetEnumPipeContent(schemas);
             dir = Path.Combine(outputPath, "pipe", docName);
+            var enumTextPath = Path.Combine(dir, "enum-text.pipe.ts");
+
+            bool isNgModule = false;
+            using (StreamReader reader = new StreamReader(enumTextPath))
+            {
+                string? firstLine = reader.ReadLine();
+                if (!string.IsNullOrWhiteSpace(firstLine) && firstLine.Contains("NgModule"))
+                {
+                    isNgModule = true;
+                }
+            }
+
+            string pipeContent = RequestGenerate.GetEnumPipeContent(schemas, isNgModule);
 
             files.Add(new GenFileInfo("enum-text.pipe.ts", pipeContent)
             {
-                FullName = Path.Combine(dir, "enum-text.pipe.ts"),
+                FullName = enumTextPath,
                 IsCover = true
             });
         }

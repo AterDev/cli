@@ -194,9 +194,9 @@ public class RequestGenerate(OpenApiDocument openApi) : GenerateBase
         return files;
     }
 
-    public static string GetEnumPipeContent(IDictionary<string, OpenApiSchema> schemas)
+    public static string GetEnumPipeContent(IDictionary<string, OpenApiSchema> schemas, bool isNgModule = false)
     {
-        string tplContent = TplContent.EnumPipeTpl();
+        string tplContent = TplContent.EnumPipeTpl(isNgModule);
         string codeBlocks = "";
         foreach (KeyValuePair<string, OpenApiSchema> item in schemas)
         {
