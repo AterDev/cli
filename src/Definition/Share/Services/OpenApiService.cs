@@ -231,22 +231,27 @@ public class OpenApiService
 
         if (extEnumData.Value != null)
         {
-            if (extEnumData.Value as JsonNode is JsonArray data && data.Count > 0)
+            var jsonString = extEnumData.Value.ToString();
+            var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(jsonString));
+
+            OpenApiArray? data = extEnumData.Value as OpenApiArray;
+            data?.ForEach(item =>
             {
-                foreach (var item in data)
+                PropertyInfo prop = new()
                 {
-                    if (item == null) { continue; }
-                    PropertyInfo prop = new()
-                    {
-                        Name = item["name"]?.GetValue<string>() ?? "",
-                        CommentSummary = item?["description"]?.GetValue<string>() ?? "",
-                        Type = "Enum:" + item?["value"]?.GetValue<string>() ?? "",
-                        IsEnum = true,
-                        DefaultValue = item?["value"]?.GetValue<string>() ?? "",
-                    };
-                    props.Add(prop);
-                }
-            }
+                    Name = ((item as OpenApiObject)?["name"] as OpenApiString)?
+                        .Value.ToString() ?? "",
+                    CommentSummary = ((item as OpenApiObject)?["description"] as OpenApiString)?
+                        .Value.ToString() ?? "",
+
+                    Type = "Enum:" + ((item as OpenApiObject)?["value"] as OpenApiInteger)?
+                        .Value.ToString() ?? "",
+                    IsEnum = true,
+                    DefaultValue = ((item as OpenApiObject)?["value"] as OpenApiInteger)?
+                        .Value.ToString() ?? "",
+                };
+                props.Add(prop);
+            });
         }
         else if (enums != null)
         {
